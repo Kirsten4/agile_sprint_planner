@@ -1,10 +1,10 @@
 import React from "react";
-import Redirect from "react-router-dom"; 
+import {Navigate} from "react-router-dom"; 
 
 const Home = () => {
   
   if (localStorage.getItem("token") === null) {
-    // return <Redirect to="/login" />;
+    return <Navigate to="/login" />;
   }
 
   const logout = () => {

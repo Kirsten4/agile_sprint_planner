@@ -9,15 +9,14 @@
   "scripts": {
     "start": "node server.js",
     "server:dev": "nodemon server.js",
-    "seeds": "node seeder.js"
+    "seeds": "mongo < db/seeds.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.2",
-    "mongoose-seed": "^0.6.0"
+    "mongoose": "^6.2.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
