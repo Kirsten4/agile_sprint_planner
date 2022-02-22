@@ -13,10 +13,7 @@ const TaskListContainer = () => {
     const [taskLists, setTaskLists] = useState(null);
 
     useEffect(() => {
-        console.log(initialData);
         setTaskLists(initialData);
-        console.log(taskLists);
-        console.log("help");
     }, [])
 
     const onDragEnd = result => {
@@ -25,6 +22,59 @@ const TaskListContainer = () => {
         if (!destination) {
             return;
         }
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        const start = taskLists.columns[source.droppableId];
+        const finish = taskLists.columns[destination.droppableId];
+
+        if (start === finish) {
+            const newTaskIds = Array.from(start.taskIds);
+            newTaskIds.splice(source.index, 1);
+            newTaskIds.splice(destination.index, 0, draggableId);
+
+            const newColumn = {
+                ...start,
+                taskIds: newTaskIds
+            };
+
+            const newState = {
+                ...taskLists,
+                columns: {
+                    ...taskLists.columns,
+                    [newColumn.id]: newColumn
+                }
+            };
+            setTaskLists(newState);
+            return;
+        }
+        const startTaskIds = Array.from(start.taskIds);
+        startTaskIds.splice(source.index, 1);
+        const newStart = {
+            ...start,
+            taskIds: startTaskIds
+        };
+
+        const finishTaskIds = Array.from(finish.taskIds);
+        finishTaskIds.splice(destination.index, 0, draggableId);
+        const newFinish = {
+            ...finish,
+            taskIds: finishTaskIds
+        };
+
+        const newState = {
+            ...taskLists,
+            columns: {
+                ...taskLists.columns,
+                [newStart.id]: newStart,
+                [newFinish.id]: newFinish
+            }
+        };
+        setTaskLists(newState);
     }
 
     return (
