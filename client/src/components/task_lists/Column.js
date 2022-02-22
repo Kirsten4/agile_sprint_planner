@@ -15,7 +15,7 @@ const TaskList = styled.div`
     padding: 8px;
     background-color: skyblue;
     flex-grow: 1;
-    min-height: 100px;
+    min-height: 300px;
     `;
 
 const Column = ({ column, tasks }) => {
@@ -28,7 +28,6 @@ const Column = ({ column, tasks }) => {
                     <TaskList
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        // isDraggingOver={snapshot.isDraggingOver}
                     >
                         {tasks.map((task, index) => (
                             <Task key={task.id} task={task} index={index} />

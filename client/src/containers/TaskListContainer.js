@@ -10,11 +10,19 @@ const Container = styled.div`
 
 const TaskListContainer = () => {
     
-    const [taskLists, setTaskLists] = useState(null);
+    const [taskList, setTaskList] = useState(null);
+    const [columns, setColumns] = useState(null);
 
     useEffect(() => {
-        setTaskLists(initialData);
+        setColumns(initialData);
+        getTasks();
     }, [])
+
+    const getTasks = () => {
+        fetch('/tasks')
+        .then(res => res.json())
+        .then(taskList => setTaskList(taskList))
+    }
 
     const onDragEnd = result => {
         const { destination, source, draggableId } = result;
@@ -29,8 +37,8 @@ const TaskListContainer = () => {
             return;
         }
 
-        const start = taskLists.columns[source.droppableId];
-        const finish = taskLists.columns[destination.droppableId];
+        const start = columns.columns[source.droppableId];
+        const finish = columns.columns[destination.droppableId];
 
         if (start === finish) {
             const newTaskIds = Array.from(start.taskIds);
@@ -43,13 +51,13 @@ const TaskListContainer = () => {
             };
 
             const newState = {
-                ...taskLists,
+                ...columns,
                 columns: {
-                    ...taskLists.columns,
+                    ...columns.columns,
                     [newColumn.id]: newColumn
                 }
             };
-            setTaskLists(newState);
+            setColumns(newState);
             return;
         }
         const startTaskIds = Array.from(start.taskIds);
@@ -67,25 +75,25 @@ const TaskListContainer = () => {
         };
 
         const newState = {
-            ...taskLists,
+            ...columns,
             columns: {
-                ...taskLists.columns,
+                ...columns.columns,
                 [newStart.id]: newStart,
                 [newFinish.id]: newFinish
             }
         };
-        setTaskLists(newState);
+        setColumns(newState);
     }
 
     return (
         
         <DragDropContext onDragEnd={onDragEnd}>
-            {taskLists ?
+            {taskList ?
             <Container>
-                {taskLists.columnOrder.map(columnId => {
-                    const column = taskLists.columns[columnId];
+                {columns.columnOrder.map(columnId => {
+                    const column = columns.columns[columnId];
                     const tasks = column.taskIds.map(
-                        taskId => taskLists.tasks[taskId]
+                        taskId => columns.tasks[taskId]
                     );
 
                     return <Column key={columnId} column={column} tasks={tasks} />;
