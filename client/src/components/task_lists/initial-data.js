@@ -8,12 +8,12 @@ const initialData = {
     columns: {
       'column-1': {
         id: 'column-1',
-        title: 'To do',
+        title: 'To Do',
         taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
       },
       'column-2': {
         id: 'column-2',
-        title: 'In progress',
+        title: 'In Progress',
         taskIds: [],
       },
       'column-3': {
@@ -22,7 +22,7 @@ const initialData = {
         taskIds: [],
       },
     },
-    // Facilitate reordering of the columns
+    
     columnOrder: ['column-1', 'column-2', 'column-3'],
   };
   
