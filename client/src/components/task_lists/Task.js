@@ -23,7 +23,7 @@ const Task = ({task, index}) => {
                     
                     isDragging={snapshot.isDragging}
                     >
-                    {task.content}
+                    {task.description}
                 </Container>
             )}
         </Draggable>

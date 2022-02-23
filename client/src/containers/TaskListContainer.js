@@ -92,9 +92,26 @@ const TaskListContainer = () => {
             <Container>
                 {columns.columnOrder.map(columnId => {
                     const column = columns.columns[columnId];
-                    const tasks = column.taskIds.map(
-                        taskId => columns.tasks[taskId]
-                    );
+                    // const tasks = column.taskIds.map(
+                    //     taskId => columns.tasks[taskId]
+                    // );
+                    // console.log(tasks);
+                    
+                    const tasks = []
+                        
+                        
+
+                        for (let id of column.taskIds) {
+                            console.log(id);
+                            for (let task of taskList){
+                                if (id == task.id){
+                                    tasks.push(task)
+                                }
+                            }
+                        
+                        console.log(tasks);
+                    }
+                    
 
                     return <Column key={columnId} column={column} tasks={tasks} />;
                 })}
