@@ -26,7 +26,7 @@ const TaskListContainer = () => {
         if (columnData && columns && taskList) {
             setColumnsFromDatabase();
         }
-    },[columnData])
+    }, [columnData])
 
     const getTasks = () => {
         fetch('/tasks')
@@ -36,38 +36,24 @@ const TaskListContainer = () => {
 
     const getColumnData = () => {
         fetch('/columns')
-        .then(res => res.json())
-        .then(columnData => setColumnData(columnData))
+            .then(res => res.json())
+            .then(columnData => setColumnData(columnData))
     }
-    
-    const setColumnsFromDatabase = () => {
-        let tempColumns = columns;
-        // console.log(columnData);
-        // console.log(columns);
-        for (const column of columnData){
-            
-            // console.log(tempColumns[column.id].taskIds);
-            // console.log(column.taskIds);
-            tempColumns[column.id].taskIds = column.taskIds;
-            
-            // console.log(column.taskIds);
 
+    const setColumnsFromDatabase = () => {
+        
+        for (const column of columnData) {
+
+            columns[column.columnId].taskIds = column.taskIds;
+            
             const newState = {
                 ...columns,
-                taskIds: column.taskIds  
-                }
-            
+                taskIds: column.taskIds
+            }
+
             setColumns(newState);
         }
-        // console.log(tempColumns);
-        // setColumns(tempColumns);
-        // console.log(columns);  
-
-        
-    } 
-    
-            
-    
+    }
 
     const onDragEnd = result => {
         const { destination, source, draggableId } = result;
@@ -97,9 +83,9 @@ const TaskListContainer = () => {
 
             const newState = {
                 ...columns,
-                    
-                    [newColumn.id]: newColumn
-                
+
+                [newColumn.id]: newColumn
+
             };
             setColumns(newState);
             return;
@@ -120,12 +106,12 @@ const TaskListContainer = () => {
 
         const newState = {
             ...columns,
-                [newStart.id]: newStart,
-                [newFinish.id]: newFinish
-            }
-        
+            [newStart.id]: newStart,
+            [newFinish.id]: newFinish
+        }
+
         setColumns(newState);
-        } 
+    }
 
     return (
 

@@ -66,12 +66,5 @@ public class DataLoader implements ApplicationRunner {
         Project project2 = new Project("Project 2");
         project2.addUser(david);
         projectRepository.save(project2);
-
-//        kirsten.addProject(project1);
-//        userRepository.save(kirsten);
-//        duncan.addProject(project1);
-//        userRepository.save(duncan);
-//        david.addProject(project2);
-//        userRepository.save(david);
     }
 }
