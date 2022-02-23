@@ -1,5 +1,6 @@
 import React from "react";
 import {Navigate} from "react-router-dom"; 
+import TaskListContainer from "../../containers/TaskListContainer";
 
 const Home = () => {
   
@@ -16,6 +17,7 @@ const Home = () => {
     <>
       <p>Home Page</p>
       <button onClick={logout}>Logout</button>
+      <TaskListContainer />
     </>
   );
 };
