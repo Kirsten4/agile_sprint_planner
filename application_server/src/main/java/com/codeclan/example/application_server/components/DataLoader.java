@@ -33,19 +33,19 @@ public class DataLoader implements ApplicationRunner {
         Task makeReservation = new Task("Make reservation", "To Do", 2);
         taskRepository.save(makeReservation);
 
-        ColumnData taskIdsToDo = new ColumnData();
+        ColumnData taskIdsToDo = new ColumnData("To Do");
         taskIdsToDo.addToTaskList("1");
         taskIdsToDo.addToTaskList("3");
         columnDataRepository.save(taskIdsToDo);
 
-        ColumnData taskIdsInProgress = new ColumnData();
+        ColumnData taskIdsInProgress = new ColumnData("In Progress");
         columnDataRepository.save(taskIdsInProgress);
 
-        ColumnData taskIdsStuck = new ColumnData();
+        ColumnData taskIdsStuck = new ColumnData("Stuck");
         taskIdsStuck.addToTaskList("2");
         columnDataRepository.save(taskIdsStuck);
 
-        ColumnData taskIdsDone = new ColumnData();
+        ColumnData taskIdsDone = new ColumnData("Done");
         columnDataRepository.save(taskIdsDone);
     }
 }

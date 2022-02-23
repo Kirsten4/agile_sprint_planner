@@ -14,7 +14,7 @@ const TaskListContainer = () => {
     const [columns, setColumns] = useState(null);
     const [columnData, setColumnData] = useState(null);
 
-    const columnOrder = [1, 2, 3, 4];
+    const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
         setColumns(initialData);
@@ -43,16 +43,26 @@ const TaskListContainer = () => {
     const setColumnsFromDatabase = () => {
         let tempColumns = columns;
         console.log(columnData);
+        console.log(columns);
         for (const column of columnData){
             
-            console.log(tempColumns[column.id].taskIds);
-            console.log(column.taskIds);
+            // console.log(tempColumns[column.id].taskIds);
+            // console.log(column.taskIds);
             tempColumns[column.id].taskIds = column.taskIds;
             
+            const newState = {
+                ...columns,
+                taskIds: column.taskIds
+                    
+                }
+            
+            setColumns(newState);
         }
-        console.log(tempColumns);
-        setColumns(tempColumns);
-        console.log(columns); 
+        // console.log(tempColumns);
+        // setColumns(tempColumns);
+        console.log(columns);  
+
+        
     } 
     
             
@@ -119,7 +129,7 @@ const TaskListContainer = () => {
     return (
 
         <DragDropContext onDragEnd={onDragEnd}>
-            {taskList ?
+            {taskList && columns && columnData ?
                 <Container>
                     {columnOrder.map(columnId => {
                         const column = columns[columnId];
