@@ -9,20 +9,54 @@ const Container = styled.div`
 `;
 
 const TaskListContainer = () => {
-    
+
     const [taskList, setTaskList] = useState(null);
     const [columns, setColumns] = useState(null);
+    const [columnData, setColumnData] = useState(null);
+
+    const columnOrder = [1, 2, 3, 4];
 
     useEffect(() => {
         setColumns(initialData);
         getTasks();
+        getColumnData();
     }, [])
+
+    useEffect(() => {
+        if (columnData && columns && taskList) {
+            setColumnsFromDatabase();
+        }
+    },[columnData])
 
     const getTasks = () => {
         fetch('/tasks')
-        .then(res => res.json())
-        .then(taskList => setTaskList(taskList))
+            .then(res => res.json())
+            .then(taskList => setTaskList(taskList))
     }
+
+    const getColumnData = () => {
+        fetch('/columns')
+        .then(res => res.json())
+        .then(columnData => setColumnData(columnData))
+    }
+    
+    const setColumnsFromDatabase = () => {
+        let tempColumns = columns;
+        console.log(columnData);
+        for (const column of columnData){
+            
+            console.log(tempColumns[column.id].taskIds);
+            console.log(column.taskIds);
+            tempColumns[column.id].taskIds = column.taskIds;
+            
+        }
+        console.log(tempColumns);
+        setColumns(tempColumns);
+        console.log(columns); 
+    } 
+    
+            
+    
 
     const onDragEnd = result => {
         const { destination, source, draggableId } = result;
@@ -37,8 +71,8 @@ const TaskListContainer = () => {
             return;
         }
 
-        const start = columns.columns[source.droppableId];
-        const finish = columns.columns[destination.droppableId];
+        const start = columns[source.droppableId];
+        const finish = columns[destination.droppableId];
 
         if (start === finish) {
             const newTaskIds = Array.from(start.taskIds);
@@ -52,10 +86,9 @@ const TaskListContainer = () => {
 
             const newState = {
                 ...columns,
-                columns: {
-                    ...columns.columns,
+                    
                     [newColumn.id]: newColumn
-                }
+                
             };
             setColumns(newState);
             return;
@@ -76,47 +109,37 @@ const TaskListContainer = () => {
 
         const newState = {
             ...columns,
-            columns: {
-                ...columns.columns,
                 [newStart.id]: newStart,
                 [newFinish.id]: newFinish
             }
-        };
+        
         setColumns(newState);
-    }
+        } 
 
     return (
-        
+
         <DragDropContext onDragEnd={onDragEnd}>
             {taskList ?
-            <Container>
-                {columns.columnOrder.map(columnId => {
-                    const column = columns.columns[columnId];
-                    // const tasks = column.taskIds.map(
-                    //     taskId => columns.tasks[taskId]
-                    // );
-                    // console.log(tasks);
-                    
-                    const tasks = []
-                        
-                        
+                <Container>
+                    {columnOrder.map(columnId => {
+                        const column = columns[columnId];
+
+
+                        const tasks = []
 
                         for (let id of column.taskIds) {
-                            console.log(id);
-                            for (let task of taskList){
-                                if (id == task.id){
+                            for (let task of taskList) {
+                                if (id === task.id) {
                                     tasks.push(task)
                                 }
                             }
-                        
-                        console.log(tasks);
-                    }
-                    
+                        }
 
-                    return <Column key={columnId} column={column} tasks={tasks} />;
-                })}
-            </Container> : null}
-        </DragDropContext> 
+                        return <Column key={columnId} column={column} tasks={tasks} />;
+                    })}
+                </Container>
+                : null}
+        </DragDropContext>
     )
 }
 
