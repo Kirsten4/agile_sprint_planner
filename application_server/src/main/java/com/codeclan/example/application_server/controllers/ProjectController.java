@@ -1,7 +1,7 @@
 package com.codeclan.example.application_server.controllers;
 
-import com.codeclan.example.application_server.models.User;
-import com.codeclan.example.application_server.repositories.UserRepository;
+import com.codeclan.example.application_server.models.Project;
+import com.codeclan.example.application_server.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class UserController {
+public class ProjectController {
 
     @Autowired
-    UserRepository userRepository;
+    ProjectRepository projectRepository;
 
-    @GetMapping(value="/users")
-    public ResponseEntity<List<User>> getAllUsers(){
-        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
+    @GetMapping(value="/projects")
+    public ResponseEntity<List<Project>> getAllProjects(){
+        return new ResponseEntity<>(projectRepository.findAll(), HttpStatus.OK);
     }
-
 }

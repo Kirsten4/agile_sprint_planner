@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
-import initialData from '../components/task_lists/initial-data';
+import initialColumnData from '../components/task_lists/initial-data';
 import Column from '../components/task_lists/Column';
 
 const Container = styled.div`
@@ -17,7 +17,7 @@ const TaskListContainer = () => {
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
-        setColumns(initialData);
+        setColumns(initialColumnData);
         getTasks();
         getColumnData();
     }, [])
@@ -42,25 +42,26 @@ const TaskListContainer = () => {
     
     const setColumnsFromDatabase = () => {
         let tempColumns = columns;
-        console.log(columnData);
-        console.log(columns);
+        // console.log(columnData);
+        // console.log(columns);
         for (const column of columnData){
             
             // console.log(tempColumns[column.id].taskIds);
             // console.log(column.taskIds);
             tempColumns[column.id].taskIds = column.taskIds;
             
+            // console.log(column.taskIds);
+
             const newState = {
                 ...columns,
-                taskIds: column.taskIds
-                    
+                taskIds: column.taskIds  
                 }
             
             setColumns(newState);
         }
         // console.log(tempColumns);
         // setColumns(tempColumns);
-        console.log(columns);  
+        // console.log(columns);  
 
         
     } 

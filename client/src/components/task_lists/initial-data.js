@@ -1,4 +1,4 @@
-const initialData = {
+const initialColumnData = {
   'To Do': {
     id: 'To Do',
     taskIds: [],
@@ -17,4 +17,4 @@ const initialData = {
   }
 }
 
-export default initialData;
+export default initialColumnData;
