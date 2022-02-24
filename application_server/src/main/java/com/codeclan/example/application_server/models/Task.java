@@ -63,6 +63,7 @@ public class Task {
     }
 
     public void addToSprint(Sprint sprint){
+        this.project = null;
         this.sprint = sprint;
     }
 

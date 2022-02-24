@@ -40,13 +40,19 @@ public class SprintController {
         System.out.println(sprint.getId());
         System.out.println(project.getName());
         System.out.println(task.getDescription());
-//        projectRepository.save(project);
+        sprint.setDuration(5);
+        taskRepository.save(task);
         sprintRepository.save(sprint);
+        projectRepository.save(project);
+
+
 
 
         System.out.println(project.getProductBacklog().size());
 
         System.out.println(sprint.getTasks().size());
+       
+        System.out.println(task.getSprint().getId());
         return new ResponseEntity(HttpStatus.OK);
     }
 }

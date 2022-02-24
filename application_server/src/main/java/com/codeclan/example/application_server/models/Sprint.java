@@ -89,8 +89,10 @@ public class Sprint {
     public void getTaskFromBacklog(Project project, Task task) {
         System.out.println(project.getProductBacklog().size());
         project.removeTask(task);
+        task.addToSprint(this);
         System.out.println(project.getProductBacklog().size());
         this.addTaskToSprint(task);
+
         System.out.println(this.getTasks().size());
 
     }
