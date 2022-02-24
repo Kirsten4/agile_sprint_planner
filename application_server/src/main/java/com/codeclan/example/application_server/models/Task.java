@@ -18,9 +18,13 @@ public class Task {
     @JoinColumn(name = "sprint_id")
     private Sprint sprint;
 
-    public Task(String description) {
-        this.description = description;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
+    public Task(String description, Project project) {
+        this.description = description;
+        this.project = project;
     }
 
     public Task() {
@@ -40,6 +44,26 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Sprint getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public void addToSprint(Sprint sprint){
+        this.sprint = sprint;
     }
 
 }

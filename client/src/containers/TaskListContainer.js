@@ -13,6 +13,7 @@ const TaskListContainer = () => {
     const [taskList, setTaskList] = useState(null);
     const [columns, setColumns] = useState(null);
     const [columnData, setColumnData] = useState(null);
+    const [productBackLog, setProductBacklog] = useState(null);
 
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
@@ -20,6 +21,7 @@ const TaskListContainer = () => {
         setColumns(initialColumnData);
         getTasks();
         getColumnData();
+        getBacklog();
     }, [])
 
     useEffect(() => {
@@ -32,6 +34,12 @@ const TaskListContainer = () => {
         fetch('/tasks')
             .then(res => res.json())
             .then(taskList => setTaskList(taskList))
+    }
+
+    const getBacklog = () => {
+        fetch('/tasks/Project 1')
+            .then(res => res.json())
+            .then(taskList => setProductBacklog(taskList))
     }
 
     const getColumnData = () => {

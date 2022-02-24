@@ -30,5 +30,5 @@ public class ColumnDataController {
         columnDataRepository.save(columnData);
         return new ResponseEntity<>(columnData, HttpStatus.OK);
     }
-    
+
 }
