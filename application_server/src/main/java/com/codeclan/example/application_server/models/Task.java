@@ -14,16 +14,13 @@ public class Task {
     @Column(name="description")
     private String description;
 
-    @Column(name="column")
-    private String column;
+    @ManyToOne
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprint;
 
-    @Column(name="index_position")
-    private int indexPosition;
-
-    public Task(String description, String column, int indexPosition) {
+    public Task(String description) {
         this.description = description;
-        this.column = column;
-        this.indexPosition = indexPosition;
+
     }
 
     public Task() {
@@ -45,19 +42,4 @@ public class Task {
         this.description = description;
     }
 
-    public String getColumn() {
-        return column;
-    }
-
-    public void setColumn(String column) {
-        this.column = column;
-    }
-
-    public int getIndexPosition() {
-        return indexPosition;
-    }
-
-    public void setIndexPosition(int indexPosition) {
-        this.indexPosition = indexPosition;
-    }
 }

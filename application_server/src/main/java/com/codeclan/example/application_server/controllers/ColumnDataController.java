@@ -20,8 +20,15 @@ public class ColumnDataController {
         return new ResponseEntity<>(columnDataRepository.findAll(), HttpStatus.OK);
     }
 
-//    @PutMapping(value = "/columns/{id}")
-//    public ResponseEntity updateColumnById(@PathVariable String id, @RequestBody ColumnData updatedColumn){
-//        ColumnData columnToUpdate = columnDataRepository.find;
-//    }
+    @GetMapping(value = "/columns/{id}")
+    public ResponseEntity getColumn(@PathVariable Long id){
+        return new ResponseEntity<>(columnDataRepository.findById(id), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/columns/{id}")
+    public ResponseEntity<ColumnData> updateColumnData(@RequestBody ColumnData columnData){
+        columnDataRepository.save(columnData);
+        return new ResponseEntity<>(columnData, HttpStatus.OK);
+    }
+    
 }

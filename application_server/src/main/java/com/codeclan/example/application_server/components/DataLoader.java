@@ -31,11 +31,11 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        Task checkIn = new Task("Check in", "To Do", 0);
+        Task checkIn = new Task("Check in");
         taskRepository.save(checkIn);
-        Task checkOut = new Task("Check out", "To Do", 1);
+        Task checkOut = new Task("Check out");
         taskRepository.save(checkOut);
-        Task makeReservation = new Task("Make reservation", "To Do", 2);
+        Task makeReservation = new Task("Make reservation");
         taskRepository.save(makeReservation);
 
         ColumnData taskIdsToDo = new ColumnData("To Do");

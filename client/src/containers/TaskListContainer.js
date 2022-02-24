@@ -40,6 +40,15 @@ const TaskListContainer = () => {
             .then(columnData => setColumnData(columnData))
     }
 
+    const updateColumn = (id, payload) => {
+        fetch('/columns/' + id, {
+              method: "PATCH",
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(payload)
+            })
+          }
+    
+
     const setColumnsFromDatabase = () => {
         
         for (const column of columnData) {
@@ -50,7 +59,7 @@ const TaskListContainer = () => {
                 ...columns,
                 taskIds: column.taskIds
             }
-
+            
             setColumns(newState);
         }
     }
@@ -84,12 +93,14 @@ const TaskListContainer = () => {
             const newState = {
                 ...columns,
 
-                [newColumn.id]: newColumn
+                [newColumn.columnId]: newColumn
 
             };
             setColumns(newState);
+            updateColumn(newColumn.id, newColumn)
             return;
         }
+
         const startTaskIds = Array.from(start.taskIds);
         startTaskIds.splice(source.index, 1);
         const newStart = {
@@ -106,11 +117,13 @@ const TaskListContainer = () => {
 
         const newState = {
             ...columns,
-            [newStart.id]: newStart,
-            [newFinish.id]: newFinish
+            [newStart.columnId]: newStart,
+            [newFinish.columnId]: newFinish
         }
 
         setColumns(newState);
+        updateColumn(newStart.id, newStart)
+        updateColumn(newFinish.id, newFinish)
     }
 
     return (
@@ -120,7 +133,6 @@ const TaskListContainer = () => {
                 <Container>
                     {columnOrder.map(columnId => {
                         const column = columns[columnId];
-
 
                         const tasks = []
 

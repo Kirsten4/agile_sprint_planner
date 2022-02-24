@@ -33,9 +33,14 @@ public class Project {
     )
     private List<User> users;
 
+    @OneToMany(mappedBy = "project")
+    @JsonIgnoreProperties({"project"})
+    private List<Sprint> sprints;
+
     public Project(String name) {
         this.name = name;
         this.users = new ArrayList<>();
+        this.sprints = new ArrayList<>();
     }
 
     public Project() {

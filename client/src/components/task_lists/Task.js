@@ -17,9 +17,7 @@ const Task = ({task, index}) => {
                 <Container
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    // innerRef={provided.innerRef}
-                    
+                    {...provided.dragHandleProps}                 
                     
                     isDragging={snapshot.isDragging}
                     >
