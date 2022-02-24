@@ -1,16 +1,14 @@
 package com.codeclan.example.application_server.components;
 
 import com.codeclan.example.application_server.models.*;
-import com.codeclan.example.application_server.repositories.ColumnDataRepository;
-import com.codeclan.example.application_server.repositories.ProjectRepository;
-import com.codeclan.example.application_server.repositories.TaskRepository;
-import com.codeclan.example.application_server.repositories.UserRepository;
+import com.codeclan.example.application_server.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -26,6 +24,9 @@ public class DataLoader implements ApplicationRunner {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    @Autowired
+    SprintRepository sprintRepository;
 
     public DataLoader() {
     }
@@ -59,18 +60,18 @@ public class DataLoader implements ApplicationRunner {
         Task backlogTask2 = new Task("Backlog Task2", project1);
         taskRepository.save(backlogTask2);
 
-//        project1.addTask(backlogTask1);
-//        project1.addTask((backlogTask2));
-//        projectRepository.save(project1);
+        Date date = new Date();
+        Sprint sprint1 = new Sprint(date, 2, project1);
+        sprintRepository.save(sprint1);
 
         ColumnData taskIdsToDo = new ColumnData("To Do");
-        taskIdsToDo.addToTaskList("1");
-        taskIdsToDo.addToTaskList("3");
+        taskIdsToDo.addToTaskList(1L);
+        taskIdsToDo.addToTaskList(3L);
         columnDataRepository.save(taskIdsToDo);
         ColumnData taskIdsInProgress = new ColumnData("In Progress");
         columnDataRepository.save(taskIdsInProgress);
         ColumnData taskIdsStuck = new ColumnData("Stuck");
-        taskIdsStuck.addToTaskList("2");
+        taskIdsStuck.addToTaskList(2L);
         columnDataRepository.save(taskIdsStuck);
         ColumnData taskIdsDone = new ColumnData("Done");
         columnDataRepository.save(taskIdsDone);

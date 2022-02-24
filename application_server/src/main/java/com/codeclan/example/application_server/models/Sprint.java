@@ -25,6 +25,7 @@ public class Sprint {
 
     @ManyToOne
     @JoinColumn(name="project_id", nullable = false)
+    @JsonIgnoreProperties({"users", "sprints", "productBacklog"})
     private Project project;
 
     @OneToMany(mappedBy = "sprint")
@@ -79,6 +80,19 @@ public class Sprint {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void addTaskToSprint(Task task){
+        this.tasks.add(task);
+    }
+
+    public void getTaskFromBacklog(Project project, Task task) {
+        System.out.println(project.getProductBacklog().size());
+        project.removeTask(task);
+        System.out.println(project.getProductBacklog().size());
+        this.addTaskToSprint(task);
+        System.out.println(this.getTasks().size());
+
     }
 }
 

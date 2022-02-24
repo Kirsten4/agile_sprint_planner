@@ -98,4 +98,8 @@ public class Project {
     public void addTask(Task task){
         this.productBacklog.add(task);
     }
+
+    public boolean removeTask(Task task) {
+        return this.productBacklog.remove(task);
+    }
 }

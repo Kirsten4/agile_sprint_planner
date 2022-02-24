@@ -13,15 +13,13 @@ const TaskListContainer = () => {
     const [taskList, setTaskList] = useState(null);
     const [columns, setColumns] = useState(null);
     const [columnData, setColumnData] = useState(null);
-    const [productBackLog, setProductBacklog] = useState(null);
-
+    
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
         setColumns(initialColumnData);
         getTasks();
         getColumnData();
-        getBacklog();
     }, [])
 
     useEffect(() => {
@@ -34,12 +32,6 @@ const TaskListContainer = () => {
         fetch('/tasks')
             .then(res => res.json())
             .then(taskList => setTaskList(taskList))
-    }
-
-    const getBacklog = () => {
-        fetch('/tasks/Project 1')
-            .then(res => res.json())
-            .then(taskList => setProductBacklog(taskList))
     }
 
     const getColumnData = () => {
@@ -62,7 +54,6 @@ const TaskListContainer = () => {
         for (const column of columnData) {
 
             columns[column.columnId].taskIds = column.taskIds;
-            
             const newState = {
                 ...columns,
                 taskIds: column.taskIds
@@ -73,8 +64,11 @@ const TaskListContainer = () => {
     }
 
     const onDragEnd = result => {
+        console.log(result);
+        console.log(result.draggableId);
+        result.draggableId = Number(result.draggableId)
         const { destination, source, draggableId } = result;
-
+        console.log(result);
         if (!destination) {
             return;
         }

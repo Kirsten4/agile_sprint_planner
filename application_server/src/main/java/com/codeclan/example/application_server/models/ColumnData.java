@@ -17,7 +17,7 @@ public class ColumnData {
 
     @Column(name="task_ids")
     @ElementCollection
-    private List<String> taskIds = new ArrayList<String>();
+    private List<Long> taskIds = new ArrayList<Long>();
 
     public ColumnData(String columnId) {
         this.columnId = columnId;
@@ -42,15 +42,15 @@ public class ColumnData {
         this.columnId = columnId;
     }
 
-    public List<String> getTaskIds() {
+    public List<Long> getTaskIds() {
         return taskIds;
     }
 
-    public void setTaskIds(List<String> taskIds) {
+    public void setTaskIds(List<Long> taskIds) {
         this.taskIds = taskIds;
     }
 
-    public void addToTaskList(String taskId){
+    public void addToTaskList(Long taskId){
         this.taskIds.add(taskId);
     }
 }

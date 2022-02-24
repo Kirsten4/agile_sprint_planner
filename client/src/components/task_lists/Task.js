@@ -10,9 +10,11 @@ const Container = styled.div`
 `
 
 const Task = ({task, index}) => {
-    
+
+    const stringDraggableId = task.id.toString();    
+
     return (
-        <Draggable draggableId={task.id} index={index}>
+        <Draggable draggableId={stringDraggableId} index={index}>
             {(provided, snapshot) => (
                 <Container
                     ref={provided.innerRef}

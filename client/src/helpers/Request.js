@@ -1,16 +1,16 @@
-const Request = {
+class Request {
     
     get(url) {
         return fetch(url)
         .then((res) => res.json());
-      },
+      }
   
     delete(url) {
         return fetch(url, {
           method: "DELETE",
           headers: {'Content-Type': 'application/json'}
         })
-      },
+      }
   
       post(url, payload){
         return fetch(url, {
@@ -18,7 +18,7 @@ const Request = {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(payload)
         })
-      },
+      }
 
     patch(url, payload){
         return fetch(url, {
@@ -29,4 +29,4 @@ const Request = {
       }
 }
 
-export default Request
+export default Request;
