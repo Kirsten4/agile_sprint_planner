@@ -1,11 +1,8 @@
 const BacklogListItem = ({item, currentSprint}) => {
     
     const putTaskInSprint = () => {
-        const payload = "payload"
         fetch('/sprints/' + currentSprint.id + '/' + item.id, {
             method: "PATCH",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(payload)
           })    
     }  
 

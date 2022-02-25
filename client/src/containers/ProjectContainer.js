@@ -20,6 +20,7 @@ const ProjectContainer = () => {
     }, [])
 
     const onProjectSelected = (project) => {
+        setCurrentSprint(null);
         setCurrentProject(project);
     }
 
