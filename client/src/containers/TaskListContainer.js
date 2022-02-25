@@ -8,7 +8,7 @@ const Container = styled.div`
     display: flex;
 `;
 
-const TaskListContainer = () => {
+const TaskListContainer = ({currentSprint}) => {
 
     const [taskList, setTaskList] = useState(null);
     const [columns, setColumns] = useState(null);
@@ -18,8 +18,9 @@ const TaskListContainer = () => {
 
     useEffect(() => {
         setColumns(initialColumnData);
-        getTasks();
+        // getTasks();
         getColumnData();
+        setTaskList(currentSprint.tasks)
     }, [])
 
     useEffect(() => {
@@ -28,11 +29,11 @@ const TaskListContainer = () => {
         }
     }, [columnData])
 
-    const getTasks = () => {
-        fetch('/tasks')
-            .then(res => res.json())
-            .then(taskList => setTaskList(taskList))
-    }
+    // const getTasks = () => {
+    //     fetch('/tasks')
+    //         .then(res => res.json())
+    //         .then(taskList => setTaskList(taskList))
+    // }
 
     const getColumnData = () => {
         fetch('/columns')
@@ -64,11 +65,8 @@ const TaskListContainer = () => {
     }
 
     const onDragEnd = result => {
-        console.log(result);
-        console.log(result.draggableId);
         result.draggableId = Number(result.draggableId)
         const { destination, source, draggableId } = result;
-        console.log(result);
         if (!destination) {
             return;
         }

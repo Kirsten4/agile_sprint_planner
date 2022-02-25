@@ -6,6 +6,7 @@ import NewProjectForm from "../components/project/NewProjectForm";
 import NewSprintForm from "../components/sprint/NewSprintForm"
 import ProjectsService from "../services/ProjectsService";
 import SprintsService from "../services/SprintsService";
+import TaskListContainer from "./TaskListContainer"
 
 const ProjectContainer = () => {
 
@@ -29,7 +30,7 @@ const ProjectContainer = () => {
     const onProjectSelected = (project) => {
         setCurrentSprint(null);
         setCurrentProject(project);
-    }  
+    }
 
     const onSprintSelected = (sprint) => {
         setCurrentSprint(sprint);
@@ -58,9 +59,11 @@ const ProjectContainer = () => {
                 : null}
 
             {currentSprint ?
-                <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} />
+                <>
+                    <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} />
+                    <TaskListContainer currentSprint={currentSprint} />
+                </>
                 : null}
-
         </>
     )
 }

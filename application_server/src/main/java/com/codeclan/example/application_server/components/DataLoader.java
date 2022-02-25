@@ -49,20 +49,23 @@ public class DataLoader implements ApplicationRunner {
         project2.addUser(david);
         projectRepository.save(project2);
 
+        Date date = new Date();
+        Sprint sprint1 = new Sprint(date, 2, project1);
+        sprintRepository.save(sprint1);
+
         Task checkIn = new Task("Check in", project2);
+        sprint1.getTaskFromBacklog(checkIn.getProject(),checkIn);
         taskRepository.save(checkIn);
         Task checkOut = new Task("Check out", project2);
+        sprint1.getTaskFromBacklog(checkOut.getProject(),checkOut);
         taskRepository.save(checkOut);
         Task makeReservation = new Task("Make reservation", project2);
+        sprint1.getTaskFromBacklog(makeReservation.getProject(),makeReservation);
         taskRepository.save(makeReservation);
         Task backlogTask1 = new Task("Backlog Task1", project1);
         taskRepository.save(backlogTask1);
         Task backlogTask2 = new Task("Backlog Task2", project1);
         taskRepository.save(backlogTask2);
-
-        Date date = new Date();
-        Sprint sprint1 = new Sprint(date, 2, project1);
-        sprintRepository.save(sprint1);
 
         ColumnData taskIdsToDo = new ColumnData("To Do");
         taskIdsToDo.addToTaskList(1L);
