@@ -31,6 +31,17 @@ public class SprintController {
         return new ResponseEntity<>(sprintRepository.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/sprints/{projectId}")
+    public ResponseEntity<List<Sprint>> getAllSprintsInProject(@PathVariable Long projectId){
+        return new ResponseEntity<>(sprintRepository.findByProjectId(projectId), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/sprints")
+    public ResponseEntity<Sprint> postSprint(@RequestBody Sprint sprint){
+        sprintRepository.save(sprint);
+        return new ResponseEntity<>(sprint, HttpStatus.CREATED);
+    }
+
     @PatchMapping(value = "/sprints/{sprintId}/{taskId}")
     public ResponseEntity putTaskInSprint(@PathVariable Long sprintId, @PathVariable Long taskId){
         Sprint sprint = sprintRepository.findById(sprintId).get();
