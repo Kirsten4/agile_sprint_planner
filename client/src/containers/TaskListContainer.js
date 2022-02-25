@@ -13,7 +13,7 @@ const TaskListContainer = () => {
     const [taskList, setTaskList] = useState(null);
     const [columns, setColumns] = useState(null);
     const [columnData, setColumnData] = useState(null);
-
+    
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const TaskListContainer = () => {
         if (columnData && columns && taskList) {
             setColumnsFromDatabase();
         }
-    },[columnData])
+    }, [columnData])
 
     const getTasks = () => {
         fetch('/tasks')
@@ -36,42 +36,39 @@ const TaskListContainer = () => {
 
     const getColumnData = () => {
         fetch('/columns')
-        .then(res => res.json())
-        .then(columnData => setColumnData(columnData))
+            .then(res => res.json())
+            .then(columnData => setColumnData(columnData))
     }
-    
-    const setColumnsFromDatabase = () => {
-        let tempColumns = columns;
-        // console.log(columnData);
-        // console.log(columns);
-        for (const column of columnData){
-            
-            // console.log(tempColumns[column.id].taskIds);
-            // console.log(column.taskIds);
-            tempColumns[column.id].taskIds = column.taskIds;
-            
-            // console.log(column.taskIds);
 
+    const updateColumn = (id, payload) => {
+        fetch('/columns/' + id, {
+              method: "PATCH",
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(payload)
+            })
+          }
+    
+
+    const setColumnsFromDatabase = () => {
+        
+        for (const column of columnData) {
+
+            columns[column.columnId].taskIds = column.taskIds;
             const newState = {
                 ...columns,
-                taskIds: column.taskIds  
-                }
+                taskIds: column.taskIds
+            }
             
             setColumns(newState);
         }
-        // console.log(tempColumns);
-        // setColumns(tempColumns);
-        // console.log(columns);  
-
-        
-    } 
-    
-            
-    
+    }
 
     const onDragEnd = result => {
+        console.log(result);
+        console.log(result.draggableId);
+        result.draggableId = Number(result.draggableId)
         const { destination, source, draggableId } = result;
-
+        console.log(result);
         if (!destination) {
             return;
         }
@@ -97,13 +94,15 @@ const TaskListContainer = () => {
 
             const newState = {
                 ...columns,
-                    
-                    [newColumn.id]: newColumn
-                
+
+                [newColumn.columnId]: newColumn
+
             };
             setColumns(newState);
+            updateColumn(newColumn.id, newColumn)
             return;
         }
+
         const startTaskIds = Array.from(start.taskIds);
         startTaskIds.splice(source.index, 1);
         const newStart = {
@@ -120,12 +119,14 @@ const TaskListContainer = () => {
 
         const newState = {
             ...columns,
-                [newStart.id]: newStart,
-                [newFinish.id]: newFinish
-            }
-        
+            [newStart.columnId]: newStart,
+            [newFinish.columnId]: newFinish
+        }
+
         setColumns(newState);
-        } 
+        updateColumn(newStart.id, newStart)
+        updateColumn(newFinish.id, newFinish)
+    }
 
     return (
 
@@ -134,7 +135,6 @@ const TaskListContainer = () => {
                 <Container>
                     {columnOrder.map(columnId => {
                         const column = columns[columnId];
-
 
                         const tasks = []
 

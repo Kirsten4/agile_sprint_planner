@@ -9,36 +9,48 @@ import java.util.List;
 public class ColumnData {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name="column_id")
+    private String columnId;
 
     @Column(name="task_ids")
     @ElementCollection
-    private List<String> taskIds = new ArrayList<String>();
+    private List<Long> taskIds = new ArrayList<Long>();
 
-    public ColumnData(String id) {
-        this.id = id;
+    public ColumnData(String columnId) {
+        this.columnId = columnId;
     }
 
     public ColumnData() {
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public List<String> getTaskIds() {
+    public String getColumnId() {
+        return columnId;
+    }
+
+    public void setColumnId(String columnId) {
+        this.columnId = columnId;
+    }
+
+    public List<Long> getTaskIds() {
         return taskIds;
     }
 
-    public void setTaskIds(List<String> taskIds) {
+    public void setTaskIds(List<Long> taskIds) {
         this.taskIds = taskIds;
     }
 
-    public void addToTaskList(String taskId){
+    public void addToTaskList(Long taskId){
         this.taskIds.add(taskId);
     }
 }

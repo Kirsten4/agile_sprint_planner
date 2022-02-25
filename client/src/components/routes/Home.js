@@ -1,9 +1,10 @@
-import React from "react";
-import {Navigate} from "react-router-dom"; 
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import TaskListContainer from "../../containers/TaskListContainer";
+import ProjectContainer from "../../containers/ProjectContainer";
 
 const Home = () => {
-  
+
   if (localStorage.getItem("token") === null) {
     return <Navigate to="/login" />;
   }
@@ -17,6 +18,7 @@ const Home = () => {
     <>
       <p>Home Page</p>
       <button onClick={logout}>Logout</button>
+      <ProjectContainer />
       <TaskListContainer />
     </>
   );

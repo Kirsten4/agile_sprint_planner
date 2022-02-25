@@ -9,7 +9,6 @@ function App() {
     <div className="App">
       <h1>This is the app</h1>
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />

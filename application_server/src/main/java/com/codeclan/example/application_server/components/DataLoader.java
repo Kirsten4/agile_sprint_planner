@@ -1,16 +1,14 @@
 package com.codeclan.example.application_server.components;
 
 import com.codeclan.example.application_server.models.*;
-import com.codeclan.example.application_server.repositories.ColumnDataRepository;
-import com.codeclan.example.application_server.repositories.ProjectRepository;
-import com.codeclan.example.application_server.repositories.TaskRepository;
-import com.codeclan.example.application_server.repositories.UserRepository;
+import com.codeclan.example.application_server.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -27,29 +25,13 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     ProjectRepository projectRepository;
 
+    @Autowired
+    SprintRepository sprintRepository;
+
     public DataLoader() {
     }
 
     public void run(ApplicationArguments args) {
-        Task checkIn = new Task("Check in", "To Do", 0);
-        taskRepository.save(checkIn);
-        Task checkOut = new Task("Check out", "To Do", 1);
-        taskRepository.save(checkOut);
-        Task makeReservation = new Task("Make reservation", "To Do", 2);
-        taskRepository.save(makeReservation);
-
-        ColumnData taskIdsToDo = new ColumnData("To Do");
-        taskIdsToDo.addToTaskList("1");
-        taskIdsToDo.addToTaskList("3");
-        columnDataRepository.save(taskIdsToDo);
-        ColumnData taskIdsInProgress = new ColumnData("In Progress");
-        columnDataRepository.save(taskIdsInProgress);
-        ColumnData taskIdsStuck = new ColumnData("Stuck");
-        taskIdsStuck.addToTaskList("2");
-        columnDataRepository.save(taskIdsStuck);
-        ColumnData taskIdsDone = new ColumnData("Done");
-        columnDataRepository.save(taskIdsDone);
-
         User kirsten = new User("Kirsten", "Kirsten4", "kirsten@fake.com", Role.PRODUCT_OWNER);
         userRepository.save(kirsten);
         User david = new User("David", "David2", "david@fake.com", Role.DEVELOPER);
@@ -67,11 +49,33 @@ public class DataLoader implements ApplicationRunner {
         project2.addUser(david);
         projectRepository.save(project2);
 
-//        kirsten.addProject(project1);
-//        userRepository.save(kirsten);
-//        duncan.addProject(project1);
-//        userRepository.save(duncan);
-//        david.addProject(project2);
-//        userRepository.save(david);
+        Task checkIn = new Task("Check in", project2);
+        taskRepository.save(checkIn);
+        Task checkOut = new Task("Check out", project2);
+        taskRepository.save(checkOut);
+        Task makeReservation = new Task("Make reservation", project2);
+        taskRepository.save(makeReservation);
+        Task backlogTask1 = new Task("Backlog Task1", project1);
+        taskRepository.save(backlogTask1);
+        Task backlogTask2 = new Task("Backlog Task2", project1);
+        taskRepository.save(backlogTask2);
+
+        Date date = new Date();
+        Sprint sprint1 = new Sprint(date, 2, project1);
+        sprintRepository.save(sprint1);
+
+        ColumnData taskIdsToDo = new ColumnData("To Do");
+        taskIdsToDo.addToTaskList(1L);
+        taskIdsToDo.addToTaskList(3L);
+        columnDataRepository.save(taskIdsToDo);
+        ColumnData taskIdsInProgress = new ColumnData("In Progress");
+        columnDataRepository.save(taskIdsInProgress);
+        ColumnData taskIdsStuck = new ColumnData("Stuck");
+        taskIdsStuck.addToTaskList(2L);
+        columnDataRepository.save(taskIdsStuck);
+        ColumnData taskIdsDone = new ColumnData("Done");
+        columnDataRepository.save(taskIdsDone);
+
+
     }
 }

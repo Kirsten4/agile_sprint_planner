@@ -9,31 +9,32 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private  String id;
+    private Long id;
 
     @Column(name="description")
     private String description;
 
-    @Column(name="column")
-    private String column;
+    @ManyToOne
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprint;
 
-    @Column(name="index_position")
-    private int indexPosition;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
-    public Task(String description, String column, int indexPosition) {
+    public Task(String description, Project project) {
         this.description = description;
-        this.column = column;
-        this.indexPosition = indexPosition;
+        this.project = project;
     }
 
     public Task() {
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,19 +46,25 @@ public class Task {
         this.description = description;
     }
 
-    public String getColumn() {
-        return column;
+    public Sprint getSprint() {
+        return sprint;
     }
 
-    public void setColumn(String column) {
-        this.column = column;
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
     }
 
-    public int getIndexPosition() {
-        return indexPosition;
+    public Project getProject() {
+        return project;
     }
 
-    public void setIndexPosition(int indexPosition) {
-        this.indexPosition = indexPosition;
+    public void setProject(Project project) {
+        this.project = project;
     }
+
+    public void addToSprint(Sprint sprint){
+        this.project = null;
+        this.sprint = sprint;
+    }
+
 }

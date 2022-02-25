@@ -19,12 +19,12 @@ const TaskList = styled.div`
     `;
 
 const Column = ({ column, tasks }) => {
-
+    
     return (
         <Container>
-            <h3>{column.id}</h3>
-            <Droppable droppableId={column.id}>
-                {(provided, snapshot) => (
+            <h3>{column.columnId}</h3>
+            <Droppable droppableId={column.columnId}>
+                {(provided) => (
                     <TaskList
                         ref={provided.innerRef}
                         {...provided.droppableProps}

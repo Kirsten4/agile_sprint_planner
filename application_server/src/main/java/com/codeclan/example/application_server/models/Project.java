@@ -33,9 +33,19 @@ public class Project {
     )
     private List<User> users;
 
+    @OneToMany(mappedBy = "project")
+    @JsonIgnoreProperties({"project"})
+    private List<Sprint> sprints;
+
+    @OneToMany(mappedBy = "project")
+    @JsonIgnoreProperties({"project"})
+    private List<Task> productBacklog;
+
     public Project(String name) {
         this.name = name;
         this.users = new ArrayList<>();
+        this.sprints = new ArrayList<>();
+        this.productBacklog = new ArrayList<>();
     }
 
     public Project() {
@@ -65,7 +75,31 @@ public class Project {
         this.users = users;
     }
 
+    public List<Sprint> getSprints() {
+        return sprints;
+    }
+
+    public void setSprints(List<Sprint> sprints) {
+        this.sprints = sprints;
+    }
+
+    public List<Task> getProductBacklog() {
+        return productBacklog;
+    }
+
+    public void setProductBacklog(List<Task> productBacklog) {
+        this.productBacklog = productBacklog;
+    }
+
     public void addUser(User user){
         this.users.add(user);
+    }
+
+    public void addTask(Task task){
+        this.productBacklog.add(task);
+    }
+
+    public boolean removeTask(Task task) {
+        return this.productBacklog.remove(task);
     }
 }
