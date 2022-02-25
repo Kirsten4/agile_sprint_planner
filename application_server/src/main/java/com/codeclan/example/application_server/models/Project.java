@@ -34,7 +34,7 @@ public class Project {
     private List<User> users;
 
     @OneToMany(mappedBy = "project")
-    @JsonIgnoreProperties({"project"})
+    @JsonIgnoreProperties({"project","tasks"})
     private List<Sprint> sprints;
 
     @OneToMany(mappedBy = "project")

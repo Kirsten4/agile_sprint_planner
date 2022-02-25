@@ -29,7 +29,7 @@ public class User {
     private Role role;
 
     @ManyToMany
-    @JsonIgnoreProperties({"users"})
+    @JsonIgnoreProperties({"users","sprints", "productBacklog"})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
             name = "users_projects",
