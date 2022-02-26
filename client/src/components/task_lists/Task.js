@@ -30,7 +30,7 @@ const Task = ({ task, index }) => {
                     {task.description}<br />
                     Priority: {index + 1}
                     {/* <input id="number" type="number" value="42"></input> */}
-                    <Button variant="primary" onClick={() => setModalShow(true)}>View/Edit Details</Button>
+                    <Button variant="primary" size="sm" onClick={() => setModalShow(true)}>View/Edit Details</Button>
                     <TaskModal show={modalShow} onHide={() => setModalShow(false)} task={task} />
                 </Container>
             )}

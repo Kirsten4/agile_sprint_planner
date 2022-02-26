@@ -7,9 +7,11 @@ import NewSprintForm from "../components/sprint/NewSprintForm"
 import ProjectsService from "../services/ProjectsService";
 import SprintsService from "../services/SprintsService";
 import TaskListContainer from "./TaskListContainer"
+import Tabs from "react-bootstrap/Tabs"
+import Tab from "react-bootstrap/Tab"
 
 const ProjectContainer = () => {
-
+    const [key, setKey] = useState('dashboard');
     const [projects, setProjects] = useState(null);
     const [currentProject, setCurrentProject] = useState(null);
     const [sprints, setSprints] = useState([]);
@@ -48,22 +50,31 @@ const ProjectContainer = () => {
 
     return (
         <>
-            <h2>This is the project container</h2>
-            <NewProjectForm onProjectSubmit={createProject} />
-            <NewSprintForm currentProject={currentProject} onSprintSubmit={createSprint} />
-            {projects ?
-                <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
-                : null}
-            {currentProject ?
-                <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
-                : null}
+        <h2>This is the project container</h2>
+            <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3" activeKey={key}
+      onSelect={(k) => setKey(k)}>
+                <Tab eventKey="dashboard" title="Dashboard">
+                    {projects ?
+                        <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
+                        : null}
+                    {currentProject ?
+                        <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
+                        : null}
 
-            {currentSprint ?
-                <>
-                    <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} />
-                    <TaskListContainer currentSprint={currentSprint} />
-                </>
-                : null}
+                    {currentSprint ?
+                        <>
+                            <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} />
+                            <TaskListContainer currentSprint={currentSprint} />
+                        </>
+                        : null}
+                </Tab>
+                <Tab eventKey="newProject" title="New Project">
+                    <NewProjectForm onProjectSubmit={createProject} />
+                </Tab>
+                <Tab eventKey="newSprint" title="New Sprint">
+                    <NewSprintForm currentProject={currentProject} onSprintSubmit={createSprint} />
+                </Tab>
+            </Tabs>
         </>
     )
 }
