@@ -3,12 +3,10 @@ import Button from 'react-bootstrap/Button'
 import { useState, useEffect } from 'react'
 
 const TaskUpdateForm = ({show, task, handleUpdate}) => {
-    
+    console.log(task);
     const [stateTask, setStateTask] = useState({description: ""})
 
     useEffect(() => {
-        console.log("active");
-        console.log(task);
         let copiedTask = { ...task };
         console.log(copiedTask);
         setStateTask(copiedTask);
@@ -16,18 +14,18 @@ const TaskUpdateForm = ({show, task, handleUpdate}) => {
 
     const handleChange = (event) => {
         let propertyName = event.target.name;
-        console.log(propertyName);
+        // console.log(propertyName);
         let copiedTask = { ...stateTask };
         copiedTask[propertyName] = event.target.value;
-        console.log(copiedTask[propertyName]);
-        console.log(stateTask);
+        // console.log(copiedTask[propertyName]);
+        // console.log(stateTask);
         setStateTask(copiedTask);
-        console.log(stateTask);
+        // console.log(stateTask);
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("help");
+        console.log(stateTask);
         handleUpdate(stateTask)
     }
 

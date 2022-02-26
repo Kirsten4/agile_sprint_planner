@@ -19,7 +19,7 @@ const StyledTaskList = styled.div`
     `;
 
 const Column = ({ column, tasks, handleUpdate }) => {
-    
+    console.log(tasks);
     return (
         <StyledContainer>
             <h3>{column.columnId}</h3>

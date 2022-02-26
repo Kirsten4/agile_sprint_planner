@@ -20,10 +20,14 @@ const TaskListContainer = ({currentSprint}) => {
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
+        console.log(taskList);
+        console.log(currentSprint.id);
         setColumns(initialColumnData);
         // getTasks();
         getColumnData();
-        setTaskList(currentSprint.tasks)
+        TasksService.getTasksBySprintId(currentSprint.id)
+        .then(tasks => setTaskList(tasks))
+        console.log(taskList);
     }, [])
 
     useEffect(() => {
@@ -31,18 +35,18 @@ const TaskListContainer = ({currentSprint}) => {
             setColumnsFromDatabase();
         }
     }, [columnData])
-
-    // const getTasks = () => {
-    //     fetch('/tasks')
-    //         .then(res => res.json())
-    //         .then(taskList => setTaskList(taskList))
-    // }
-
+ 
     const handleTaskUpdate = (task) => {
         console.log(task);
         TasksService.updateTask(task.id, task)
         .then(res => res.json());
         console.log(task.description);
+        const newState = {
+            ...taskList,
+            task
+        }
+        
+        setColumns(newState);
     }
 
     const getColumnData = () => {

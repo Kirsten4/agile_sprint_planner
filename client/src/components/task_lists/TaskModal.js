@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import TaskUpdateForm from './modal/TaskUpdateForm'
 
 const TaskModal = ({show, onHide, task, handleUpdate}) => {
-    
+    console.log(task);
     return (
         <Modal show={show} onHide={onHide}  size="lg" centered>
             <Modal.Header closeButton>
