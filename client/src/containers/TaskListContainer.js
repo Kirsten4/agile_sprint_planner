@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 import initialColumnData from '../components/task_lists/initial-data';
 import Column from '../components/task_lists/Column';
+import TasksService from "../services/TasksService";
 
-const Container = styled.div`
+const StyledContainer = styled.div`
     display: flex;
 `;
 
@@ -13,6 +14,8 @@ const TaskListContainer = ({currentSprint}) => {
     const [taskList, setTaskList] = useState(null);
     const [columns, setColumns] = useState(null);
     const [columnData, setColumnData] = useState(null);
+    
+
     
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
@@ -34,6 +37,13 @@ const TaskListContainer = ({currentSprint}) => {
     //         .then(res => res.json())
     //         .then(taskList => setTaskList(taskList))
     // }
+
+    const handleTaskUpdate = (task) => {
+        console.log(task);
+        TasksService.updateTask(task.id, task)
+        .then(res => res.json());
+        console.log(task.description);
+    }
 
     const getColumnData = () => {
         fetch('/columns')
@@ -130,7 +140,7 @@ const TaskListContainer = ({currentSprint}) => {
 
         <DragDropContext onDragEnd={onDragEnd}>
             {taskList && columns && columnData ?
-                <Container>
+                <StyledContainer>
                     {columnOrder.map(columnId => {
                         const column = columns[columnId];
 
@@ -144,12 +154,12 @@ const TaskListContainer = ({currentSprint}) => {
                             }
                         }
 
-                        return <Column key={columnId} column={column} tasks={tasks} />;
+                        return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} />;
                     })}
-                </Container>
+                </StyledContainer>
                 : null}
         </DragDropContext>
     )
 }
-
+ 
 export default TaskListContainer;

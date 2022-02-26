@@ -22,8 +22,7 @@ public class Task {
     private Double timeEstimate;
 
     @Column(name = "time_log")
-    @ElementCollection
-    private List<Double> timeLog;
+    private Double timeLog;
 
     @ManyToOne
     @JoinColumn(name = "sprint_id")
@@ -38,7 +37,6 @@ public class Task {
     public Task(String description, Project project) {
         this.description = description;
         this.project = project;
-        this.timeLog = new ArrayList<>();
     }
 
     public Task() {
@@ -68,11 +66,11 @@ public class Task {
         this.timeEstimate = timeEstimate;
     }
 
-    public List<Double> getTimeLog() {
+    public Double getTimeLog() {
         return timeLog;
     }
 
-    public void setTimeLog(List<Double> timeLog) {
+    public void setTimeLog(Double timeLog) {
         this.timeLog = timeLog;
     }
 
@@ -96,5 +94,4 @@ public class Task {
         this.project = null;
         this.sprint = sprint;
     }
-
 }

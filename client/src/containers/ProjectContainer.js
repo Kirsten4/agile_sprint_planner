@@ -17,6 +17,8 @@ const ProjectContainer = () => {
     const [sprints, setSprints] = useState([]);
     const [currentSprint, setCurrentSprint] = useState(null);
 
+    
+
     useEffect(() => {
         ProjectsService.getProjects()
             .then(projects => setProjects(projects));
@@ -28,6 +30,10 @@ const ProjectContainer = () => {
                 .then(sprints => setSprints(sprints));
         }
     }, [currentProject])
+
+    if (!projects){
+        return (<p>Loading...</p>)
+      }
 
     const onProjectSelected = (project) => {
         setCurrentSprint(null);
