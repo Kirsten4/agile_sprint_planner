@@ -17,7 +17,7 @@ const Task = ({ task, index, handleUpdate }) => {
     const [currentTask, setCurrentTask] = useState(null);
 
     const stringDraggableId = task.id.toString();
-    console.log(task);
+    
     return (
         <Draggable draggableId={stringDraggableId} index={index}>
             {(provided, snapshot) => (

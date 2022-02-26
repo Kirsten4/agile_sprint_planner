@@ -12,23 +12,22 @@ const StyledContainer = styled.div`
 const TaskListContainer = ({currentSprint}) => {
 
     const [taskList, setTaskList] = useState(null);
-    const [columns, setColumns] = useState(null);
-    const [columnData, setColumnData] = useState(null);
+    const [columns, setColumns] = useState([]);
+    const [columnData, setColumnData] = useState([]);
     
 
     
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
-        console.log(taskList);
-        console.log(currentSprint.id);
-        setColumns(initialColumnData);
-        // getTasks();
-        getColumnData();
         TasksService.getTasksBySprintId(currentSprint.id)
         .then(tasks => setTaskList(tasks))
-        console.log(taskList);
     }, [])
+
+    useEffect(() => {
+        setColumns(initialColumnData);
+        getColumnData();
+    }, [taskList])
 
     useEffect(() => {
         if (columnData && columns && taskList) {
@@ -37,16 +36,13 @@ const TaskListContainer = ({currentSprint}) => {
     }, [columnData])
  
     const handleTaskUpdate = (task) => {
-        console.log(task);
         TasksService.updateTask(task.id, task)
         .then(res => res.json());
-        console.log(task.description);
-        const newState = {
-            ...taskList,
-            task
-        }
-        
-        setColumns(newState);
+        taskList[task.id-1] = task
+        const newState = [
+            ...taskList
+        ]
+        setTaskList(newState);
     }
 
     const getColumnData = () => {
@@ -70,8 +66,7 @@ const TaskListContainer = ({currentSprint}) => {
 
             columns[column.columnId].taskIds = column.taskIds;
             const newState = {
-                ...columns,
-                taskIds: column.taskIds
+                ...columns
             }
             
             setColumns(newState);
@@ -149,7 +144,7 @@ const TaskListContainer = ({currentSprint}) => {
                         const column = columns[columnId];
 
                         const tasks = []
-
+                        console.log(taskList);
                         for (let id of column.taskIds) {
                             for (let task of taskList) {
                                 if (id === task.id) {
@@ -160,7 +155,7 @@ const TaskListContainer = ({currentSprint}) => {
 
                         return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} />;
                     })}
-                </StyledContainer>
+                </StyledContainer> 
                 : null}
         </DragDropContext>
     )

@@ -17,6 +17,6 @@ const TasksService = {
             body: JSON.stringify(payload)
           })
     }
-}
+} 
 
 export default TasksService;
