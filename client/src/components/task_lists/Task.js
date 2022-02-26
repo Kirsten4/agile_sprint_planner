@@ -11,7 +11,7 @@ const Container = styled.div`
 
 const Task = ({task, index}) => {
 
-    const stringDraggableId = task.id.toString();    
+    const stringDraggableId = task.id.toString();
 
     return (
         <Draggable draggableId={stringDraggableId} index={index}>
@@ -23,7 +23,9 @@ const Task = ({task, index}) => {
                     
                     isDragging={snapshot.isDragging}
                     >
-                    {task.description}
+                    {task.description}<br />
+                    Priority: {index + 1}
+                    <input id="number" type="number" value="42"></input>
                 </Container>
             )}
         </Draggable>
