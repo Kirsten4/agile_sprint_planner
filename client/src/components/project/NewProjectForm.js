@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react'
 import Form from 'react-bootstrap/Form'
+import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-const NewProjectForm = ({onProjectSubmit}) => {
-    
+const NewProjectForm = ({ onProjectSubmit }) => {
+
     const [name, setName] = useState("");
 
     const handleNameChange = (evt) => {
@@ -21,16 +22,15 @@ const NewProjectForm = ({onProjectSubmit}) => {
         setName("")
     }
 
-    return(
+    return (
         <>
-        <h3>Add a New Project:</h3>
-        <Form onSubmit={handleProjectFormSubmit}>
-            <Form.Group className="mb-3" controlId="formProjectName"> 
-            <Form.Label>Project Name: </Form.Label>
-            <Form.Control type="text" placeholder="Project Name..." value={name} onChange={handleNameChange} required />
-            </Form.Group>
-            <Button variant="primary" type="submit">Submit</Button>            
-        </Form>
+            <Form onSubmit={handleProjectFormSubmit}>
+                <Form.Label>Add New Project: </Form.Label>
+                <FloatingLabel controlId="floatingProjectName" label="Project Name" className="mb-3">
+                    <Form.Control type="text" placeholder="Project Name" value={name} onChange={handleNameChange} required />
+                </FloatingLabel>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
         </>
     )
 }

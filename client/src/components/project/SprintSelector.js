@@ -1,19 +1,28 @@
+import Dropdown from 'react-bootstrap/Dropdown'
+
 const SprintSelector = ({sprints, onSprintSelected}) => {
     
-    const handleChange = (event) => {
-        const chosenSprint = sprints[event.target.value]
+    const handleChange = (eventKey) => {
+        const chosenSprint = sprints[eventKey]
         onSprintSelected(chosenSprint)
     }
 
-    const SprintOptions = sprints.map((sprint, index) => {
-        return <option value={index} key={index}>{sprint.id}</option>
+    const dropdownOptions = sprints.map((sprint, index) => {
+        return <Dropdown.Item eventKey={index} key={index} >{sprint.id} </Dropdown.Item>
     })
 
     return (
-        <select defaultValue="" onChange={handleChange}>
-            <option value="">Select Sprint</option>
-            {SprintOptions}
-        </select>
+         <>
+         <Dropdown onSelect={handleChange}>
+             <Dropdown.Toggle variant="success" size="lg" id="dropdown-basic">
+                 Select Sprint
+             </Dropdown.Toggle>
+
+             <Dropdown.Menu>
+                 {dropdownOptions}
+             </Dropdown.Menu>
+         </Dropdown>
+     </>
     )
 }
 

@@ -1,19 +1,28 @@
-const ProjectSelector = ({projects, onProjectSelected}) => {
-    
-    const handleChange = (event) => {
-        const chosenProject = projects[event.target.value]
+import Dropdown from 'react-bootstrap/Dropdown'
+
+const ProjectSelector = ({ projects, onProjectSelected }) => {
+
+    const handleChange = (eventKey) => {
+        const chosenProject = projects[eventKey]
         onProjectSelected(chosenProject)
     }
 
-    const projectOptions = projects.map((project, index) => {
-        return <option value={index} key={index}>{project.name}</option>
+    const dropdownOptions = projects.map((project, index) => {
+        return <Dropdown.Item eventKey={index} key={index} >{project.name} </Dropdown.Item>
     })
 
     return (
-        <select defaultValue="" onChange={handleChange}>
-            <option value="">Select Project</option>
-            {projectOptions}
-        </select>
+        <>
+            <Dropdown onSelect={handleChange}>
+                <Dropdown.Toggle variant="info" size="lg" id="dropdown-basic">
+                    Select Project
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                    {dropdownOptions}
+                </Dropdown.Menu>
+            </Dropdown>
+        </>
     )
 }
 
