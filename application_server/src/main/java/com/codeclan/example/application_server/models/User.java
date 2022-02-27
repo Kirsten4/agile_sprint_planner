@@ -42,12 +42,27 @@ public class User {
     )
     private List<Project> projects;
 
+    @ManyToMany
+    @JsonIgnoreProperties({"tasks", "projects", "users", "sprints"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name = "users_tasks",
+            joinColumns = {@JoinColumn(
+                    name = "user_id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "task_id"
+            )}
+    )
+    private List<Task> tasks;
+
     public User(String name, String username, String email, Role role) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.role = role;
         this.projects = new ArrayList<>();
+        this.tasks = new ArrayList<>();
     }
 
     public User() {
@@ -101,7 +116,19 @@ public class User {
         this.projects = projects;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     public void addProject(Project project){
         this.projects.add(project);
+    }
+
+    public void addTask(Task task){
+        this.tasks.add(task);
     }
 }

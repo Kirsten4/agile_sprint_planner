@@ -1,6 +1,7 @@
 package com.codeclan.example.application_server.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,10 +20,10 @@ public class Task {
     private String description;
 
     @Column(name = "time_estimate")
-    private Double timeEstimate;
+    private Double timeEstimate = 0.0;
 
     @Column(name = "time_log")
-    private Double timeLog;
+    private Double timeLog = 0.0;
 
     @ManyToOne
     @JoinColumn(name = "sprint_id")
@@ -34,9 +35,24 @@ public class Task {
     @JsonIgnoreProperties({"users", "sprints", "productBacklog"})
     private Project project;
 
+    @ManyToMany
+    @JsonIgnoreProperties({"tasks", "users", "projects"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name = "users_tasks",
+            joinColumns = {@JoinColumn(
+                    name = "task_id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "user_id"
+            )}
+    )
+    private List<User> users;
+
     public Task(String description, Project project) {
         this.description = description;
         this.project = project;
+        this.users = new ArrayList<>();
     }
 
     public Task() {
@@ -88,6 +104,18 @@ public class Task {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void addUser(User user){
+        this.users.add(user);
     }
 
     public void addToSprint(Sprint sprint){

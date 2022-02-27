@@ -15,19 +15,19 @@ const TaskListContainer = ({currentSprint}) => {
     const [columns, setColumns] = useState([]);
     const [columnData, setColumnData] = useState([]);
     
-
-    
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
         TasksService.getTasksBySprintId(currentSprint.id)
         .then(tasks => setTaskList(tasks))
-    }, [])
-
-    useEffect(() => {
         setColumns(initialColumnData);
         getColumnData();
-    }, [taskList])
+    }, [])
+
+    // useEffect(() => {
+        // setColumns(initialColumnData);
+        // getColumnData();
+    // }, [taskList])
 
     useEffect(() => {
         if (columnData && columns && taskList) {
@@ -142,9 +142,8 @@ const TaskListContainer = ({currentSprint}) => {
                 <StyledContainer>
                     {columnOrder.map(columnId => {
                         const column = columns[columnId];
+                        let tasks = [];
 
-                        const tasks = []
-                        console.log(taskList);
                         for (let id of column.taskIds) {
                             for (let task of taskList) {
                                 if (id === task.id) {

@@ -28,6 +28,12 @@ public class TaskController {
         return new ResponseEntity<>(taskRepository.findAll(), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/tasks")
+    public ResponseEntity<Task> postTask(@RequestBody Task task) {
+        taskRepository.save(task);
+        return new ResponseEntity<>(task, HttpStatus.CREATED);
+    }
+
     @PatchMapping(value = "/tasks/{id}")
     public ResponseEntity<Task> updateTask(@RequestBody Task task){
         taskRepository.save(task);

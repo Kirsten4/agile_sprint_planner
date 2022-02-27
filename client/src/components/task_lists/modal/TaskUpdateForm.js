@@ -1,18 +1,14 @@
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
-const TaskUpdateForm = ({ show, task, handleUpdate }) => {
+const TaskUpdateForm = ({ task, handleUpdate }) => {
 
-    const [stateTask, setStateTask] = useState({ description: "" })
-
-    useEffect(() => {
-        let copiedTask = { ...task };
-        setStateTask(copiedTask);
-    }, [show])
+    const [stateTask, setStateTask] = useState(task)
 
     const handleChange = (event) => {
         let propertyName = event.target.name;
         let copiedTask = { ...stateTask };
+        //Timelog needs to add to existing value rather than overwrite it
         if (propertyName === "timeLog") {
             copiedTask[propertyName] = task.timeLog + Number(event.target.value);
         } else {
@@ -32,13 +28,13 @@ const TaskUpdateForm = ({ show, task, handleUpdate }) => {
                 <Row>
                     <Form.Group className="mb-3" controlId="formDescription">
                         <Form.Label>Description: </Form.Label>
-                        <Form.Control name="description" type="text" placeholder="Enter description..." value={task.description} onChange={handleChange}></Form.Control>
+                        <Form.Control name="description" type="text" placeholder="Enter description..." value={stateTask.description} onChange={handleChange}></Form.Control>
                     </Form.Group>
                 </Row>
                 <Row>
                     <Form.Group className="mb-3" controlId="formTimeEstimate">
                         <Form.Label>Time Estimate: </Form.Label>
-                        <Form.Control name="timeEstimate" type="number" placeholder={0} value={task.timeEstimate} onChange={handleChange}></Form.Control>
+                        <Form.Control name="timeEstimate" type="number" placeholder={0} value={stateTask.timeEstimate} onChange={handleChange}></Form.Control>
                     </Form.Group>
                 </Row>
                 <Row>
@@ -52,11 +48,6 @@ const TaskUpdateForm = ({ show, task, handleUpdate }) => {
                         </Form.Group>
                     </Col>
                 </Row>
-
-
-
-
-
                 <Button type="submit">Save Changes</Button>
             </Form>
         </Container>

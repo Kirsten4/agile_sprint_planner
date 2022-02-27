@@ -41,6 +41,10 @@ public class Project {
     @JsonIgnoreProperties({"project"})
     private List<Task> productBacklog;
 
+    @Column(name = "backlog_order")
+    @ElementCollection
+    private List<Long> backlogOrder = new ArrayList<>();
+
     public Project(String name) {
         this.name = name;
         this.users = new ArrayList<>();
@@ -91,8 +95,20 @@ public class Project {
         this.productBacklog = productBacklog;
     }
 
+    public List<Long> getBacklogOrder() {
+        return backlogOrder;
+    }
+
+    public void setBacklogOrder(List<Long> backlogOrder) {
+        this.backlogOrder = backlogOrder;
+    }
+
     public void addUser(User user){
         this.users.add(user);
+    }
+
+    public void addBacklogOrder(Long id){
+        this.backlogOrder.add(id);
     }
 
     public void addTask(Task task){
