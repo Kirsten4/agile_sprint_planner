@@ -11,7 +11,7 @@ const TaskModal = ({show, onHide, task, handleUpdate}) => {
             </Modal.Header>
             <Modal.Body>
 
-                <p>Logged Time: {task.timeLog}</p>
+                
                 <TaskUpdateForm show={show} handleUpdate={handleUpdate} task={task}/>
             </Modal.Body>
             <Modal.Footer>
