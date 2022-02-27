@@ -11,8 +11,6 @@ const TasksService = {
     },
     
     updateTask(id, payload) {
-        console.log(id);
-        console.log(payload);
         return fetch('/tasks/' + id, {
             method: "PATCH",
             headers: {'Content-Type': 'application/json'},

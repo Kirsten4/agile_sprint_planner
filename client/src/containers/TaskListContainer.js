@@ -53,14 +53,6 @@ const TaskListContainer = ({currentSprint}) => {
         setTaskList(newState);
     }
 
-    const updateColumn = (id, payload) => {
-        fetch('/columns/' + id, {
-              method: "PATCH",
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify(payload)
-            })
-          }
-
     const onDragEnd = result => {
         result.draggableId = Number(result.draggableId)
         const { destination, source, draggableId } = result;
@@ -99,7 +91,7 @@ const TaskListContainer = ({currentSprint}) => {
 
             };
             setColumns(newState);
-            updateColumn(newColumn.id, newColumn)
+            ColumnDataService.updateColumn(newColumn.id, newColumn)
             return;
         }
         //dropped in new index position and new column
@@ -124,8 +116,8 @@ const TaskListContainer = ({currentSprint}) => {
         }
 
         setColumns(newState);
-        updateColumn(newStart.id, newStart)
-        updateColumn(newFinish.id, newFinish)
+        ColumnDataService.updateColumn(newStart.id, newStart)
+        ColumnDataService.updateColumn(newFinish.id, newFinish)
     }
 
     return (

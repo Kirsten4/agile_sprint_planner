@@ -101,6 +101,10 @@ public class Sprint {
         this.tasks.add(task);
     }
 
+    public void addColumnData(ColumnData data){
+        this.columnData.add(data);
+    }
+
     public void getTaskFromBacklog(Project project, Task task) {
         project.removeTask(task);
         task.addToSprint(this);
