@@ -16,13 +16,22 @@ public class TaskController {
     TaskRepository taskRepository;
 
     @GetMapping(value = "/tasks")
-    public ResponseEntity<List<Task>> getAllTasks(){
+    public ResponseEntity<List<Task>> getAllTasks(
+            @RequestParam(name = "projectId", required = false) Long projectId,
+            @RequestParam(name = "sprintId", required = false) Long sprintId
+    ){
+        if(projectId != null){
+            return new ResponseEntity<>(taskRepository.findByProjectId(projectId), HttpStatus.OK);
+        } else if (sprintId != null){
+            return new ResponseEntity<>(taskRepository.findBySprintId(sprintId), HttpStatus.OK);
+        }
         return new ResponseEntity<>(taskRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/tasks/{projectId}")
-    public ResponseEntity<List<Task>> getAllTasksInProject(@PathVariable Long projectId){
-        return new ResponseEntity<>(taskRepository.findByProjectId(projectId), HttpStatus.OK);
+    @PostMapping(value = "/tasks")
+    public ResponseEntity<Task> postTask(@RequestBody Task task) {
+        taskRepository.save(task);
+        return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @PatchMapping(value = "/tasks/{id}")

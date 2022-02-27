@@ -2,7 +2,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Task from './Task';
 
-const Container = styled.div`
+const StyledContainer = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
     border-radius: 2px;
@@ -11,32 +11,32 @@ const Container = styled.div`
     flex-direction: column;
     `;
 
-const TaskList = styled.div`
+const StyledTaskList = styled.div`
     padding: 8px;
     background-color: skyblue;
     flex-grow: 1;
     min-height: 300px;
     `;
 
-const Column = ({ column, tasks }) => {
+const Column = ({ column, tasks, handleUpdate }) => {
     
     return (
-        <Container>
+        <StyledContainer>
             <h3>{column.columnId}</h3>
             <Droppable droppableId={column.columnId}>
                 {(provided) => (
-                    <TaskList
+                    <StyledTaskList
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
                         {tasks.map((task, index) => (
-                            <Task key={task.id} task={task} index={index} />
+                            <Task key={task.id} task={task} index={index} handleUpdate={handleUpdate} />
                         ))}
                         {provided.placeholder}
-                    </TaskList>
+                    </StyledTaskList>
                 )}
             </Droppable>
-        </Container>
+        </StyledContainer>
     )
 }
 

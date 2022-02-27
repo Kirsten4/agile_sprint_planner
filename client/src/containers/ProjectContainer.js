@@ -9,6 +9,9 @@ import SprintsService from "../services/SprintsService";
 import TaskListContainer from "./TaskListContainer"
 import Tabs from "react-bootstrap/Tabs"
 import Tab from "react-bootstrap/Tab"
+import BacklogContainer from "./BacklogContainer";
+
+
 
 const ProjectContainer = () => {
     const [key, setKey] = useState('dashboard');
@@ -16,6 +19,8 @@ const ProjectContainer = () => {
     const [currentProject, setCurrentProject] = useState(null);
     const [sprints, setSprints] = useState([]);
     const [currentSprint, setCurrentSprint] = useState(null);
+
+    
 
     useEffect(() => {
         ProjectsService.getProjects()
@@ -28,6 +33,10 @@ const ProjectContainer = () => {
                 .then(sprints => setSprints(sprints));
         }
     }, [currentProject])
+
+    if (!projects){
+        return (<p>Loading...</p>)
+      }
 
     const onProjectSelected = (project) => {
         setCurrentSprint(null);
@@ -63,7 +72,6 @@ const ProjectContainer = () => {
 
                     {currentSprint ?
                         <>
-                            <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} />
                             <TaskListContainer currentSprint={currentSprint} />
                         </>
                         : null}
@@ -73,6 +81,15 @@ const ProjectContainer = () => {
                 </Tab>
                 <Tab eventKey="newSprint" title="New Sprint">
                     <NewSprintForm currentProject={currentProject} onSprintSubmit={createSprint} />
+                </Tab>
+                <Tab eventKey="productBacklog" title="Product Backlog">
+                    {currentProject ? 
+                    <>
+                    <BacklogContainer currentProject={currentProject}/>
+                    <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} />
+                    </>
+                : null}
+                
                 </Tab>
             </Tabs>
         </>

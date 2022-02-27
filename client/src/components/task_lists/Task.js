@@ -12,11 +12,12 @@ const Container = styled.div`
     background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
 `
 
-const Task = ({ task, index }) => {
+const Task = ({ task, index, handleUpdate }) => {
     const [modalShow, setModalShow] = useState(false);
+    const [currentTask, setCurrentTask] = useState(null);
 
     const stringDraggableId = task.id.toString();
-
+    
     return (
         <Draggable draggableId={stringDraggableId} index={index}>
             {(provided, snapshot) => (
@@ -29,9 +30,8 @@ const Task = ({ task, index }) => {
                 >
                     {task.description}<br />
                     Priority: {index + 1}
-                    {/* <input id="number" type="number" value="42"></input> */}
                     <Button variant="primary" size="sm" onClick={() => setModalShow(true)}>View/Edit Details</Button>
-                    <TaskModal show={modalShow} onHide={() => setModalShow(false)} task={task} />
+                    <TaskModal show={modalShow} onHide={() => setModalShow(false)} task={task} handleUpdate={handleUpdate} />
                 </Container>
             )}
         </Draggable>
