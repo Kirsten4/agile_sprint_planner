@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BackLogList from "../components/project/BacklogList";
 import ProjectSelector from "../components/project/ProjectSelector";
-import SprintSelector from "../components/project/SprintSelector";
+import SprintSelector from "../components/sprint/SprintSelector";
 import NewProjectForm from "../components/project/NewProjectForm";
 import NewSprintForm from "../components/sprint/NewSprintForm"
 import ProjectsService from "../services/ProjectsService";
@@ -15,7 +15,7 @@ import BacklogContainer from "./BacklogContainer";
 
 const ProjectContainer = () => {
     const [key, setKey] = useState('dashboard');
-    const [projects, setProjects] = useState(null);
+    const [projects, setProjects] = useState([]);
     const [currentProject, setCurrentProject] = useState(null);
     const [sprints, setSprints] = useState([]);
     const [currentSprint, setCurrentSprint] = useState(null);

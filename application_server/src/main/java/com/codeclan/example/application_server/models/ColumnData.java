@@ -1,5 +1,7 @@
 package com.codeclan.example.application_server.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +21,14 @@ public class ColumnData {
     @ElementCollection
     private List<Long> taskIds = new ArrayList<Long>();
 
-    public ColumnData(String columnId) {
+    @ManyToOne
+    @JoinColumn(name = "sprint_id")
+    @JsonIgnoreProperties({"project", "tasks","columnData"})
+    private Sprint sprint;
+
+    public ColumnData(String columnId, Sprint sprint) {
         this.columnId = columnId;
+        this.sprint = sprint;
     }
 
     public ColumnData() {
@@ -48,6 +56,14 @@ public class ColumnData {
 
     public void setTaskIds(List<Long> taskIds) {
         this.taskIds = taskIds;
+    }
+
+    public Sprint getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
     }
 
     public void addToTaskList(Long taskId){

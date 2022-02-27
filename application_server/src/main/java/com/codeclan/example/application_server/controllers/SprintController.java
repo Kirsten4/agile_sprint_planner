@@ -42,6 +42,12 @@ public class SprintController {
         return new ResponseEntity<>(sprint, HttpStatus.CREATED);
     }
 
+    @PatchMapping(value = "/sprints/{id}")
+    public ResponseEntity<Sprint> updateSprint(@RequestBody Sprint sprint){
+        sprintRepository.save(sprint);
+        return new ResponseEntity<>(sprint, HttpStatus.OK);
+    }
+
     @PatchMapping(value = "/sprints/{sprintId}/{taskId}")
     public ResponseEntity putTaskInSprint(@PathVariable Long sprintId, @PathVariable Long taskId){
         Sprint sprint = sprintRepository.findById(sprintId).get();

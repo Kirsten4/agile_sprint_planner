@@ -74,16 +74,16 @@ public class DataLoader implements ApplicationRunner {
         project1.addBacklogOrder(backlogTask1.getId());
         projectRepository.save(project1);
 
-        ColumnData taskIdsToDo = new ColumnData("To Do");
+        ColumnData taskIdsToDo = new ColumnData("To Do", sprint1);
         taskIdsToDo.addToTaskList(1L);
         taskIdsToDo.addToTaskList(3L);
         columnDataRepository.save(taskIdsToDo);
-        ColumnData taskIdsInProgress = new ColumnData("In Progress");
+        ColumnData taskIdsInProgress = new ColumnData("In Progress", sprint1);
         columnDataRepository.save(taskIdsInProgress);
-        ColumnData taskIdsStuck = new ColumnData("Stuck");
+        ColumnData taskIdsStuck = new ColumnData("Stuck", sprint1);
         taskIdsStuck.addToTaskList(2L);
         columnDataRepository.save(taskIdsStuck);
-        ColumnData taskIdsDone = new ColumnData("Done");
+        ColumnData taskIdsDone = new ColumnData("Done", sprint1);
         columnDataRepository.save(taskIdsDone);
 
 

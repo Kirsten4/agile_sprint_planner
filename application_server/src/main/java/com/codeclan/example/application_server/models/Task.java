@@ -27,7 +27,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "sprint_id")
-    @JsonIgnoreProperties({"project", "tasks"})
+    @JsonIgnoreProperties({"project", "tasks", "columnData"})
     private Sprint sprint;
 
     @ManyToOne

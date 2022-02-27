@@ -1,7 +1,7 @@
 import { Draggable } from 'react-beautiful-dnd';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
-import TaskModal from './TaskModal';
+import TaskModal from './modal/TaskModal';
 import { useState } from 'react';
 
 const Container = styled.div`

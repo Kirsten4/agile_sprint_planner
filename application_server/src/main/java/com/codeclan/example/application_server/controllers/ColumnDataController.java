@@ -20,9 +20,9 @@ public class ColumnDataController {
         return new ResponseEntity<>(columnDataRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/columns/{id}")
-    public ResponseEntity getColumn(@PathVariable Long id){
-        return new ResponseEntity<>(columnDataRepository.findById(id), HttpStatus.OK);
+    @GetMapping(value = "/columns/{sprintId}")
+    public ResponseEntity<List<ColumnData>> getColumnsBySprintId(@PathVariable Long sprintId){
+        return new ResponseEntity<>(columnDataRepository.findBySprintId(sprintId), HttpStatus.OK);
     }
 
     @PatchMapping(value = "/columns/{id}")

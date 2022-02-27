@@ -4,6 +4,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import initialColumnData from '../components/task_lists/initial-data';
 import Column from '../components/task_lists/Column';
 import TasksService from "../services/TasksService";
+import ColumnDataService from "../services/ColumnDataService";
 
 const StyledContainer = styled.div`
     display: flex;
@@ -12,28 +13,35 @@ const StyledContainer = styled.div`
 const TaskListContainer = ({currentSprint}) => {
 
     const [taskList, setTaskList] = useState(null);
-    const [columns, setColumns] = useState([]);
-    const [columnData, setColumnData] = useState([]);
+    const [columnData, setColumnData] = useState(null);
+    const [columns, setColumns] = useState(null);
     
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
         TasksService.getTasksBySprintId(currentSprint.id)
         .then(tasks => setTaskList(tasks))
-        setColumns(initialColumnData);
-        getColumnData();
+        ColumnDataService.getColumnsBySprintId(currentSprint.id)
+        .then(columns => setColumnData(columns))
+        // setColumns(initialColumnData);
     }, [])
 
-    // useEffect(() => {
-        // setColumns(initialColumnData);
-        // getColumnData();
-    // }, [taskList])
-
     useEffect(() => {
-        if (columnData && columns && taskList) {
-            setColumnsFromDatabase();
+        if (columnData && taskList) {
+            // setColumnsFromDatabase();
+            setUpColumns();
         }
     }, [columnData])
+
+    const setUpColumns = () => {
+        let tempColumns = {}
+        for (const column of columnData){
+            tempColumns[column.columnId] = column
+        }
+        setColumns(tempColumns)
+        console.log(columns);
+        console.log(columnData);
+    }
  
     const handleTaskUpdate = (task) => {
         TasksService.updateTask(task.id, task)
@@ -45,12 +53,6 @@ const TaskListContainer = ({currentSprint}) => {
         setTaskList(newState);
     }
 
-    const getColumnData = () => {
-        fetch('/columns')
-            .then(res => res.json())
-            .then(columnData => setColumnData(columnData))
-    }
-
     const updateColumn = (id, payload) => {
         fetch('/columns/' + id, {
               method: "PATCH",
@@ -58,27 +60,17 @@ const TaskListContainer = ({currentSprint}) => {
               body: JSON.stringify(payload)
             })
           }
-    
-
-    const setColumnsFromDatabase = () => {
-        
-        for (const column of columnData) {
-
-            columns[column.columnId].taskIds = column.taskIds;
-            const newState = {
-                ...columns
-            }
-            
-            setColumns(newState);
-        }
-    }
 
     const onDragEnd = result => {
         result.draggableId = Number(result.draggableId)
         const { destination, source, draggableId } = result;
+
+        //dropped outside the list
         if (!destination) {
             return;
         }
+
+        //dropped in original position
         if (
             destination.droppableId === source.droppableId &&
             destination.index === source.index
@@ -89,6 +81,7 @@ const TaskListContainer = ({currentSprint}) => {
         const start = columns[source.droppableId];
         const finish = columns[destination.droppableId];
 
+        //dropped in new index position, same column
         if (start === finish) {
             const newTaskIds = Array.from(start.taskIds);
             newTaskIds.splice(source.index, 1);
@@ -109,7 +102,7 @@ const TaskListContainer = ({currentSprint}) => {
             updateColumn(newColumn.id, newColumn)
             return;
         }
-
+        //dropped in new index position and new column
         const startTaskIds = Array.from(start.taskIds);
         startTaskIds.splice(source.index, 1);
         const newStart = {
@@ -143,7 +136,6 @@ const TaskListContainer = ({currentSprint}) => {
                     {columnOrder.map(columnId => {
                         const column = columns[columnId];
                         let tasks = [];
-
                         for (let id of column.taskIds) {
                             for (let task of taskList) {
                                 if (id === task.id) {

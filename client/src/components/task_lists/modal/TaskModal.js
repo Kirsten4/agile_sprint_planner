@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import TaskUpdateForm from './modal/TaskUpdateForm'
+import TaskUpdateForm from './TaskUpdateForm'
 
 const TaskModal = ({ show, onHide, task, handleUpdate }) => {
 
