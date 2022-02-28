@@ -20,7 +20,7 @@ public class Project {
     private String name;
 
     @ManyToMany
-    @JsonIgnoreProperties({"projects"})
+    @JsonIgnoreProperties({"projects","tasks"})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
             name = "users_projects",
@@ -34,7 +34,7 @@ public class Project {
     private List<User> users;
 
     @OneToMany(mappedBy = "project")
-    @JsonIgnoreProperties({"project","tasks"})
+    @JsonIgnoreProperties({"project","tasks","columnData"})
     private List<Sprint> sprints;
 
     @OneToMany(mappedBy = "project")
@@ -113,8 +113,9 @@ public class Project {
         this.columnData.add(data);
     }
 
-    public void addTask(Task task){
+    public void addTask(Task task, ColumnData columnData){
         this.productBacklog.add(task);
+        columnData.addToTaskList(task.getId());
     }
 
     public boolean removeTask(Task task) {

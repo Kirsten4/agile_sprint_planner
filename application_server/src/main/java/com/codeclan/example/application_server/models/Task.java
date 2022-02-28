@@ -32,6 +32,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JsonIgnoreProperties({"users", "sprints", "productBacklog"})
     private Project project;
 

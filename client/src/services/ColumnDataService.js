@@ -1,9 +1,14 @@
 const ColumnDataService = {
     
     getColumnsBySprintId(sprintId){
-        return fetch('/columns/' + sprintId)
+        return fetch('/columns?sprintId=' + sprintId)
             .then(res => res.json())
     },
+
+    getColumnsByProjectId(projectId){
+      return fetch('/columns?projectId=' + projectId)
+          .then(res => res.json())
+  },
 
     updateColumn(id, payload){
         return fetch('/columns/' + id, {
@@ -12,7 +17,6 @@ const ColumnDataService = {
               body: JSON.stringify(payload)
             })
           }
-
 } 
 
 export default ColumnDataService;

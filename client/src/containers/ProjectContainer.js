@@ -92,7 +92,7 @@ const ProjectContainer = () => {
                     {currentProject ?
                         <>
                             <BacklogContainer currentProject={currentProject} currentSprint={currentSprint} />
-                            <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} />
+                            {/* <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} /> */}
                         </>
                         : null}
 

@@ -24,12 +24,10 @@ const TaskListContainer = ({currentSprint}) => {
         .then(tasks => setTaskList(tasks))
         ColumnDataService.getColumnsBySprintId(currentSprint.id)
         .then(columns => setColumnData(columns))
-        // setColumns(initialColumnData);
     }, [currentSprint])
 
     useEffect(() => {
         if (columnData && taskList) {
-            // setColumnsFromDatabase();
             setUpColumns();
         }
     }, [columnData])
@@ -40,14 +38,16 @@ const TaskListContainer = ({currentSprint}) => {
             tempColumns[column.columnId] = column
         }
         setColumns(tempColumns)
-        console.log(columns);
-        console.log(columnData);
     }
  
     const handleTaskUpdate = (task) => {
         TasksService.updateTask(task.id, task)
         .then(res => res.json());
-        taskList[task.id-1] = task
+        for (let taskToCheck in taskList){
+            if (taskToCheck.id === task.id){
+                taskToCheck = task
+            }
+        }
         const newState = [
             ...taskList
         ]

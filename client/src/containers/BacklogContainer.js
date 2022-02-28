@@ -4,6 +4,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Column from "../components/task_lists/Column";
 import TasksService from "../services/TasksService";
 import SprintsService from "../services/SprintsService";
+import ColumnDataService from "../services/ColumnDataService";
 import SprintSelector from "../components/sprint/SprintSelector";
 import ProjectSelector from "../components/project/ProjectSelector";
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -18,29 +19,32 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
     // const [currentProject, setCurrentProject] = useState(null);
     // const [currentSprint, setCurrentSprint] = useState(null);
     const [taskList, setTaskList] = useState(null);
-    const [columns, setColumns] = useState([]);
+    const [columnData, setColumnData] = useState(null);
+    const [columns, setColumns] = useState(null);
     const [modalShow, setModalShow] = useState(false);
-
-    const initialColumnData = {
-        'Backlog': {
-          id: 1,
-          columnId: 'Backlog',
-          taskIds: [],
-        }}
 
     const columnOrder = ['Backlog'];
 
     useEffect(() => {
         TasksService.getTasksByProjectId(currentProject.id)
             .then(tasks => setTaskList(tasks))
-        setColumns(initialColumnData);
-    }, [currentProject])
+        ColumnDataService.getColumnsByProjectId(currentProject.id)
+            .then(columns => setColumnData(columns))
+    }, [currentProject, taskList])
 
     useEffect(() => {
-        if (currentProject && taskList) {
-            setColumnsFromDatabase();
+        if (columnData && taskList) {
+            setUpColumns();
         }
-    }, [taskList])
+    }, [columnData])
+
+    const setUpColumns = () => {
+        let tempColumns = {}
+        for (const column of columnData){
+            tempColumns[column.columnId] = column
+        }
+        setColumns({...tempColumns})
+    }
 
     const handleTaskUpdate = (task) => {
         if (task.id){
@@ -58,22 +62,14 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
     } else{
         TasksService.postTask(task)
         .then(savedTask => setTaskList([...taskList, savedTask]))
+        // TasksService.getTasksByProjectId(currentProject.id)
+        //     .then(tasks => setTaskList([...tasks])) 
     }
-    }
-
-    const setColumnsFromDatabase = () => {
-            columns['Backlog'].taskIds = currentProject.backlogOrder;
-            const newState = {
-                ...columns
-            }
-            setColumns(newState);
     }
 
     const handleAddToSprint = (task) => {
-        console.log("help");
         SprintsService.putTaskInSprint(currentSprint.id, task.id)
     }
-
 
     const onDragEnd = result => {
         result.draggableId = Number(result.draggableId)
@@ -123,14 +119,14 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
                         <Row>
 
         <DragDropContext onDragEnd={onDragEnd}>
-            {taskList && columns ?
+            {taskList && columns && columnData?
                 <StyledContainer>
                     {columnOrder.map(columnId => {
+                        console.log(columns);
                         const column = columns[columnId];
                         let tasks = [];
-
+                        
                         for (let id of column.taskIds) {
-                            
                             for (let task of taskList) {
                                 if (id === task.id) {
                                     tasks.push(task)

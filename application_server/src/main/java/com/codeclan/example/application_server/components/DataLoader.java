@@ -49,6 +49,8 @@ public class DataLoader implements ApplicationRunner {
         project2.addUser(kirsten);
         project2.addUser(david);
         projectRepository.save(project2);
+        ColumnData backlogProject2 = new ColumnData("Backlog", null, project2);
+        columnDataRepository.save(backlogProject2);
 
         Date date = new Date();
         Sprint sprint1 = new Sprint(date, 2, project1);
@@ -70,10 +72,10 @@ public class DataLoader implements ApplicationRunner {
         taskRepository.save(backlogTask1);
         Task backlogTask2 = new Task("Backlog Task2", project1);
         taskRepository.save(backlogTask2);
-        ColumnData backlog = new ColumnData("Backlog", null, project1);
-        backlog.addToTaskList(5L);
-        backlog.addToTaskList(4L);
-        columnDataRepository.save(backlog);
+        ColumnData backlogProject1 = new ColumnData("Backlog", null, project1);
+        backlogProject1.addToTaskList(5L);
+        backlogProject1.addToTaskList(4L);
+        columnDataRepository.save(backlogProject1);
 //        project1.addBacklogOrder(backlogTask2.getId());
 //        project1.addBacklogOrder(backlogTask1.getId());
         projectRepository.save(project1);

@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface ColumnDataRepository extends JpaRepository<ColumnData, Long> {
 
-    List<ColumnData> findBySprintId(Long projectId);
+    List<ColumnData> findBySprintId(Long sprintId);
+
+    List<ColumnData> findByProjectId(Long projectId);
 }

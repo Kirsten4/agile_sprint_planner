@@ -28,8 +28,9 @@ public class ColumnData {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    @JsonIgnoreProperties({"sprints","project", "tasks","columnData", "users","productBacklog"})
+    @JsonIgnoreProperties({"sprints", "tasks","columnData", "users","productBacklog"})
     private Project project;
+
 
     public ColumnData(String columnId, Sprint sprint, Project project) {
         this.columnId = columnId;
