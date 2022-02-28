@@ -49,6 +49,8 @@ public class DataLoader implements ApplicationRunner {
         project2.addUser(kirsten);
         project2.addUser(david);
         projectRepository.save(project2);
+        ColumnData backlogProject2 = new ColumnData("Backlog", null, project2);
+        columnDataRepository.save(backlogProject2);
 
         Date date = new Date();
         Sprint sprint1 = new Sprint(date, 2, project1);
@@ -70,21 +72,25 @@ public class DataLoader implements ApplicationRunner {
         taskRepository.save(backlogTask1);
         Task backlogTask2 = new Task("Backlog Task2", project1);
         taskRepository.save(backlogTask2);
-        project1.addBacklogOrder(backlogTask2.getId());
-        project1.addBacklogOrder(backlogTask1.getId());
+        ColumnData backlogProject1 = new ColumnData("Backlog", null, project1);
+        backlogProject1.addToTaskList(5L);
+        backlogProject1.addToTaskList(4L);
+        columnDataRepository.save(backlogProject1);
+//        project1.addBacklogOrder(backlogTask2.getId());
+//        project1.addBacklogOrder(backlogTask1.getId());
         projectRepository.save(project1);
 
-        ColumnData taskIdsToDo = new ColumnData("To Do");
-        taskIdsToDo.addToTaskList(1L);
-        taskIdsToDo.addToTaskList(3L);
-        columnDataRepository.save(taskIdsToDo);
-        ColumnData taskIdsInProgress = new ColumnData("In Progress");
-        columnDataRepository.save(taskIdsInProgress);
-        ColumnData taskIdsStuck = new ColumnData("Stuck");
-        taskIdsStuck.addToTaskList(2L);
-        columnDataRepository.save(taskIdsStuck);
-        ColumnData taskIdsDone = new ColumnData("Done");
-        columnDataRepository.save(taskIdsDone);
+        ColumnData toDo = new ColumnData("To Do", sprint1, null);
+        toDo.addToTaskList(1L);
+        toDo.addToTaskList(3L);
+        columnDataRepository.save(toDo);
+        ColumnData inProgress = new ColumnData("In Progress", sprint1, null);
+        columnDataRepository.save(inProgress);
+        ColumnData stuck = new ColumnData("Stuck", sprint1, null);
+        stuck.addToTaskList(2L);
+        columnDataRepository.save(stuck);
+        ColumnData done = new ColumnData("Done", sprint1, null);
+        columnDataRepository.save(done);
 
 
     }

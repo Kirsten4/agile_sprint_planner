@@ -1,19 +1,26 @@
 package com.codeclan.example.application_server.controllers;
 
+import com.codeclan.example.application_server.models.ColumnData;
 import com.codeclan.example.application_server.models.Task;
+import com.codeclan.example.application_server.repositories.ColumnDataRepository;
 import com.codeclan.example.application_server.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Column;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TaskController {
 
     @Autowired
     TaskRepository taskRepository;
+
+    @Autowired
+    ColumnDataRepository columnDataRepository;
 
     @GetMapping(value = "/tasks")
     public ResponseEntity<List<Task>> getAllTasks(
@@ -31,6 +38,10 @@ public class TaskController {
     @PostMapping(value = "/tasks")
     public ResponseEntity<Task> postTask(@RequestBody Task task) {
         taskRepository.save(task);
+        Long id = task.getProject().getColumnData().get(0).getId();
+        ColumnData columnData = columnDataRepository.findById(id).get();
+        columnData.addToTaskList(task.getId());
+        columnDataRepository.save(columnData);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 

@@ -12,7 +12,13 @@ const SprintsService = {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(res => res.json())
-    }
+    },
+
+    putTaskInSprint(currentSprintId, taskId) {
+        fetch('/sprints/' + currentSprintId + '/' + taskId, {
+            method: "PATCH",
+          })    
+    }  
 }
 
 export default SprintsService;

@@ -20,7 +20,7 @@ public class Project {
     private String name;
 
     @ManyToMany
-    @JsonIgnoreProperties({"projects"})
+    @JsonIgnoreProperties({"projects","tasks"})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
             name = "users_projects",
@@ -34,22 +34,24 @@ public class Project {
     private List<User> users;
 
     @OneToMany(mappedBy = "project")
-    @JsonIgnoreProperties({"project","tasks"})
+    @JsonIgnoreProperties({"project","tasks","columnData"})
     private List<Sprint> sprints;
 
     @OneToMany(mappedBy = "project")
     @JsonIgnoreProperties({"project"})
     private List<Task> productBacklog;
 
-    @Column(name = "backlog_order")
-    @ElementCollection
-    private List<Long> backlogOrder = new ArrayList<>();
+    @OneToMany(mappedBy = "project")
+    @JsonIgnoreProperties({"project","columnData"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private List<ColumnData> columnData;
 
     public Project(String name) {
         this.name = name;
         this.users = new ArrayList<>();
         this.sprints = new ArrayList<>();
         this.productBacklog = new ArrayList<>();
+        this.columnData = new ArrayList<>();
     }
 
     public Project() {
@@ -95,24 +97,25 @@ public class Project {
         this.productBacklog = productBacklog;
     }
 
-    public List<Long> getBacklogOrder() {
-        return backlogOrder;
+    public List<ColumnData> getColumnData() {
+        return columnData;
     }
 
-    public void setBacklogOrder(List<Long> backlogOrder) {
-        this.backlogOrder = backlogOrder;
+    public void setColumnData(List<ColumnData> columnData) {
+        this.columnData = columnData;
     }
 
     public void addUser(User user){
         this.users.add(user);
     }
 
-    public void addBacklogOrder(Long id){
-        this.backlogOrder.add(id);
+    public void addColumnData(ColumnData data){
+        this.columnData.add(data);
     }
 
-    public void addTask(Task task){
+    public void addTask(Task task, ColumnData columnData){
         this.productBacklog.add(task);
+        columnData.addToTaskList(task.getId());
     }
 
     public boolean removeTask(Task task) {

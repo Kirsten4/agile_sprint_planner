@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
 import BackLogList from "../components/project/BacklogList";
 import ProjectSelector from "../components/project/ProjectSelector";
-import SprintSelector from "../components/project/SprintSelector";
+import SprintSelector from "../components/sprint/SprintSelector";
 import NewProjectForm from "../components/project/NewProjectForm";
 import NewSprintForm from "../components/sprint/NewSprintForm"
 import ProjectsService from "../services/ProjectsService";
 import SprintsService from "../services/SprintsService";
 import TaskListContainer from "./TaskListContainer"
-import Tabs from "react-bootstrap/Tabs"
-import Tab from "react-bootstrap/Tab"
 import BacklogContainer from "./BacklogContainer";
+import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap'
 
 
 
 const ProjectContainer = () => {
     const [key, setKey] = useState('dashboard');
-    const [projects, setProjects] = useState(null);
+    const [projects, setProjects] = useState([]);
     const [currentProject, setCurrentProject] = useState(null);
     const [sprints, setSprints] = useState([]);
     const [currentSprint, setCurrentSprint] = useState(null);
 
-    
+
 
     useEffect(() => {
         ProjectsService.getProjects()
@@ -34,17 +33,17 @@ const ProjectContainer = () => {
         }
     }, [currentProject])
 
-    if (!projects){
+    if (!projects) {
         return (<p>Loading...</p>)
-      }
+    }
 
     const onProjectSelected = (project) => {
         setCurrentSprint(null);
-        setCurrentProject(project);
+        setCurrentProject({ ...project });
     }
 
     const onSprintSelected = (sprint) => {
-        setCurrentSprint(sprint);
+        setCurrentSprint({ ...sprint });
     }
 
     const createProject = (newProject) => {
@@ -59,22 +58,29 @@ const ProjectContainer = () => {
 
     return (
         <>
-        <h2>This is the project container</h2>
+            <h2>This is the project container</h2>
             <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3" activeKey={key}
-      onSelect={(k) => setKey(k)}>
+                onSelect={(k) => setKey(k)}>
                 <Tab eventKey="dashboard" title="Dashboard">
-                    {projects ?
-                        <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
-                        : null}
-                    {currentProject ?
-                        <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
-                        : null}
-
-                    {currentSprint ?
-                        <>
-                            <TaskListContainer currentSprint={currentSprint} />
-                        </>
-                        : null}
+                    <Container>
+                        <Row>
+                            <Col>
+                                {projects ?
+                                    <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
+                                    : null}
+                            </Col>
+                            <Col>
+                                {currentProject ?
+                                    <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
+                                    : null}
+                            </Col>
+                        </Row>
+                        <Row>
+                            {currentSprint ?
+                                <TaskListContainer currentSprint={currentSprint} />
+                                : null}
+                        </Row>
+                    </Container>
                 </Tab>
                 <Tab eventKey="newProject" title="New Project">
                     <NewProjectForm onProjectSubmit={createProject} />
@@ -83,13 +89,13 @@ const ProjectContainer = () => {
                     <NewSprintForm currentProject={currentProject} onSprintSubmit={createSprint} />
                 </Tab>
                 <Tab eventKey="productBacklog" title="Product Backlog">
-                    {currentProject ? 
-                    <>
-                    <BacklogContainer currentProject={currentProject}/>
-                    <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} />
-                    </>
-                : null}
-                
+                    {currentProject ?
+                        <>
+                            <BacklogContainer currentProject={currentProject} currentSprint={currentSprint} />
+                            {/* <BackLogList productBacklog={currentProject.productBacklog} currentSprint={currentSprint} /> */}
+                        </>
+                        : null}
+
                 </Tab>
             </Tabs>
         </>

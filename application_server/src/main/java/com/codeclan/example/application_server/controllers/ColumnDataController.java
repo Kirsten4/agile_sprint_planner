@@ -16,13 +16,16 @@ public class ColumnDataController {
     ColumnDataRepository columnDataRepository;
 
     @GetMapping(value = "/columns")
-    public ResponseEntity<List<ColumnData>> getAllColumns(){
+    public ResponseEntity<List<ColumnData>> getAllColumns(
+            @RequestParam(name = "projectId", required = false) Long projectId,
+            @RequestParam(name = "sprintId", required = false) Long sprintId
+    ){
+        if(projectId != null){
+            return new ResponseEntity<>(columnDataRepository.findByProjectId(projectId), HttpStatus.OK);
+        } else if (sprintId != null){
+            return new ResponseEntity<>(columnDataRepository.findBySprintId(sprintId), HttpStatus.OK);
+        }
         return new ResponseEntity<>(columnDataRepository.findAll(), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/columns/{id}")
-    public ResponseEntity getColumn(@PathVariable Long id){
-        return new ResponseEntity<>(columnDataRepository.findById(id), HttpStatus.OK);
     }
 
     @PatchMapping(value = "/columns/{id}")

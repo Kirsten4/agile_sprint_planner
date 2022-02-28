@@ -6,6 +6,7 @@ import Home from "./components/routes/Home";
 import Projects from "./components/routes/Projects"
 
 function App() {
+  
   return (
     <div className="App">
       <h1>This is the app</h1>

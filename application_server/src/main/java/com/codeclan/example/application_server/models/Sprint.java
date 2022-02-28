@@ -3,6 +3,7 @@ package com.codeclan.example.application_server.models;
 import com.codeclan.example.application_server.models.Project;
 import com.codeclan.example.application_server.models.Task;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,11 +33,17 @@ public class Sprint {
     @JsonIgnoreProperties({"sprint"})
     private List<Task> tasks;
 
+    @OneToMany(mappedBy = "sprint")
+    @JsonIgnoreProperties({"sprint","columnData"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private List<ColumnData> columnData;
+
     public Sprint(Date startDate, int duration, Project project) {
         this.startDate = startDate;
         this.duration = duration;
         this.project = project;
         this.tasks = new ArrayList<>();
+        this.columnData = new ArrayList<>();
     }
 
     public Sprint() {
@@ -82,8 +89,20 @@ public class Sprint {
         this.tasks = tasks;
     }
 
+    public List<ColumnData> getColumnData() {
+        return columnData;
+    }
+
+    public void setColumnData(List<ColumnData> columnData) {
+        this.columnData = columnData;
+    }
+
     public void addTaskToSprint(Task task){
         this.tasks.add(task);
+    }
+
+    public void addColumnData(ColumnData data){
+        this.columnData.add(data);
     }
 
     public void getTaskFromBacklog(Project project, Task task) {

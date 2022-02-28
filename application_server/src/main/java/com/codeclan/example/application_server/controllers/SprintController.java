@@ -1,8 +1,10 @@
 package com.codeclan.example.application_server.controllers;
 
+import com.codeclan.example.application_server.models.ColumnData;
 import com.codeclan.example.application_server.models.Project;
 import com.codeclan.example.application_server.models.Sprint;
 import com.codeclan.example.application_server.models.Task;
+import com.codeclan.example.application_server.repositories.ColumnDataRepository;
 import com.codeclan.example.application_server.repositories.ProjectRepository;
 import com.codeclan.example.application_server.repositories.SprintRepository;
 import com.codeclan.example.application_server.repositories.TaskRepository;
@@ -21,10 +23,11 @@ public class SprintController {
     SprintRepository sprintRepository;
 
     @Autowired
-    ProjectRepository projectRepository;
+    ColumnDataRepository columnDataRepository;
 
     @Autowired
     TaskRepository taskRepository;
+
 
     @GetMapping(value = "/sprints")
     public ResponseEntity<List<Sprint>> getAllSprints(){
@@ -39,7 +42,21 @@ public class SprintController {
     @PostMapping(value = "/sprints")
     public ResponseEntity<Sprint> postSprint(@RequestBody Sprint sprint){
         sprintRepository.save(sprint);
+        ColumnData toDo = new ColumnData("To Do", sprint, null);
+        columnDataRepository.save(toDo);
+        ColumnData inProgress = new ColumnData("In Progress", sprint, null);
+        columnDataRepository.save(inProgress);
+        ColumnData stuck = new ColumnData("Stuck", sprint, null);
+        columnDataRepository.save(stuck);
+        ColumnData done = new ColumnData("Done", sprint, null);
+        columnDataRepository.save(done);
         return new ResponseEntity<>(sprint, HttpStatus.CREATED);
+    }
+
+    @PatchMapping(value = "/sprints/{id}")
+    public ResponseEntity<Sprint> updateSprint(@RequestBody Sprint sprint){
+        sprintRepository.save(sprint);
+        return new ResponseEntity<>(sprint, HttpStatus.OK);
     }
 
     @PatchMapping(value = "/sprints/{sprintId}/{taskId}")

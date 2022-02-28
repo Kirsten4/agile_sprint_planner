@@ -1,24 +1,21 @@
-const initialColumnData = {
-  'To Do': {
-    id: 1,
-    columnId: 'To Do',
-    taskIds: [],
-  },
-  'In Progress': {
-    id: 2,
-    columnId: 'In Progress',
-    taskIds: [],
-  },
-  'Stuck': {
-    id: 3,
-    columnId: 'Stuck',
-    taskIds: [],
-  },
-  'Done': {
-    id: 4,
-    columnId:'Done',
-    taskIds: [],
-  }
-}
+// const initialColumnData = [
+//   {
+//     columnId: 'To Do',
+//     taskIds: [],
+  
+//   },{
+//     columnId: 'In Progress',
+//     taskIds: [],
+//     sprint: {}
+//   },{
+//     columnId: 'Stuck',
+//     taskIds: [],
+//     sprint: {}
+//   },{
+//     columnId:'Done',
+//     taskIds: [],
+//     sprint: {}
+//   }
+// ]
 
-export default initialColumnData;
+// export default initialColumnData;
