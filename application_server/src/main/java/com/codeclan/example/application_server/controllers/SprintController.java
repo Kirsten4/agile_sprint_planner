@@ -28,6 +28,9 @@ public class SprintController {
     @Autowired
     TaskRepository taskRepository;
 
+    @Autowired
+    ProjectRepository projectRepository;
+
 
     @GetMapping(value = "/sprints")
     public ResponseEntity<List<Sprint>> getAllSprints(){
@@ -60,12 +63,19 @@ public class SprintController {
     }
 
     @PatchMapping(value = "/sprints/{sprintId}/{taskId}")
-    public ResponseEntity putTaskInSprint(@PathVariable Long sprintId, @PathVariable Long taskId){
+    public ResponseEntity<Sprint> putTaskInSprint(@PathVariable Long sprintId, @PathVariable Long taskId){
         Sprint sprint = sprintRepository.findById(sprintId).get();
-        Project project = sprint.getProject();
+        Project project = projectRepository.findById(sprint.getProject().getId()).get();
         Task task = taskRepository.findById(taskId).get();
         sprint.getTaskFromBacklog(project,task);
         taskRepository.save(task);
-        return new ResponseEntity(HttpStatus.OK);
+        ColumnData columnDataStart = columnDataRepository.findById(project.getColumnData().get(0).getId()).get();
+        columnDataStart.removeFromTaskList(taskId);
+        ColumnData columnDataEnd = columnDataRepository.findBySprintId(sprintId).get(0);
+        columnDataEnd.addToTaskList(taskId);
+        columnDataRepository.save(columnDataStart);
+        columnDataRepository.save(columnDataEnd);
+        sprintRepository.save(sprint);
+        return new ResponseEntity(sprintRepository.findById(sprintId), HttpStatus.OK);
     }
 }

@@ -1,7 +1,7 @@
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import { useState } from 'react'
 
-const TaskUpdateForm = ({ task, handleUpdate }) => {
+const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
 
     const [stateTask, setStateTask] = useState(task)
 
@@ -19,7 +19,8 @@ const TaskUpdateForm = ({ task, handleUpdate }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        handleUpdate(stateTask)
+        handleUpdate(stateTask);
+        onHide();
     }
 
     return (

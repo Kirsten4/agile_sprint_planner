@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const Login = () => {
+const Login = ({fetchCurrentUser}) => {
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -21,6 +21,7 @@ const Login = () => {
     .then(res => {
         if (res.status === 200){
             localStorage.setItem('token', res.data.token)
+            fetchCurrentUser(user)
             window.location = "/"}
     }, err => {console.log(err.response);
     setError(err.response.data.error);}    

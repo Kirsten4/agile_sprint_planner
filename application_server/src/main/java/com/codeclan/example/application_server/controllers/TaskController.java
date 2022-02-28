@@ -1,8 +1,10 @@
 package com.codeclan.example.application_server.controllers;
 
 import com.codeclan.example.application_server.models.ColumnData;
+import com.codeclan.example.application_server.models.Project;
 import com.codeclan.example.application_server.models.Task;
 import com.codeclan.example.application_server.repositories.ColumnDataRepository;
+import com.codeclan.example.application_server.repositories.ProjectRepository;
 import com.codeclan.example.application_server.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ public class TaskController {
     @Autowired
     ColumnDataRepository columnDataRepository;
 
+    @Autowired
+    ProjectRepository projectRepository;
+
     @GetMapping(value = "/tasks")
     public ResponseEntity<List<Task>> getAllTasks(
             @RequestParam(name = "projectId", required = false) Long projectId,
@@ -38,7 +43,8 @@ public class TaskController {
     @PostMapping(value = "/tasks")
     public ResponseEntity<Task> postTask(@RequestBody Task task) {
         taskRepository.save(task);
-        Long id = task.getProject().getColumnData().get(0).getId();
+        Project project = projectRepository.findById(task.getProject().getId()).get();
+        Long id = project.getColumnData().get(0).getId();
         ColumnData columnData = columnDataRepository.findById(id).get();
         columnData.addToTaskList(task.getId());
         columnDataRepository.save(columnData);

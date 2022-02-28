@@ -28,6 +28,9 @@ public class User {
     @Column(name="role")
     private Role role;
 
+    @Column(name = "weekly_contracted_hours")
+    private Integer weeklyContractedHours;
+
     @ManyToMany
     @JsonIgnoreProperties({"users","sprints", "productBacklog"})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
@@ -56,11 +59,12 @@ public class User {
     )
     private List<Task> tasks;
 
-    public User(String name, String username, String email, Role role) {
+    public User(String name, String username, String email, Role role, Integer weeklyContractedHours) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.role = role;
+        this.weeklyContractedHours = weeklyContractedHours;
         this.projects = new ArrayList<>();
         this.tasks = new ArrayList<>();
     }
@@ -106,6 +110,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Integer getWeeklyContractedHours() {
+        return weeklyContractedHours;
+    }
+
+    public void setWeeklyContractedHours(Integer weeklyContractedHours) {
+        this.weeklyContractedHours = weeklyContractedHours;
     }
 
     public List<Project> getProjects() {
