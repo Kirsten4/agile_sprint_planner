@@ -9,6 +9,15 @@ const TasksService = {
         return fetch('/tasks?sprintId=' + sprintId.toString())
             .then(res => res.json())
     },
+
+    postTask(payload) {
+        return fetch('/tasks', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(res => res.json());
+    },
     
     updateTask(id, payload) {
         return fetch('/tasks/' + id, {

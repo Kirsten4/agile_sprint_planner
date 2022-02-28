@@ -6,7 +6,8 @@ import TasksService from "../services/TasksService";
 import SprintsService from "../services/SprintsService";
 import SprintSelector from "../components/sprint/SprintSelector";
 import ProjectSelector from "../components/project/ProjectSelector";
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
+import TaskModal from "../components/task_lists/modal/TaskModal";
 
 const StyledContainer = styled.div`
     display: flex;
@@ -18,6 +19,7 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
     // const [currentSprint, setCurrentSprint] = useState(null);
     const [taskList, setTaskList] = useState(null);
     const [columns, setColumns] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
 
     const initialColumnData = {
         'Backlog': {
@@ -41,21 +43,22 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
     }, [taskList])
 
     const handleTaskUpdate = (task) => {
+        if (task.id){
         TasksService.updateTask(task.id, task)
         .then(res => res.json());
-        for (const taskToCheck in taskList){
+        for (let taskToCheck in taskList){
             if (taskToCheck.id === task.id){
                 taskToCheck = task
             }
         }
-        
-        console.log(task);
         const newState = [
             ...taskList
         ]
-        console.log(newState);
         setTaskList(newState);
-        console.log(taskList);
+    } else{
+        TasksService.postTask(task)
+        .then(savedTask => setTaskList([...taskList, savedTask]))
+    }
     }
 
     const setColumnsFromDatabase = () => {
@@ -70,6 +73,7 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
         console.log("help");
         SprintsService.putTaskInSprint(currentSprint.id, task.id)
     }
+
 
     const onDragEnd = result => {
         result.draggableId = Number(result.draggableId)
@@ -136,6 +140,8 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
 
                         return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} handleAdd={handleAddToSprint} />;
                     })}
+                    <Button variant="primary" size="sm" onClick={() => setModalShow(true)}>Add New Task</Button>
+                    <TaskModal show={modalShow} onHide={() => setModalShow(false)}  handleUpdate={handleTaskUpdate} currentProject={currentProject} />
                 </StyledContainer>
                 : null}
         </DragDropContext>
