@@ -3,13 +3,19 @@ import styled from 'styled-components';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Column from "../components/task_lists/Column";
 import TasksService from "../services/TasksService";
+import SprintsService from "../services/SprintsService";
+import SprintSelector from "../components/sprint/SprintSelector";
+import ProjectSelector from "../components/project/ProjectSelector";
+import { Container, Row, Col } from 'react-bootstrap'
 
 const StyledContainer = styled.div`
     display: flex;
     `;
 
-const BacklogContainer = ({ currentProject }) => {
+const BacklogContainer = ({ currentProject, currentSprint }) => {
 
+    // const [currentProject, setCurrentProject] = useState(null);
+    // const [currentSprint, setCurrentSprint] = useState(null);
     const [taskList, setTaskList] = useState(null);
     const [columns, setColumns] = useState([]);
 
@@ -26,7 +32,7 @@ const BacklogContainer = ({ currentProject }) => {
         TasksService.getTasksByProjectId(currentProject.id)
             .then(tasks => setTaskList(tasks))
         setColumns(initialColumnData);
-    }, [])
+    }, [currentProject])
 
     useEffect(() => {
         if (currentProject && taskList) {
@@ -58,6 +64,11 @@ const BacklogContainer = ({ currentProject }) => {
                 ...columns
             }
             setColumns(newState);
+    }
+
+    const handleAddToSprint = (task) => {
+        console.log("help");
+        SprintsService.putTaskInSprint(currentSprint.id, task.id)
     }
 
     const onDragEnd = result => {
@@ -92,6 +103,20 @@ const BacklogContainer = ({ currentProject }) => {
     }
 
     return (
+        <Container>
+                        {/* <Row>
+                            <Col>
+                                {projects ?
+                                    <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
+                                    : null}
+                            </Col>
+                            <Col>
+                                {currentProject ?
+                                    <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
+                                    : null}
+                            </Col>
+                        </Row> */}
+                        <Row>
 
         <DragDropContext onDragEnd={onDragEnd}>
             {taskList && columns ?
@@ -109,11 +134,13 @@ const BacklogContainer = ({ currentProject }) => {
                             }
                         }
 
-                        return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} />;
+                        return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} handleAdd={handleAddToSprint} />;
                     })}
                 </StyledContainer>
                 : null}
         </DragDropContext>
+        </Row>
+        </Container>
     )
 }
 

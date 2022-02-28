@@ -5,6 +5,7 @@ import initialColumnData from '../components/task_lists/initial-data';
 import Column from '../components/task_lists/Column';
 import TasksService from "../services/TasksService";
 import ColumnDataService from "../services/ColumnDataService";
+import SprintsService from "../services/SprintsService";
 
 const StyledContainer = styled.div`
     display: flex;
@@ -24,7 +25,7 @@ const TaskListContainer = ({currentSprint}) => {
         ColumnDataService.getColumnsBySprintId(currentSprint.id)
         .then(columns => setColumnData(columns))
         // setColumns(initialColumnData);
-    }, [])
+    }, [currentSprint])
 
     useEffect(() => {
         if (columnData && taskList) {
@@ -52,6 +53,8 @@ const TaskListContainer = ({currentSprint}) => {
         ]
         setTaskList(newState);
     }
+
+
 
     const onDragEnd = result => {
         result.draggableId = Number(result.draggableId)
@@ -136,7 +139,7 @@ const TaskListContainer = ({currentSprint}) => {
                             }
                         }
 
-                        return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} />;
+                        return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate}  />;
                     })}
                 </StyledContainer> 
                 : null}
