@@ -14,14 +14,13 @@ const StyledContainer = styled.div`
     display: flex;
     `;
 
-const BacklogContainer = ({ currentProject, currentSprint }) => {
+const BacklogContainer = ({ currentProject }) => {
 
-    // const [currentProject, setCurrentProject] = useState(null);
-    // const [currentSprint, setCurrentSprint] = useState(null);
     const [taskList, setTaskList] = useState(null);
     const [columnData, setColumnData] = useState(null);
     const [columns, setColumns] = useState(null);
     const [modalShow, setModalShow] = useState(false);
+    const [selectedSprint, setSelectedSprint] = useState(null);
 
     const columnOrder = ['Backlog'];
 
@@ -61,14 +60,17 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
         setTaskList(newState);
     } else{
         TasksService.postTask(task)
-        // .then(savedTask => setTaskList([...taskList, savedTask]))
         TasksService.getTasksByProjectId(currentProject.id)
             .then(tasks => setTaskList([...tasks])) 
     }
     }
 
     const handleAddToSprint = (task) => {
-        SprintsService.putTaskInSprint(currentSprint.id, task.id)
+        SprintsService.putTaskInSprin(selectedSprint.id, task.id)
+    }
+
+    const onSprintSelected = (sprint) => {
+        setSelectedSprint({ ...sprint });
     }
 
     const onDragEnd = result => {

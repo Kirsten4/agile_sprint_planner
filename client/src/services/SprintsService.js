@@ -15,8 +15,8 @@ const SprintsService = {
             .then(res => res.json())
     },
 
-    putTaskInSprint(currentSprintId, taskId) {
-        fetch('/sprints/' + currentSprintId + '/' + taskId, {
+    putTaskInSprint(sprintId, taskId) {
+        fetch('/sprints/' + sprintId + '/' + taskId, {
             method: "PATCH",
           })    
     }  

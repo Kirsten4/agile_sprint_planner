@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -32,39 +33,46 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        User kirsten = new User("Kirsten", "Kirsten4", "kirsten@fake.com", Role.PRODUCT_OWNER);
+        User kirsten = new User("Kirsten", "Kirsten4", "kirsten@fake.com", Role.PRODUCT_OWNER, 40);
         userRepository.save(kirsten);
-        User david = new User("David", "David2", "david@fake.com", Role.DEVELOPER);
+        User david = new User("David", "David2", "david@fake.com", Role.DEVELOPER, 40);
         userRepository.save(david);
-        User duncan = new User("Duncan", "Duncan1", "duncan@fake.com", Role.SCRUM_MASTER);
+        User martin = new User("Martin", "Martin5", "martin@fake.com", Role.DEVELOPER, 20);
+        userRepository.save(martin);
+        User rachel = new User("Rachel", "Rachel6", "rachel@fake.com", Role.DEVELOPER, 35);
+        userRepository.save(rachel);
+        User duncan = new User("Duncan", "Duncan1", "duncan@fake.com", Role.SCRUM_MASTER, 40);
         userRepository.save(duncan);
-        User linda = new User("Linda", "Linda3", "linda@fake.com", Role.ADMIN);
+        User linda = new User("Linda", "Linda3", "linda@fake.com", Role.ADMIN, 35);
         userRepository.save(linda);
 
-        Project project1 = new Project("Project 1");
+        Project project1 = new Project("Project 1: Hotel Booking System");
         project1.addUser(kirsten);
+        project1.addUser(david);
         project1.addUser(duncan);
+        project1.addUser(martin);
+        project1.addUser(rachel);
         projectRepository.save(project1);
-        Project project2 = new Project("Project 2");
-        project2.addUser(kirsten);
-        project2.addUser(david);
-        projectRepository.save(project2);
-        ColumnData backlogProject2 = new ColumnData("Backlog", null, project2);
-        columnDataRepository.save(backlogProject2);
+//        Project project2 = new Project("Project 2");
+//        project2.addUser(kirsten);
+//        project2.addUser(david);
+//        projectRepository.save(project2);
+//        ColumnData backlogProject2 = new ColumnData("Backlog", null, project2);
+//        columnDataRepository.save(backlogProject2);
 
         Date date = new Date();
         Sprint sprint1 = new Sprint(date, 2, project1);
         sprintRepository.save(sprint1);
 
-        Task checkIn = new Task("Check in", project2);
+        Task checkIn = new Task("Check in", project1);
         sprint1.getTaskFromBacklog(checkIn.getProject(),checkIn);
         checkIn.addUser(david);
         taskRepository.save(checkIn);
-        Task checkOut = new Task("Check out", project2);
+        Task checkOut = new Task("Check out", project1);
         sprint1.getTaskFromBacklog(checkOut.getProject(),checkOut);
         checkOut.addUser(david);
         taskRepository.save(checkOut);
-        Task makeReservation = new Task("Make reservation", project2);
+        Task makeReservation = new Task("Make reservation", project1);
         sprint1.getTaskFromBacklog(makeReservation.getProject(),makeReservation);
         makeReservation.addUser(kirsten);
         taskRepository.save(makeReservation);
@@ -76,8 +84,6 @@ public class DataLoader implements ApplicationRunner {
         backlogProject1.addToTaskList(5L);
         backlogProject1.addToTaskList(4L);
         columnDataRepository.save(backlogProject1);
-//        project1.addBacklogOrder(backlogTask2.getId());
-//        project1.addBacklogOrder(backlogTask1.getId());
         projectRepository.save(project1);
 
         ColumnData toDo = new ColumnData("To Do", sprint1, null);
@@ -91,7 +97,6 @@ public class DataLoader implements ApplicationRunner {
         columnDataRepository.save(stuck);
         ColumnData done = new ColumnData("Done", sprint1, null);
         columnDataRepository.save(done);
-
 
     }
 }
