@@ -63,7 +63,7 @@ public class SprintController {
     }
 
     @PatchMapping(value = "/sprints/{sprintId}/{taskId}")
-    public ResponseEntity putTaskInSprint(@PathVariable Long sprintId, @PathVariable Long taskId){
+    public ResponseEntity<Sprint> putTaskInSprint(@PathVariable Long sprintId, @PathVariable Long taskId){
         Sprint sprint = sprintRepository.findById(sprintId).get();
         Project project = projectRepository.findById(sprint.getProject().getId()).get();
         Task task = taskRepository.findById(taskId).get();
@@ -75,6 +75,7 @@ public class SprintController {
         columnDataEnd.addToTaskList(taskId);
         columnDataRepository.save(columnDataStart);
         columnDataRepository.save(columnDataEnd);
-        return new ResponseEntity(HttpStatus.OK);
+        sprintRepository.save(sprint);
+        return new ResponseEntity(sprintRepository.findById(sprintId), HttpStatus.OK);
     }
 }

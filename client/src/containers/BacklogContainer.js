@@ -7,20 +7,22 @@ import SprintsService from "../services/SprintsService";
 import ColumnDataService from "../services/ColumnDataService";
 import SprintSelector from "../components/sprint/SprintSelector";
 import ProjectSelector from "../components/project/ProjectSelector";
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col, Button, Alert } from 'react-bootstrap'
 import TaskModal from "../components/task_lists/modal/TaskModal";
+import SprintContainer from "./SprintContainer";
 
 const StyledContainer = styled.div`
     display: flex;
     `;
 
-const BacklogContainer = ({ currentProject }) => {
+const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
 
     const [taskList, setTaskList] = useState(null);
     const [columnData, setColumnData] = useState(null);
     const [columns, setColumns] = useState(null);
     const [modalShow, setModalShow] = useState(false);
     const [selectedSprint, setSelectedSprint] = useState(null);
+    const [showAlert, setShowAlert] = useState(false);
 
     const columnOrder = ['Backlog'];
 
@@ -39,38 +41,44 @@ const BacklogContainer = ({ currentProject }) => {
 
     const setUpColumns = () => {
         let tempColumns = {}
-        for (const column of columnData){
+        for (const column of columnData) {
             tempColumns[column.columnId] = column
         }
-        setColumns({...tempColumns})
+        setColumns({ ...tempColumns })
     }
 
     const handleTaskUpdate = (task) => {
-        if (task.id){
-        TasksService.updateTask(task.id, task)
-        .then(res => res.json());
-        for (let taskToCheck in taskList){
-            if (taskToCheck.id === task.id){
-                taskToCheck = task
+        if (task.id) {
+            TasksService.updateTask(task.id, task)
+                .then(res => res.json());
+            for (let taskToCheck in taskList) {
+                if (taskToCheck.id === task.id) {
+                    taskToCheck = task
+                }
             }
+            const newState = [
+                ...taskList
+            ]
+            setTaskList(newState);
+        } else {
+            TasksService.postTask(task)
+            TasksService.getTasksByProjectId(currentProject.id)
+                .then(tasks => setTaskList([...tasks]))
         }
-        const newState = [
-            ...taskList
-        ]
-        setTaskList(newState);
-    } else{
-        TasksService.postTask(task)
-        TasksService.getTasksByProjectId(currentProject.id)
-            .then(tasks => setTaskList([...tasks])) 
-    }
     }
 
     const handleAddToSprint = (task) => {
-        SprintsService.putTaskInSprin(selectedSprint.id, task.id)
+        if (selectedSprint) {
+            SprintsService.putTaskInSprint(selectedSprint.id, task.id)
+            .then(sprint => setSelectedSprint({...sprint}))
+        } else {
+            setShowAlert(true);
+        }
     }
 
     const onSprintSelected = (sprint) => {
         setSelectedSprint({ ...sprint });
+        setShowAlert(false);
     }
 
     const onDragEnd = result => {
@@ -106,43 +114,59 @@ const BacklogContainer = ({ currentProject }) => {
 
     return (
         <Container>
-                        {/* <Row>
-                            <Col>
+            <Row>
+                <Alert show={showAlert} variant="danger">
+                    Select a sprint for the task!
+                </Alert>
+            </Row>
+            <Row>
+                {/* <Col>
                                 {projects ?
                                     <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
                                     : null}
-                            </Col>
-                            <Col>
-                                {currentProject ?
-                                    <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
-                                    : null}
-                            </Col>
-                        </Row> */}
-                        <Row>
-
-        <DragDropContext onDragEnd={onDragEnd}>
-            {taskList && columns && columnData?
-                <StyledContainer>
-                    {columnOrder.map(columnId => {
-                        const column = columns[columnId];
-                        let tasks = [];
-                        
-                        for (let id of column.taskIds) {
-                            for (let task of taskList) {
-                                if (id === task.id) {
-                                    tasks.push(task)
-                                }
-                            }
-                        }
-
-                        return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} handleAdd={handleAddToSprint} />;
-                    })}
+                            </Col> */}
+                <Col>
+                    {currentProject ?
+                        <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
+                        : null}
+                </Col>
+            </Row>
+            <Row>
+                <div>
                     <Button variant="primary" size="sm" onClick={() => setModalShow(true)}>Add New Task</Button>
-                    <TaskModal show={modalShow} onHide={() => setModalShow(false)}  handleUpdate={handleTaskUpdate} currentProject={currentProject} />
-                </StyledContainer>
-                : null}
-        </DragDropContext>
-        </Row>
+                    <TaskModal show={modalShow} onHide={() => setModalShow(false)} handleUpdate={handleTaskUpdate} currentProject={currentProject} />
+                </div>
+
+            </Row>
+            <Row>
+                <Col>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        {taskList && columns && columnData ?
+                            <StyledContainer>
+                                {columnOrder.map(columnId => {
+                                    const column = columns[columnId];
+                                    let tasks = [];
+
+                                    for (let id of column.taskIds) {
+                                        for (let task of taskList) {
+                                            if (id === task.id) {
+                                                tasks.push(task)
+                                            }
+                                        }
+                                    }
+
+                                    return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} handleAdd={handleAddToSprint} />;
+                                })}
+
+                            </StyledContainer>
+                            : null}
+                    </DragDropContext>
+                </Col>
+                <Col>
+                    {selectedSprint ? <SprintContainer selectedSprint={selectedSprint} usersOnProject={usersOnProject} /> : null}
+                    
+                </Col>
+            </Row>
         </Container>
     )
 }

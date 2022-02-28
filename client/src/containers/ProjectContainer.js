@@ -9,6 +9,7 @@ import SprintsService from "../services/SprintsService";
 import TaskListContainer from "./TaskListContainer"
 import BacklogContainer from "./BacklogContainer";
 import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap'
+import UsersService from "../services/UsersService";
 
 
 
@@ -18,6 +19,7 @@ const ProjectContainer = () => {
     const [currentProject, setCurrentProject] = useState(null);
     const [sprints, setSprints] = useState([]);
     const [currentSprint, setCurrentSprint] = useState(null);
+    const [usersOnProject, setUsersOnProject] = useState(null);
 
 
 
@@ -30,6 +32,8 @@ const ProjectContainer = () => {
         if (currentProject) {
             SprintsService.getSprintsByProject(currentProject.id)
                 .then(sprints => setSprints(sprints));
+            UsersService.getUsersByProject(currentProject.id)
+            .then(users => setUsersOnProject(users))
         }
     }, [currentProject])
 
@@ -91,7 +95,7 @@ const ProjectContainer = () => {
                 <Tab eventKey="productBacklog" title="Product Backlog">
                     {currentProject ?
                         <>
-                            <BacklogContainer currentProject={currentProject} />
+                            <BacklogContainer currentProject={currentProject} sprints={sprints} usersOnProject={usersOnProject} />
                         </>
                         : null}
 
