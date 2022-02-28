@@ -24,7 +24,7 @@ const ProjectContainer = () => {
     useEffect(() => {
         ProjectsService.getProjects()
             .then(projects => setProjects(projects));
-    }, [])
+    }, [projects])
 
     useEffect(() => {
         if (currentProject) {

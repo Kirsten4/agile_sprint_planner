@@ -61,9 +61,9 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
         setTaskList(newState);
     } else{
         TasksService.postTask(task)
-        .then(savedTask => setTaskList([...taskList, savedTask]))
-        // TasksService.getTasksByProjectId(currentProject.id)
-        //     .then(tasks => setTaskList([...tasks])) 
+        // .then(savedTask => setTaskList([...taskList, savedTask]))
+        TasksService.getTasksByProjectId(currentProject.id)
+            .then(tasks => setTaskList([...tasks])) 
     }
     }
 
@@ -122,7 +122,6 @@ const BacklogContainer = ({ currentProject, currentSprint }) => {
             {taskList && columns && columnData?
                 <StyledContainer>
                     {columnOrder.map(columnId => {
-                        console.log(columns);
                         const column = columns[columnId];
                         let tasks = [];
                         

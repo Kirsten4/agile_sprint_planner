@@ -27,13 +27,14 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "sprint_id")
-    @JsonIgnoreProperties({"project", "tasks", "columnData"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JsonIgnoreProperties(value = {"project", "tasks", "columnData"}, allowSetters = true)
     private Sprint sprint;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @JsonIgnoreProperties({"users", "sprints", "productBacklog"})
+    @JsonIgnoreProperties({"users", "sprints", "productBacklog","columnData"})
     private Project project;
 
     @ManyToMany

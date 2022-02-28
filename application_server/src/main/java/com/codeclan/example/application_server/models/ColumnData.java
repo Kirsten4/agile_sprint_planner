@@ -84,4 +84,8 @@ public class ColumnData {
     public void addToTaskList(Long taskId){
         this.taskIds.add(taskId);
     }
+
+    public void removeFromTaskList(Long taskId){
+        this.taskIds.remove(new Long(taskId));
+    }
 }

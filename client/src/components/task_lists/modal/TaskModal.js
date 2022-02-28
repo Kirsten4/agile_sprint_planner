@@ -18,7 +18,7 @@ const TaskModal = ({ show, onHide, task, handleUpdate, currentProject }) => {
                 <Modal.Title>{task.description}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TaskUpdateForm handleUpdate={handleUpdate} task={task} />
+                <TaskUpdateForm handleUpdate={handleUpdate} task={task} onHide={onHide} />
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onHide}>Close</Button>

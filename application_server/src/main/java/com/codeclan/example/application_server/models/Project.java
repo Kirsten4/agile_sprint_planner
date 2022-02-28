@@ -38,11 +38,11 @@ public class Project {
     private List<Sprint> sprints;
 
     @OneToMany(mappedBy = "project")
-    @JsonIgnoreProperties({"project"})
+    @JsonIgnoreProperties({"project","users","columnData"})
     private List<Task> productBacklog;
 
     @OneToMany(mappedBy = "project")
-    @JsonIgnoreProperties({"project","columnData"})
+    @JsonIgnoreProperties({"project"})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ColumnData> columnData;
 

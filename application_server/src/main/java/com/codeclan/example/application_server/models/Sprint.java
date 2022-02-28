@@ -26,7 +26,7 @@ public class Sprint {
 
     @ManyToOne
     @JoinColumn(name="project_id", nullable = false)
-    @JsonIgnoreProperties({"users", "sprints", "productBacklog"})
+    @JsonIgnoreProperties({"users", "sprints", "productBacklog","columnData"})
     private Project project;
 
     @OneToMany(mappedBy = "sprint")
@@ -34,7 +34,7 @@ public class Sprint {
     private List<Task> tasks;
 
     @OneToMany(mappedBy = "sprint")
-    @JsonIgnoreProperties({"sprint","columnData"})
+    @JsonIgnoreProperties({"sprint"})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ColumnData> columnData;
 
