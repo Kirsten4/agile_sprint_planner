@@ -70,21 +70,25 @@ public class DataLoader implements ApplicationRunner {
         taskRepository.save(backlogTask1);
         Task backlogTask2 = new Task("Backlog Task2", project1);
         taskRepository.save(backlogTask2);
-        project1.addBacklogOrder(backlogTask2.getId());
-        project1.addBacklogOrder(backlogTask1.getId());
+        ColumnData backlog = new ColumnData("Backlog", null, project1);
+        backlog.addToTaskList(5L);
+        backlog.addToTaskList(4L);
+        columnDataRepository.save(backlog);
+//        project1.addBacklogOrder(backlogTask2.getId());
+//        project1.addBacklogOrder(backlogTask1.getId());
         projectRepository.save(project1);
 
-        ColumnData taskIdsToDo = new ColumnData("To Do", sprint1);
-        taskIdsToDo.addToTaskList(1L);
-        taskIdsToDo.addToTaskList(3L);
-        columnDataRepository.save(taskIdsToDo);
-        ColumnData taskIdsInProgress = new ColumnData("In Progress", sprint1);
-        columnDataRepository.save(taskIdsInProgress);
-        ColumnData taskIdsStuck = new ColumnData("Stuck", sprint1);
-        taskIdsStuck.addToTaskList(2L);
-        columnDataRepository.save(taskIdsStuck);
-        ColumnData taskIdsDone = new ColumnData("Done", sprint1);
-        columnDataRepository.save(taskIdsDone);
+        ColumnData toDo = new ColumnData("To Do", sprint1, null);
+        toDo.addToTaskList(1L);
+        toDo.addToTaskList(3L);
+        columnDataRepository.save(toDo);
+        ColumnData inProgress = new ColumnData("In Progress", sprint1, null);
+        columnDataRepository.save(inProgress);
+        ColumnData stuck = new ColumnData("Stuck", sprint1, null);
+        stuck.addToTaskList(2L);
+        columnDataRepository.save(stuck);
+        ColumnData done = new ColumnData("Done", sprint1, null);
+        columnDataRepository.save(done);
 
 
     }

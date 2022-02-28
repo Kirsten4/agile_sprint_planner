@@ -42,13 +42,13 @@ public class SprintController {
     @PostMapping(value = "/sprints")
     public ResponseEntity<Sprint> postSprint(@RequestBody Sprint sprint){
         sprintRepository.save(sprint);
-        ColumnData toDo = new ColumnData("To Do", sprint);
+        ColumnData toDo = new ColumnData("To Do", sprint, null);
         columnDataRepository.save(toDo);
-        ColumnData inProgress = new ColumnData("In Progress", sprint);
+        ColumnData inProgress = new ColumnData("In Progress", sprint, null);
         columnDataRepository.save(inProgress);
-        ColumnData stuck = new ColumnData("Stuck", sprint);
+        ColumnData stuck = new ColumnData("Stuck", sprint, null);
         columnDataRepository.save(stuck);
-        ColumnData done = new ColumnData("Done", sprint);
+        ColumnData done = new ColumnData("Done", sprint, null);
         columnDataRepository.save(done);
         return new ResponseEntity<>(sprint, HttpStatus.CREATED);
     }

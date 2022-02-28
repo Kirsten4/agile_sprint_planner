@@ -23,12 +23,18 @@ public class ColumnData {
 
     @ManyToOne
     @JoinColumn(name = "sprint_id")
-    @JsonIgnoreProperties({"project", "tasks","columnData"})
+    @JsonIgnoreProperties({"project","sprint", "tasks","columnData", "users"})
     private Sprint sprint;
 
-    public ColumnData(String columnId, Sprint sprint) {
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    @JsonIgnoreProperties({"sprints","project", "tasks","columnData", "users","productBacklog"})
+    private Project project;
+
+    public ColumnData(String columnId, Sprint sprint, Project project) {
         this.columnId = columnId;
         this.sprint = sprint;
+        this.project = project;
     }
 
     public ColumnData() {
@@ -64,6 +70,14 @@ public class ColumnData {
 
     public void setSprint(Sprint sprint) {
         this.sprint = sprint;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public void addToTaskList(Long taskId){
