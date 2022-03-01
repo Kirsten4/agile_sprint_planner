@@ -71,6 +71,11 @@
   background-color: #45A29E;
 }
 
+.form-container{
+  padding: 50px;
+  width: 50vw;
+}
+
 .show>.btn-info.dropdown-toggle{
   background-color:  rgb(55, 55, 60);
   color:#66FCF1;
