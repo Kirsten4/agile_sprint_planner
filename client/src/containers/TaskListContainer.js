@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react"
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
-import initialColumnData from '../components/task_lists/initial-data';
 import Column from '../components/task_lists/Column';
 import TasksService from "../services/TasksService";
 import ColumnDataService from "../services/ColumnDataService";
-import SprintsService from "../services/SprintsService";
+import { ProgressBar } from "react-bootstrap"
 
 const StyledContainer = styled.div`
     display: flex;
 `;
 
-const TaskListContainer = ({currentSprint}) => {
+const TaskListContainer = ({ currentSprint }) => {
 
     const [taskList, setTaskList] = useState(null);
     const [columnData, setColumnData] = useState(null);
     const [columns, setColumns] = useState(null);
-    
+    const [bookedHours, setBookedHours] = useState(0);
+    const [doneHours, setDoneHours] = useState(0);
+
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
     useEffect(() => {
         TasksService.getTasksBySprintId(currentSprint.id)
-        .then(tasks => setTaskList(tasks))
+            .then(tasks => setTaskList(tasks))
         ColumnDataService.getColumnsBySprintId(currentSprint.id)
-        .then(columns => setColumnData(columns))
+            .then(columns => setColumnData(columns))
     }, [currentSprint])
 
     useEffect(() => {
@@ -32,19 +33,26 @@ const TaskListContainer = ({currentSprint}) => {
         }
     }, [columnData])
 
+    useEffect(() => {
+        if (taskList && columns) {
+            calculateBookedHours();
+            calculateDoneHours();
+        }
+    }, [taskList, columns])
+
     const setUpColumns = () => {
         let tempColumns = {}
-        for (const column of columnData){
+        for (const column of columnData) {
             tempColumns[column.columnId] = column
         }
         setColumns(tempColumns)
     }
- 
+
     const handleTaskUpdate = (task) => {
         TasksService.updateTask(task.id, task)
-        .then(res => res.json());
-        for (let taskToCheck in taskList){
-            if (taskToCheck.id === task.id){
+            .then(res => res.json());
+        for (let taskToCheck in taskList) {
+            if (taskToCheck.id === task.id) {
                 taskToCheck = task
             }
         }
@@ -123,28 +131,59 @@ const TaskListContainer = ({currentSprint}) => {
         ColumnDataService.updateColumn(newFinish.id, newFinish)
     }
 
-    return (
+    const calculateBookedHours = () => {
+        let bookedHours = 0;
+        for (const task of taskList) {
+            bookedHours += task.timeLog
+        }
+        setBookedHours(bookedHours)
+    }
 
-        <DragDropContext onDragEnd={onDragEnd}>
-            {taskList && columns && columnData ?
-                <StyledContainer>
-                    {columnOrder.map(columnId => {
-                        const column = columns[columnId];
-                        let tasks = [];
-                        for (let id of column.taskIds) {
-                            for (let task of taskList) {
-                                if (id === task.id) {
-                                    tasks.push(task)
+
+    const calculateDoneHours = () => {
+
+        const column = columns["Done"];
+        let tasks = [];
+        for (let id of column.taskIds) {
+            for (let task of taskList) {
+                if (id === task.id) {
+                    tasks.push(task)
+                }
+            }
+        }
+        let doneHours = 0;
+        for (const task of tasks) {
+            doneHours += task.timeLog
+        }
+        setDoneHours(doneHours);
+    }
+    
+    return (
+        <>
+        <h3>Sprint: {currentSprint.id}</h3>
+            <ProgressBar now={bookedHours} label={`${bookedHours}%`} />
+            <ProgressBar now={doneHours} label={`${doneHours}%`} />
+            <DragDropContext onDragEnd={onDragEnd}>
+                {taskList && columns && columnData ?
+                    <StyledContainer>
+                        {columnOrder.map(columnId => {
+                            const column = columns[columnId];
+                            let tasks = [];
+                            for (let id of column.taskIds) {
+                                for (let task of taskList) {
+                                    if (id === task.id) {
+                                        tasks.push(task)
+                                    }
                                 }
                             }
-                        }
 
-                        return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate}  />;
-                    })}
-                </StyledContainer> 
-                : null}
-        </DragDropContext>
+                            return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} />;
+                        })}
+                    </StyledContainer>
+                    : null}
+            </DragDropContext>
+        </>
     )
 }
- 
+
 export default TaskListContainer;

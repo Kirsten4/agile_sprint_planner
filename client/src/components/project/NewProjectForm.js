@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Button from 'react-bootstrap/Button'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 const NewProjectForm = ({ onProjectSubmit }) => {
 

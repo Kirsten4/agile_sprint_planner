@@ -1,4 +1,5 @@
 import {Routes, Route, Link} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 import Login from "./components/routes/Login";
 import SignUp from "./components/routes/Signup";
@@ -16,8 +17,7 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h1>This is the app</h1>
+    <div className="App" >
       {/* <h2>The current user is: {currentUser.name}</h2> */}
       <Routes>
         <Route path="/" element={<Home />} />

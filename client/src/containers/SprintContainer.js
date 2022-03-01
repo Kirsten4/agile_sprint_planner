@@ -1,3 +1,5 @@
+import { ProgressBar } from "react-bootstrap";
+
 import { useEffect, useState } from "react";
 
 const SprintContainer = ({ selectedSprint, usersOnProject }) => {
@@ -6,7 +8,6 @@ const SprintContainer = ({ selectedSprint, usersOnProject }) => {
 
     useEffect(() => {
         setTasks([...selectedSprint.tasks])
-        console.log("here");
     }, [selectedSprint])
 
     let userHours = 0;
@@ -24,12 +25,14 @@ const SprintContainer = ({ selectedSprint, usersOnProject }) => {
 
     const hoursRemaining = totalSprintHours - totalTaskTime
 
+    const percentageOfHours = Math.round(totalTaskTime / totalSprintHours * 100)
 
     return (
         <>
             <h3>I am sprint container</h3>
             <h4>Hours avialable: {totalSprintHours}</h4>
             <h4>Hours remaining: {hoursRemaining}</h4>
+            <ProgressBar now={percentageOfHours} label={`${percentageOfHours}%`} />
             
             {tasks.map(task => <li key={task.id}>{task.description}: {task.timeEstimate}</li>)}
         </>

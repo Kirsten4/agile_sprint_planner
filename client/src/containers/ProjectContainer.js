@@ -10,7 +10,7 @@ import TaskListContainer from "./TaskListContainer"
 import BacklogContainer from "./BacklogContainer";
 import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap'
 import UsersService from "../services/UsersService";
-
+import '../App.css';
 
 
 const ProjectContainer = () => {
@@ -61,11 +61,11 @@ const ProjectContainer = () => {
     }
 
     return (
-        <>
-            <h2>This is the project container</h2>
-            <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3" activeKey={key}
+        <div className="project-container">
+            
+            <Tabs defaultActiveKey="profile" id="custom-tab" className="custom-tab" activeKey={key}
                 onSelect={(k) => setKey(k)}>
-                <Tab eventKey="dashboard" title="Dashboard">
+                <Tab eventKey="dashboard" title="Dashboard" className="custom-tab">
                     <Container>
                         <Row>
                             <Col>
@@ -86,7 +86,7 @@ const ProjectContainer = () => {
                         </Row>
                     </Container>
                 </Tab>
-                <Tab eventKey="newProject" title="New Project">
+                <Tab eventKey="newProject" title="New Project" className="custom-tab">
                     <NewProjectForm onProjectSubmit={createProject} />
                 </Tab>
                 <Tab eventKey="newSprint" title="New Sprint">
@@ -101,7 +101,7 @@ const ProjectContainer = () => {
 
                 </Tab>
             </Tabs>
-        </>
+        </div>
     )
 }
 

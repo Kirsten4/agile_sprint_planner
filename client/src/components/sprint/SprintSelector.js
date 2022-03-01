@@ -14,7 +14,7 @@ const SprintSelector = ({sprints, onSprintSelected}) => {
     return (
          <>
          <Dropdown onSelect={handleChange}>
-             <Dropdown.Toggle variant="success" size="lg" id="dropdown-basic">
+             <Dropdown.Toggle variant="info" size="lg" id="dropdown-basic">
                  Select Sprint
              </Dropdown.Toggle>
 

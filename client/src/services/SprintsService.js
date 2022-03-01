@@ -15,7 +15,6 @@ const SprintsService = {
     },
 
     putTaskInSprint(sprintId, taskId) {
-        console.log("here1");
         return fetch('/sprints/' + sprintId + '/' + taskId, {
             method: "PATCH",
             body: JSON.stringify({}),
