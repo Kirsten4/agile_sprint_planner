@@ -14,11 +14,10 @@ const NewProjectForm = ({ onProjectSubmit }) => {
 
     const handleProjectFormSubmit = (evt) => {
         evt.preventDefault()
-
         onProjectSubmit({
             name: name
         })
-        setShowAlert(true)
+        setShowAlert(true) 
         setName("")
     }
 
@@ -39,8 +38,6 @@ const NewProjectForm = ({ onProjectSubmit }) => {
                 </Alert>
             </Row>
         </Container>
-
-
     )
 }
 

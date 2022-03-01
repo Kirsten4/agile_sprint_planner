@@ -93,7 +93,7 @@ const ProjectContainer = ({ currentUser }) => {
                     <NewProjectForm onProjectSubmit={createProject} />
                 </Tab>
                 <Tab eventKey="newSprint" title="New Sprint">
-                    <NewSprintForm currentProject={currentProject} onSprintSubmit={createSprint} />
+                    <NewSprintForm projects={projects} onSprintSubmit={createSprint} />
                 </Tab>
             </Tabs>
         </div>

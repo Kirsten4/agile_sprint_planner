@@ -4,7 +4,6 @@ import { useState } from 'react'
 const TaskUpdateForm = ({ task, handleUpdate, onHide, usersOnProject }) => {
 
     const [stateTask, setStateTask] = useState(task)
-    const [allocatedUser, setAllocatedUser] = useState(null)
 
     const handleChange = (event) => {
         let propertyName = event.target.name;
