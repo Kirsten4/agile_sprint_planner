@@ -7,9 +7,10 @@ import SprintsService from "../services/SprintsService";
 import ColumnDataService from "../services/ColumnDataService";
 import SprintSelector from "../components/sprint/SprintSelector";
 import ProjectSelector from "../components/project/ProjectSelector";
-import { Container, Row, Col, Button, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Button, Alert, ProgressBar } from 'react-bootstrap'
 import TaskModal from "../components/task_lists/modal/TaskModal";
 import SprintContainer from "./SprintContainer";
+import Task from "../components/task_lists/Task";
 
 const StyledContainer = styled.div`
     display: flex;
@@ -23,6 +24,7 @@ const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
     const [modalShow, setModalShow] = useState(false);
     const [selectedSprint, setSelectedSprint] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
+    const [sprintTasks, setSprintTasks] = useState([]);
     const [taskToAdd, setTaskToAdd] = useState(null);
 
     const columnOrder = ['Backlog'];
@@ -39,6 +41,12 @@ const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
             setUpColumns();
         }
     }, [columnData])
+
+    useEffect(() => {
+        if (selectedSprint){
+        setSprintTasks([...selectedSprint.tasks])
+        }
+    }, [selectedSprint])
 
     const setUpColumns = () => {
         let tempColumns = {}
@@ -68,18 +76,17 @@ const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
         }
     }
 
-    const checkCanAddToSprint = (hoursRemaining, task) => {
+    const checkCanAddToSprint = (task) => {
+        console.log(task.timeEstimate);
         console.log(hoursRemaining);
-        console.log(task);
-        return hoursRemaining >= task.timeEstimate
+        return hoursRemaining >= Number(task.timeEstimate) 
     }
 
     const handleAddToSprint = (task) => {
-        setTaskToAdd(task)
-        if (selectedSprint && checkCanAddToSprint) {
+        console.log(checkCanAddToSprint(task));
+        if (selectedSprint && checkCanAddToSprint(task)) {
             SprintsService.putTaskInSprint(selectedSprint.id, task.id)
-            .then(sprint => setSelectedSprint({...sprint}))
-            setTaskToAdd(null)
+                .then(sprint => setSelectedSprint({ ...sprint }))
         } else {
             setShowAlert(true);
         }
@@ -121,62 +128,102 @@ const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
         setColumns(newState);
     }
 
+
+    let totalSprintHours;
+    let hoursRemaining;
+    let percentageOfHours;
+    if (selectedSprint) {
+        let userHours = 0;
+        for (const user of usersOnProject) {
+            userHours += user.weeklyContractedHours
+        }
+        totalSprintHours = userHours * selectedSprint.duration
+
+        let totalTaskTime = 0;
+
+        for (const task of sprintTasks) {
+            totalTaskTime += task.timeEstimate
+        }
+
+        hoursRemaining = totalSprintHours - totalTaskTime
+        percentageOfHours = Math.round(totalTaskTime / totalSprintHours * 100)
+
+        if (taskToAdd) {
+            checkCanAddToSprint(hoursRemaining)
+        }
+    }
+
     return (
-        <Container>
-            <Row>
-                <Alert show={showAlert} variant="danger">
-                    Select a sprint for the task!
-                </Alert>
-            </Row>
-            <Row>
-                {/* <Col>
+        <>
+            <Container>
+                <Row>
+                    <Alert show={showAlert} variant="danger">
+                        Select a sprint for the task!
+                    </Alert>
+                </Row>
+                <Row>
+                    {/* <Col>
                                 {projects ?
                                     <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
                                     : null}
                             </Col> */}
-                <Col>
-                    {currentProject ?
-                        <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
-                        : null}
-                </Col>
-            </Row>
-            <Row>
-                <div>
-                    <Button variant="primary" size="sm" onClick={() => setModalShow(true)}>Add New Task</Button>
-                    <TaskModal show={modalShow} onHide={() => setModalShow(false)} handleUpdate={handleTaskUpdate} currentProject={currentProject} />
-                </div>
+                    <Col>
+                        {currentProject ?
+                            <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
+                            : null}
+                    </Col>
+                </Row>
+                <Row>
+                    <div>
+                        <Button variant="primary" size="sm" onClick={() => setModalShow(true)}>Add New Task</Button>
+                        <TaskModal show={modalShow} onHide={() => setModalShow(false)} handleUpdate={handleTaskUpdate} currentProject={currentProject} />
+                    </div>
 
-            </Row>
-            <Row>
-                <Col>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        {taskList && columns && columnData ?
-                            <StyledContainer>
-                                {columnOrder.map(columnId => {
-                                    const column = columns[columnId];
-                                    let tasks = [];
+                </Row>
+                <Row>
+                    <Col>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            {taskList && columns && columnData ?
+                                <StyledContainer>
+                                    {columnOrder.map(columnId => {
+                                        const column = columns[columnId];
+                                        let tasks = [];
 
-                                    for (let id of column.taskIds) {
-                                        for (let task of taskList) {
-                                            if (id === task.id) {
-                                                tasks.push(task)
+                                        for (let id of column.taskIds) {
+                                            for (let task of taskList) {
+                                                if (id === task.id) {
+                                                    tasks.push(task)
+                                                }
                                             }
                                         }
-                                    }
 
-                                    return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} handleAdd={handleAddToSprint} />;
-                                })}
+                                        return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} handleAdd={handleAddToSprint} />;
+                                    })}
 
-                            </StyledContainer>
-                            : null}
-                    </DragDropContext>
-                </Col>
-                <Col>
-                    {selectedSprint ? <SprintContainer selectedSprint={selectedSprint} usersOnProject={usersOnProject} checkCanAddToSprint={checkCanAddToSprint} taskToAdd={taskToAdd} /> : null}
-                    
-                </Col>
-            </Row>
-        </Container>
+                                </StyledContainer>
+                                : null}
+                        </DragDropContext>
+                    </Col>
+                    <Col>
+                        {selectedSprint ? <SprintContainer selectedSprint={selectedSprint} checkCanAddToSprint={checkCanAddToSprint} taskToAdd={taskToAdd} usersOnProject={usersOnProject} /> : null}
+
+                    </Col>
+                </Row>
+            </Container>
+            <Container>
+                
+                {selectedSprint ? 
+                <>
+                <h3>I am sprint container</h3>
+                <h4>Hours avialable: {totalSprintHours}</h4>
+                <h4>Hours remaining: {hoursRemaining}</h4>
+                <ProgressBar now={percentageOfHours} label={`${percentageOfHours}%`} />
+
+                {sprintTasks.map(task => <li key={task.id}>{task.description}: {task.timeEstimate}</li>)}
+                </> : null}
+                
+            </Container>
+        </>
     )
 }
 

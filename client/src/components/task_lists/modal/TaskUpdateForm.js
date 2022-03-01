@@ -30,10 +30,13 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide, usersOnProject }) => {
         onHide();
     }
 
-    const dropdownOptions = usersOnProject.map((user) => {
-        return <option value={user.id} key={user.id} >{user.name} </option>
-    })
-
+    let dropdownOptions;
+    if (usersOnProject){
+        dropdownOptions = usersOnProject.map((user) => {
+            return <option value={user.id} key={user.id} >{user.name} </option>
+        })
+    }
+     
     return (
         <Container>
             <Form onSubmit={handleSubmit}>
@@ -61,12 +64,15 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide, usersOnProject }) => {
                     </Col>
                 </Row>
                 <Row>
-                <Form.Group className="mb-3" controlId="formUser">
-                        <Form.Label>Task Allocated To:: </Form.Label>
-                        <Form.Select name="users"  onChange={handleChange}>
-                        {dropdownOptions}
-                        </Form.Select>
-                    </Form.Group>
+                    {usersOnProject ?  
+                    <Form.Group className="mb-3" controlId="formUser">
+                    <Form.Label>Task Allocated To: </Form.Label>
+                    <Form.Select name="users"  onChange={handleChange}>
+                    {dropdownOptions}
+                    </Form.Select>
+                </Form.Group>
+                    : null}
+                
                 </Row>
                 <Button type="submit">Save Changes</Button>
             </Form>

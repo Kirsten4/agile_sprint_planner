@@ -95,7 +95,7 @@ const ProjectContainer = ({currentUser}) => {
                 <Tab eventKey="productBacklog" title="Product Backlog">
                     {currentProject ?
                         <>
-                            <BacklogContainer currentProject={currentProject} sprints={sprints} currentUser={currentUser} />
+                            <BacklogContainer currentProject={currentProject} sprints={sprints} currentUser={currentUser} usersOnProject={usersOnProject} />
                         </>
                         : null}
 
