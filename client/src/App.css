@@ -55,6 +55,22 @@
   margin-top: 20px;
 }
 
+.progress{
+  background-color: #C5C6C7;
+  height: 25px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.progress-bar{
+  color: aliceblue;
+  font-weight: bold;
+}
+
+.progress-bar {
+  background-color: #45A29E;
+}
+
 .show>.btn-info.dropdown-toggle{
   background-color:  rgb(55, 55, 60);
   color:#66FCF1;

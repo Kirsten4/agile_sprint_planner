@@ -8,9 +8,9 @@ import ColumnDataService from "../services/ColumnDataService";
 import UsersService from "../services/UsersService";
 import SprintSelector from "../components/sprint/SprintSelector";
 import ProjectSelector from "../components/project/ProjectSelector";
-import { Container, Row, Col, Button, Alert, ProgressBar } from 'react-bootstrap'
+import { Container, Row, Col, Button, Alert, ProgressBar, Table } from 'react-bootstrap'
 import TaskModal from "../components/task_lists/modal/TaskModal";
-import { format } from "date-fns"
+import '../App.css'
 
 
 const StyledContainer = styled.div`
@@ -242,12 +242,31 @@ const BacklogContainer = ({ projects }) => {
                 <Col>
                     {selectedSprint ?
                         <>
+                            <h5><b>Hours avialable: </b>{totalSprintHours}</h5>
+                            <h5><b>Hours remaining: </b>{hoursRemaining}</h5>
+                            <ProgressBar now={percentageOfHours} label={`Remaining Capacity: ${percentageOfHours}%`} />
 
-                            <h4>Hours avialable: {totalSprintHours}</h4>
-                            <h4>Hours remaining: {hoursRemaining}</h4>
-                            <ProgressBar now={percentageOfHours} label={`${percentageOfHours}%`} />
+                            <Table >
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Task
+                                        </th>
+                                        <th>
+                                            Estimated Time (hours)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {sprintTasks.map(task => {
+                                        return <tr key={task.id}>
+                                            <td>{task.description}</td>
+                                            <td>{task.timeEstimate}</td>
+                                        </tr>
+                                    })}
+                                </tbody>
+                            </Table>
 
-                            {sprintTasks.map(task => <li key={task.id}>{task.description}: {task.timeEstimate}</li>)}
                         </> : null}
                 </Col>
             </Row>
