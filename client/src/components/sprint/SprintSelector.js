@@ -13,7 +13,7 @@ const SprintSelector = ({sprints, onSprintSelected, currentSprint}) => {
 
     let dropDownToggle = "Select Sprint"
     if (currentSprint){
-        dropDownToggle = "Sprint:" + currentSprint.id
+        dropDownToggle = "Sprint: " + currentSprint.id
     }
 
     return (

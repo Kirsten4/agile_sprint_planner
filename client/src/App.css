@@ -6,7 +6,8 @@
 }
 
 .App h1{
-  color:#66FCF1;
+  color:aliceblue;
+  font-weight: bold;
   font-family: 'Roboto', sans-serif;
   font-size: 50px;
   padding: 30px;
@@ -21,8 +22,18 @@
   margin-bottom: 40px;
 }
 
+.column-header{
+  background-color: #48505a;
+  margin: 0;
+  padding: 10px;
+  color: aliceblue;
+  border-radius: 10px 10px 0 0;
+  font-weight: 400;
+}
+
 .dropdown-menu.show{
   background-color:  rgb(55, 55, 60);
+  box-shadow: 0 0 0 0.25rem rgb(11 172 204 / 50%);
 }
 .dropdown-item{
   color:#66FCF1;

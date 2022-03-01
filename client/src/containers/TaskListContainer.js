@@ -10,7 +10,6 @@ import '../App.css';
 
 const StyledContainer = styled.div`
     display: flex;
-    background-color: aqua;
     justify-content: space-around;
     padding: 20px;
 `;
@@ -169,13 +168,13 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
             <Row>
                 <Col></Col>
                 <Col>
-                    <h6>Start Date: {formattedDate}</h6>
+                    <h6><b>Start Date: </b>{formattedDate}</h6>
                 </Col>
             </Row>
             <Row>
                 <Col></Col>
                 <Col>
-                    <h6>Duration: {currentSprint.duration} weeks</h6>
+                    <h6><b>Duration: </b>{currentSprint.duration} weeks</h6>
                 </Col>
             </Row>
             <Row>

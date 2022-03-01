@@ -6,11 +6,11 @@ import { useState } from 'react';
 import SprintsService from '../../services/SprintsService';
 
 const Container = styled.div`
-    border: 1px solid lightgrey;
-    border-radius: 2px;
+    color: aliceblue;    
+    border-radius: 10px;
     padding 8px;
-    margin-bottom: 8px;
-    background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
+    margin-bottom: 10px;
+    background-color: ${props => (props.isDragging ? '#51bdb8' : '#45A29E')};
 `
 
 const Task = ({ task, index, handleUpdate, handleAdd, usersOnProject }) => {
@@ -18,7 +18,7 @@ const Task = ({ task, index, handleUpdate, handleAdd, usersOnProject }) => {
     const [currentTask, setCurrentTask] = useState(null);
 
     const stringDraggableId = task.id.toString();
-    
+
     const handleClick = () => {
         handleAdd(task)
     }
