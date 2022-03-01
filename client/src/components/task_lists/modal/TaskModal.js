@@ -2,7 +2,7 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import TaskUpdateForm from './TaskUpdateForm'
 
-const TaskModal = ({ show, onHide, task, handleUpdate, currentProject }) => {
+const TaskModal = ({ show, onHide, task, handleUpdate, currentProject, usersOnProject }) => {
 
     if (!task) {
         task = {
@@ -18,7 +18,7 @@ const TaskModal = ({ show, onHide, task, handleUpdate, currentProject }) => {
                 <Modal.Title>{task.description}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TaskUpdateForm handleUpdate={handleUpdate} task={task} onHide={onHide} />
+                <TaskUpdateForm handleUpdate={handleUpdate} task={task} onHide={onHide} usersOnProject={usersOnProject}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onHide}>Close</Button>

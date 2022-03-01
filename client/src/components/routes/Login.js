@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const Login = ({fetchCurrentUser}) => {
   const [user, setUser] = useState({
@@ -7,6 +8,10 @@ const Login = ({fetchCurrentUser}) => {
     password: "",
   });
   const [error, setError] = useState("");
+
+  if (localStorage.getItem("token")) {
+    return <Navigate to="/" />;
+  }
 
   const handleChange = (event) => {
     const copiedUser = { ...user };
@@ -22,7 +27,7 @@ const Login = ({fetchCurrentUser}) => {
         if (res.status === 200){
             localStorage.setItem('token', res.data.token)
             fetchCurrentUser(user)
-            window.location = "/"}
+            }
     }, err => {console.log(err.response);
     setError(err.response.data.error);}    
     );

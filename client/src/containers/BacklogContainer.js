@@ -23,6 +23,7 @@ const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
     const [modalShow, setModalShow] = useState(false);
     const [selectedSprint, setSelectedSprint] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
+    const [taskToAdd, setTaskToAdd] = useState(null);
 
     const columnOrder = ['Backlog'];
 
@@ -67,10 +68,18 @@ const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
         }
     }
 
+    const checkCanAddToSprint = (hoursRemaining, task) => {
+        console.log(hoursRemaining);
+        console.log(task);
+        return hoursRemaining >= task.timeEstimate
+    }
+
     const handleAddToSprint = (task) => {
-        if (selectedSprint) {
+        setTaskToAdd(task)
+        if (selectedSprint && checkCanAddToSprint) {
             SprintsService.putTaskInSprint(selectedSprint.id, task.id)
             .then(sprint => setSelectedSprint({...sprint}))
+            setTaskToAdd(null)
         } else {
             setShowAlert(true);
         }
@@ -163,7 +172,7 @@ const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
                     </DragDropContext>
                 </Col>
                 <Col>
-                    {selectedSprint ? <SprintContainer selectedSprint={selectedSprint} usersOnProject={usersOnProject} /> : null}
+                    {selectedSprint ? <SprintContainer selectedSprint={selectedSprint} usersOnProject={usersOnProject} checkCanAddToSprint={checkCanAddToSprint} taskToAdd={taskToAdd} /> : null}
                     
                 </Col>
             </Row>

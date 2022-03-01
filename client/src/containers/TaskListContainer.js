@@ -5,12 +5,13 @@ import Column from '../components/task_lists/Column';
 import TasksService from "../services/TasksService";
 import ColumnDataService from "../services/ColumnDataService";
 import { ProgressBar } from "react-bootstrap"
+import {format} from "date-fns"
 
 const StyledContainer = styled.div`
     display: flex;
 `;
 
-const TaskListContainer = ({ currentSprint }) => {
+const TaskListContainer = ({ currentSprint, usersOnProject }) => {
 
     const [taskList, setTaskList] = useState(null);
     const [columnData, setColumnData] = useState(null);
@@ -157,10 +158,19 @@ const TaskListContainer = ({ currentSprint }) => {
         }
         setDoneHours(doneHours);
     }
+
+    const longEnUSFormatter = new Intl.DateTimeFormat('en-UK', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+
+    const formattedDate = longEnUSFormatter.format(new Date(currentSprint.startDate), 'dd MM yyyy')
     
     return (
         <>
         <h3>Sprint: {currentSprint.id}</h3>
+        <h4>Start Date: {formattedDate}</h4>
             <ProgressBar now={bookedHours} label={`${bookedHours}%`} />
             <ProgressBar now={doneHours} label={`${doneHours}%`} />
             <DragDropContext onDragEnd={onDragEnd}>
@@ -177,7 +187,7 @@ const TaskListContainer = ({ currentSprint }) => {
                                 }
                             }
 
-                            return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} />;
+                            return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} usersOnProject={usersOnProject} />;
                         })}
                     </StyledContainer>
                     : null}

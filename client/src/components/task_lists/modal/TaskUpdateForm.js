@@ -1,9 +1,10 @@
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import { useState } from 'react'
 
-const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
+const TaskUpdateForm = ({ task, handleUpdate, onHide, usersOnProject }) => {
 
     const [stateTask, setStateTask] = useState(task)
+    const [allocatedUser, setAllocatedUser] = useState(null)
 
     const handleChange = (event) => {
         let propertyName = event.target.name;
@@ -11,7 +12,13 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
         //Timelog needs to add to existing value rather than overwrite it
         if (propertyName === "timeLog") {
             copiedTask[propertyName] = task.timeLog + Number(event.target.value);
-        } else {
+        } else if(propertyName === "users"){
+            for (const user of usersOnProject){
+                if (user.id === Number(event.target.value)){
+                    copiedTask[propertyName].push(user) 
+                }
+            }
+        }else {
             copiedTask[propertyName] = event.target.value;
         }
         setStateTask(copiedTask);
@@ -22,6 +29,10 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
         handleUpdate(stateTask);
         onHide();
     }
+
+    const dropdownOptions = usersOnProject.map((user) => {
+        return <option value={user.id} key={user.id} >{user.name} </option>
+    })
 
     return (
         <Container>
@@ -48,6 +59,14 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
                             <Form.Control name="timeLog" type="number" placeholder={0} onChange={handleChange}></Form.Control>
                         </Form.Group>
                     </Col>
+                </Row>
+                <Row>
+                <Form.Group className="mb-3" controlId="formUser">
+                        <Form.Label>Task Allocated To:: </Form.Label>
+                        <Form.Select name="users"  onChange={handleChange}>
+                        {dropdownOptions}
+                        </Form.Select>
+                    </Form.Group>
                 </Row>
                 <Button type="submit">Save Changes</Button>
             </Form>

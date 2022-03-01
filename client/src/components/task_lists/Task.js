@@ -13,7 +13,7 @@ const Container = styled.div`
     background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
 `
 
-const Task = ({ task, index, handleUpdate, handleAdd }) => {
+const Task = ({ task, index, handleUpdate, handleAdd, usersOnProject }) => {
     const [modalShow, setModalShow] = useState(false);
     const [currentTask, setCurrentTask] = useState(null);
 
@@ -35,9 +35,10 @@ const Task = ({ task, index, handleUpdate, handleAdd }) => {
                 >
                     {task.description}<br />
                     Priority: {index + 1}
+                    {/* {task.users[0]} */}
                     <Button variant="primary" size="sm" onClick={() => setModalShow(true)}>View/Edit Details</Button>
                     {task.project ? <button onClick={handleClick}>Add To Sprint</button> : null}
-                    <TaskModal show={modalShow} onHide={() => setModalShow(false)} task={task} handleUpdate={handleUpdate} />
+                    <TaskModal show={modalShow} onHide={() => setModalShow(false)} task={task} handleUpdate={handleUpdate} usersOnProject={usersOnProject} />
                 </Container>
             )}
         </Draggable>

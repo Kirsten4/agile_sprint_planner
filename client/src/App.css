@@ -35,30 +35,29 @@
  }
 
  .nav-link:hover{
-   color: #45A29E;
- }
-
- .nav-link.active {
-  background-color: #C5C6C7;
-  color: #125ebb;
+   color: #2c7672;
  }
 
 #custom-tab-tab-dashboard.active{
   background-color: #C5C6C7;
-  color: #1F2833;
+  color: #2c7672;
+  font-weight: bold;
 }
 
 #custom-tab-tab-newSprint.active{
   background-color: #C5C6C7;
-  color: #1F2833;
+  color: #2c7672;
+  font-weight: bold;
 }
 
 #custom-tab-tab-newProject.active{
   background-color: #C5C6C7;
-  color: #1F2833;
+  color: #2c7672;
+  font-weight: bold;
 }
 
 #custom-tab-tab-productBacklog.active{
   background-color: #C5C6C7;
-  color: #1F2833;
+  color: #2c7672;
+  font-weight: bold;
 }

@@ -2,7 +2,7 @@ import { ProgressBar } from "react-bootstrap";
 
 import { useEffect, useState } from "react";
 
-const SprintContainer = ({ selectedSprint, usersOnProject }) => {
+const SprintContainer = ({ selectedSprint, usersOnProject, checkCanAddToSprint, taskToAdd }) => {
 
     const [tasks, setTasks] = useState([]);
 
@@ -26,6 +26,11 @@ const SprintContainer = ({ selectedSprint, usersOnProject }) => {
     const hoursRemaining = totalSprintHours - totalTaskTime
 
     const percentageOfHours = Math.round(totalTaskTime / totalSprintHours * 100)
+
+    if (taskToAdd){
+        checkCanAddToSprint(hoursRemaining, taskToAdd)
+    }
+    
 
     return (
         <>

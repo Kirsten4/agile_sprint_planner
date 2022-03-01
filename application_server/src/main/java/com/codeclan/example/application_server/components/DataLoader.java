@@ -62,8 +62,8 @@ public class DataLoader implements ApplicationRunner {
 //        ColumnData backlogProject2 = new ColumnData("Backlog", null, project2);
 //        columnDataRepository.save(backlogProject2);
 
-        Date date = new Date();
-        Sprint sprint1 = new Sprint(date, 2, project1);
+
+        Sprint sprint1 = new Sprint("2022-03-11", 2, project1);
         sprintRepository.save(sprint1);
 
         Task checkIn = new Task("Check In", project1);

@@ -19,7 +19,7 @@ public class Sprint {
     private Long id;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private String startDate;
 
     @Column(name = "duration")
     private int duration;
@@ -38,7 +38,7 @@ public class Sprint {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<ColumnData> columnData;
 
-    public Sprint(Date startDate, int duration, Project project) {
+    public Sprint(String startDate, int duration, Project project) {
         this.startDate = startDate;
         this.duration = duration;
         this.project = project;
@@ -57,11 +57,11 @@ public class Sprint {
         this.id = id;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 

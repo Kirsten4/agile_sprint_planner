@@ -18,7 +18,7 @@ const StyledTaskList = styled.div`
     min-height: 300px;
     `;
 
-const Column = ({ column, tasks, handleUpdate, handleAdd }) => {
+const Column = ({ column, tasks, handleUpdate, handleAdd, usersOnProject }) => {
     
     return (
         <StyledContainer>
@@ -30,7 +30,7 @@ const Column = ({ column, tasks, handleUpdate, handleAdd }) => {
                         {...provided.droppableProps}
                     >
                         {tasks.map((task, index) => (
-                            <Task key={task.id} task={task} index={index} handleUpdate={handleUpdate} handleAdd={handleAdd} />
+                            <Task key={task.id} task={task} index={index} handleUpdate={handleUpdate} handleAdd={handleAdd}usersOnProject={usersOnProject} />
                         ))}
                         {provided.placeholder}
                     </StyledTaskList>

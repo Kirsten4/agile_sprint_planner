@@ -13,7 +13,7 @@ import UsersService from "../services/UsersService";
 import '../App.css';
 
 
-const ProjectContainer = () => {
+const ProjectContainer = ({currentUser}) => {
     const [key, setKey] = useState('dashboard');
     const [projects, setProjects] = useState([]);
     const [currentProject, setCurrentProject] = useState(null);
@@ -81,7 +81,7 @@ const ProjectContainer = () => {
                         </Row>
                         <Row>
                             {currentSprint ?
-                                <TaskListContainer currentSprint={currentSprint} />
+                                <TaskListContainer currentSprint={currentSprint} usersOnProject={usersOnProject}/>
                                 : null}
                         </Row>
                     </Container>
@@ -95,7 +95,7 @@ const ProjectContainer = () => {
                 <Tab eventKey="productBacklog" title="Product Backlog">
                     {currentProject ?
                         <>
-                            <BacklogContainer currentProject={currentProject} sprints={sprints} usersOnProject={usersOnProject} />
+                            <BacklogContainer currentProject={currentProject} sprints={sprints} currentUser={currentUser} />
                         </>
                         : null}
 
