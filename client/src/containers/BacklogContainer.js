@@ -43,9 +43,12 @@ const BacklogContainer = ({ currentProject, sprints, usersOnProject }) => {
     }, [columnData])
 
     useEffect(() => {
-        if (selectedSprint){
-        setSprintTasks([...selectedSprint.tasks])
-        }
+        // if (selectedSprint && selectedSprint.tasks.length > 0){
+        // setSprintTasks([...selectedSprint.tasks])
+        // }
+        if (selectedSprint ){
+            setSprintTasks([...selectedSprint.tasks])
+            }
     }, [selectedSprint])
 
     const setUpColumns = () => {

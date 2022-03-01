@@ -4,11 +4,15 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import Column from '../components/task_lists/Column';
 import TasksService from "../services/TasksService";
 import ColumnDataService from "../services/ColumnDataService";
-import { ProgressBar } from "react-bootstrap"
-import {format} from "date-fns"
+import { ProgressBar, Col, Row, Container } from "react-bootstrap"
+import { format } from "date-fns"
+import '../App.css';
 
 const StyledContainer = styled.div`
     display: flex;
+    background-color: aqua;
+    justify-content: space-around;
+    padding: 20px;
 `;
 
 const TaskListContainer = ({ currentSprint, usersOnProject }) => {
@@ -73,7 +77,6 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
         if (!destination) {
             return;
         }
-
         //dropped in original position
         if (
             destination.droppableId === source.droppableId &&
@@ -81,10 +84,8 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
         ) {
             return;
         }
-
         const start = columns[source.droppableId];
         const finish = columns[destination.droppableId];
-
         //dropped in new index position, same column
         if (start === finish) {
             const newTaskIds = Array.from(start.taskIds);
@@ -95,12 +96,10 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
                 ...start,
                 taskIds: newTaskIds
             };
-
             const newState = {
                 ...columns,
 
                 [newColumn.columnId]: newColumn
-
             };
             setColumns(newState);
             ColumnDataService.updateColumn(newColumn.id, newColumn)
@@ -140,9 +139,7 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
         setBookedHours(bookedHours)
     }
 
-
     const calculateDoneHours = () => {
-
         const column = columns["Done"];
         let tasks = [];
         for (let id of column.taskIds) {
@@ -163,35 +160,51 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-      })
+    })
 
     const formattedDate = longEnUSFormatter.format(new Date(currentSprint.startDate), 'dd MM yyyy')
-    
+
     return (
         <>
-        <h3>Sprint: {currentSprint.id}</h3>
-        <h4>Start Date: {formattedDate}</h4>
-            <ProgressBar now={bookedHours} label={`${bookedHours}%`} />
-            <ProgressBar now={doneHours} label={`${doneHours}%`} />
-            <DragDropContext onDragEnd={onDragEnd}>
-                {taskList && columns && columnData ?
-                    <StyledContainer>
-                        {columnOrder.map(columnId => {
-                            const column = columns[columnId];
-                            let tasks = [];
-                            for (let id of column.taskIds) {
-                                for (let task of taskList) {
-                                    if (id === task.id) {
-                                        tasks.push(task)
+            <Row>
+                <Col></Col>
+                <Col>
+                    <h6>Start Date: {formattedDate}</h6>
+                </Col>
+            </Row>
+            <Row>
+                <Col></Col>
+                <Col>
+                    <h6>Duration: {currentSprint.duration} weeks</h6>
+                </Col>
+            </Row>
+            <Row>
+                <ProgressBar now={bookedHours} label={`${bookedHours}%`} />
+            </Row>
+            <Row>
+                <ProgressBar now={doneHours} label={`${doneHours}%`} />
+            </Row>
+            <Row>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    {taskList && columns && columnData ?
+                        <StyledContainer>
+                            {columnOrder.map(columnId => {
+                                const column = columns[columnId];
+                                let tasks = [];
+                                for (let id of column.taskIds) {
+                                    for (let task of taskList) {
+                                        if (id === task.id) {
+                                            tasks.push(task)
+                                        }
                                     }
                                 }
-                            }
 
-                            return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} usersOnProject={usersOnProject} />;
-                        })}
-                    </StyledContainer>
-                    : null}
-            </DragDropContext>
+                                return <Column key={columnId} column={column} tasks={tasks} handleUpdate={handleTaskUpdate} usersOnProject={usersOnProject} />;
+                            })}
+                        </StyledContainer>
+                        : null}
+                </DragDropContext>
+            </Row>
         </>
     )
 }

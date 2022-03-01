@@ -13,10 +13,10 @@ import UsersService from "../services/UsersService";
 import '../App.css';
 
 
-const ProjectContainer = ({currentUser}) => {
+const ProjectContainer = ({ currentUser }) => {
     const [key, setKey] = useState('dashboard');
     const [projects, setProjects] = useState([]);
-    const [currentProject, setCurrentProject] = useState(null);
+    const [currentProject, setCurrentProject] = useState('');
     const [sprints, setSprints] = useState([]);
     const [currentSprint, setCurrentSprint] = useState(null);
     const [usersOnProject, setUsersOnProject] = useState(null);
@@ -33,7 +33,7 @@ const ProjectContainer = ({currentUser}) => {
             SprintsService.getSprintsByProject(currentProject.id)
                 .then(sprints => setSprints(sprints));
             UsersService.getUsersByProject(currentProject.id)
-            .then(users => setUsersOnProject(users))
+                .then(users => setUsersOnProject(users))
         }
     }, [currentProject])
 
@@ -62,35 +62,29 @@ const ProjectContainer = ({currentUser}) => {
 
     return (
         <div className="project-container">
-            
+
             <Tabs defaultActiveKey="profile" id="custom-tab" className="custom-tab" activeKey={key}
                 onSelect={(k) => setKey(k)}>
                 <Tab eventKey="dashboard" title="Dashboard" className="custom-tab">
                     <Container>
-                        <Row>
-                            <Col>
+                        <Row className="selector-row">
+                            <Col >
                                 {projects ?
-                                    <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
+                                    <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} currentProject={currentProject} />
                                     : null}
                             </Col>
-                            <Col>
+                            <Col >
                                 {currentProject ?
-                                    <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
+                                    <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} currentSprint={currentSprint} />
                                     : null}
                             </Col>
-                        </Row>
-                        <Row>
-                            {currentSprint ?
-                                <TaskListContainer currentSprint={currentSprint} usersOnProject={usersOnProject}/>
-                                : null}
                         </Row>
                     </Container>
-                </Tab>
-                <Tab eventKey="newProject" title="New Project" className="custom-tab">
-                    <NewProjectForm onProjectSubmit={createProject} />
-                </Tab>
-                <Tab eventKey="newSprint" title="New Sprint">
-                    <NewSprintForm currentProject={currentProject} onSprintSubmit={createSprint} />
+                    <Container className="task-list-container">
+                        {currentSprint ?
+                            <TaskListContainer currentSprint={currentSprint} usersOnProject={usersOnProject} />
+                            : null}
+                    </Container>
                 </Tab>
                 <Tab eventKey="productBacklog" title="Product Backlog">
                     {currentProject ?
@@ -99,6 +93,12 @@ const ProjectContainer = ({currentUser}) => {
                         </>
                         : null}
 
+                </Tab>
+                <Tab eventKey="newProject" title="New Project" className="custom-tab">
+                    <NewProjectForm onProjectSubmit={createProject} />
+                </Tab>
+                <Tab eventKey="newSprint" title="New Sprint">
+                    <NewSprintForm currentProject={currentProject} onSprintSubmit={createSprint} />
                 </Tab>
             </Tabs>
         </div>

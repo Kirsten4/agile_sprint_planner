@@ -1,6 +1,6 @@
 import Dropdown from 'react-bootstrap/Dropdown'
 
-const SprintSelector = ({sprints, onSprintSelected}) => {
+const SprintSelector = ({sprints, onSprintSelected, currentSprint}) => {
     
     const handleChange = (eventKey) => {
         const chosenSprint = sprints[eventKey]
@@ -11,11 +11,16 @@ const SprintSelector = ({sprints, onSprintSelected}) => {
         return <Dropdown.Item eventKey={index} key={index} >{sprint.id} </Dropdown.Item>
     })
 
+    let dropDownToggle = "Select Sprint"
+    if (currentSprint){
+        dropDownToggle = "Sprint:" + currentSprint.id
+    }
+
     return (
          <>
          <Dropdown onSelect={handleChange}>
              <Dropdown.Toggle variant="info" size="lg" id="dropdown-basic">
-                 Select Sprint
+                 {dropDownToggle} 
              </Dropdown.Toggle>
 
              <Dropdown.Menu>

@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   background-color: rgb(55, 55, 60);
 }
@@ -15,18 +15,45 @@
 .project-container {
   background-color: aliceblue;
   height: 100%;
-  min-height: 60vh;
-  border-radius: 10PX;
+  min-width: 100%;
+  min-height: 70vh;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.dropdown-menu.show{
+  background-color:  rgb(55, 55, 60);
+}
+.dropdown-item{
+  color:#66FCF1;
 }
 
 .header.row {
-  
   align-items: center;
+}
+
+.task-list-container{
+  justify-content: center;
+}
+
+.show>.btn-info.dropdown-toggle{
+  background-color:  rgb(55, 55, 60);
+  color:#66FCF1;
+}
+
+.selector-row {
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .btn.btn-info {
   background-color: #45A29E;
   border-color: #45A29E;
+  color: aliceblue;
+}
+
+#dropdown-basic{
+  min-width: 30vw;
 }
 
  .nav-link {
@@ -36,6 +63,7 @@
 
  .nav-link:hover{
    color: #2c7672;
+   background-color: #e9eaeb;
  }
 
 #custom-tab-tab-dashboard.active{
