@@ -4,7 +4,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import Column from '../components/task_lists/Column';
 import TasksService from "../services/TasksService";
 import ColumnDataService from "../services/ColumnDataService";
-import { ProgressBar, Col, Row, Container } from "react-bootstrap"
+import { ProgressBar, Col, Row } from "react-bootstrap"
 import { format } from "date-fns"
 import '../App.css';
 

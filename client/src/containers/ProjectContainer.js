@@ -87,12 +87,7 @@ const ProjectContainer = ({ currentUser }) => {
                     </Container>
                 </Tab>
                 <Tab eventKey="productBacklog" title="Product Backlog">
-                    {currentProject ?
-                        <>
-                            <BacklogContainer currentProject={currentProject} sprints={sprints} currentUser={currentUser} usersOnProject={usersOnProject} />
-                        </>
-                        : null}
-
+                    <BacklogContainer projects={projects} />
                 </Tab>
                 <Tab eventKey="newProject" title="New Project" className="custom-tab">
                     <NewProjectForm onProjectSubmit={createProject} />

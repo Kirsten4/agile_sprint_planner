@@ -47,21 +47,22 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide, usersOnProject }) => {
                     </Form.Group>
                 </Row>
                 <Row>
+                    <Col>
                     <Form.Group className="mb-3" controlId="formTimeEstimate">
                         <Form.Label>Time Estimate: </Form.Label>
                         <Form.Control name="timeEstimate" type="number" placeholder={0} value={stateTask.timeEstimate} onChange={handleChange}></Form.Control>
                     </Form.Group>
-                </Row>
-                <Row>
-                    <Col>
-                        <p>Logged Time: {task.timeLog}</p>
                     </Col>
                     <Col>
-                        <Form.Group className="mb-3" controlId="formTimeLog">
+                    <Form.Label>Logged Time: </Form.Label>
+                    <div id="logged-time">{task.timeLog} hours</div>
+                    </Col>
+                    <Col>
+                    <Form.Group className="mb-3" controlId="formTimeLog">
                             <Form.Label>Book Hours Against Task: </Form.Label>
                             <Form.Control name="timeLog" type="number" placeholder={0} onChange={handleChange}></Form.Control>
                         </Form.Group>
-                    </Col>
+                    </Col>  
                 </Row>
                 <Row>
                     {usersOnProject ?  

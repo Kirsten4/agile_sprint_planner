@@ -4,8 +4,7 @@ import Task from './Task';
 
 const StyledContainer = styled.div`
     margin: 8px;
-    
-    width: 22%;
+    min-width: 22%;
     display: flex;
     flex-direction: column;
     `;
