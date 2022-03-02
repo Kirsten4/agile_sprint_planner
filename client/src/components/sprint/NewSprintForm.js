@@ -20,7 +20,6 @@ const NewSprintForm = ({ onSprintSubmit, projects }) => {
 
     const handleProjectChange = (evt) => {
         for (const project of projects) {
-            console.log(project);
             if (project.id === Number(evt.target.value)) {
                 setProject(project)
             }

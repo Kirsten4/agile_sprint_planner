@@ -21,6 +21,9 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
     const [columns, setColumns] = useState(null);
     const [bookedHours, setBookedHours] = useState(0);
     const [doneHours, setDoneHours] = useState(0);
+    const [sprintHours, setSprintHours] = useState(0);
+    const [bookedVsSprint, setBookedVsSprint] = useState(0);
+    const [doneVsSprint, setDoneVsSprint] = useState(0);
 
     const columnOrder = ['To Do', 'In Progress', 'Stuck', 'Done'];
 
@@ -29,7 +32,7 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
             .then(tasks => setTaskList(tasks))
         ColumnDataService.getColumnsBySprintId(currentSprint.id)
             .then(columns => setColumnData(columns))
-    }, [currentSprint])
+    }, [currentSprint, taskList])
 
     useEffect(() => {
         if (columnData && taskList) {
@@ -41,8 +44,14 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
         if (taskList && columns) {
             calculateBookedHours();
             calculateDoneHours();
+            calculateSprintHours();
         }
     }, [taskList, columns])
+
+    useEffect(() => {
+        calculateBookedVsSprintHours()
+        calculateDoneVsSprintHours()
+    }, [sprintHours, doneHours, bookedHours, taskList])
 
     const setUpColumns = () => {
         let tempColumns = {}
@@ -55,18 +64,15 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
     const handleTaskUpdate = (task) => {
         TasksService.updateTask(task.id, task)
             .then(res => res.json());
-        for (let taskToCheck in taskList) {
+        for (let taskToCheck of taskList) {
             if (taskToCheck.id === task.id) {
                 taskToCheck = task
             }
-        }
         const newState = [
             ...taskList
         ]
         setTaskList(newState);
-    }
-
-
+    }}
 
     const onDragEnd = result => {
         result.draggableId = Number(result.draggableId)
@@ -155,6 +161,26 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
         setDoneHours(doneHours);
     }
 
+    const calculateSprintHours = () => {
+        let totalSprintHours;
+        if (currentSprint) {
+            let userHours = 0;
+            for (const user of usersOnProject) {
+                userHours += user.weeklyContractedHours
+            }
+            totalSprintHours = userHours * currentSprint.duration
+            setSprintHours(totalSprintHours);
+        }
+    }
+
+    const calculateBookedVsSprintHours = () => {
+        setBookedVsSprint(Math.round(bookedHours / sprintHours * 100))
+    }
+
+    const calculateDoneVsSprintHours = () => {
+        setDoneVsSprint(Math.round(doneHours / sprintHours * 100))
+    }
+
     const longEnUSFormatter = new Intl.DateTimeFormat('en-UK', {
         year: 'numeric',
         month: 'long',
@@ -174,14 +200,15 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
             <Row>
                 <Col></Col>
                 <Col>
-                    <h6><b>Duration: </b>{currentSprint.duration} weeks</h6>
+                    <h6><b>Duration: </b>{currentSprint.duration} weeks ({sprintHours} hours)</h6>
                 </Col>
             </Row>
-            <Row>
-                <ProgressBar now={bookedHours} label={`${bookedHours}%`} />
+            <Row> Hours Booked vs Duration:
+                <ProgressBar className="progress-dashboard" now={bookedVsSprint} label={`${bookedVsSprint}%`} />
             </Row>
             <Row>
-                <ProgressBar now={doneHours} label={`${doneHours}%`} />
+                Estimated Hours of Tasks Completed vs Duration:
+                <ProgressBar className="progress-dashboard" now={doneVsSprint} label={`${doneVsSprint}%`} />
             </Row>
             <Row>
                 <DragDropContext onDragEnd={onDragEnd}>

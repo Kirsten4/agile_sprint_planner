@@ -14,7 +14,7 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide, usersOnProject }) => {
         } else if(propertyName === "users"){
             for (const user of usersOnProject){
                 if (user.id === Number(event.target.value)){
-                    copiedTask[propertyName].push(user) 
+                    copiedTask[propertyName].splice(0, 1, user) 
                 }
             }
         }else {

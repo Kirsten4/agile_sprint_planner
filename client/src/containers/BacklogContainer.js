@@ -80,7 +80,7 @@ const BacklogContainer = ({ projects }) => {
         if (task.id) {
             TasksService.updateTask(task.id, task)
                 .then(res => res.json());
-            for (let taskToCheck in taskList) {
+            for (let taskToCheck of taskList) {
                 if (taskToCheck.id === task.id) {
                     taskToCheck = task
                 }
@@ -97,8 +97,6 @@ const BacklogContainer = ({ projects }) => {
     }
 
     const checkCanAddToSprint = (task) => {
-        console.log(task.timeEstimate);
-        console.log(hoursRemaining);
         return hoursRemaining >= Number(task.timeEstimate)
     }
 
@@ -242,8 +240,8 @@ const BacklogContainer = ({ projects }) => {
                 <Col>
                     {selectedSprint ?
                         <>
-                            <h5><b>Hours avialable: </b>{totalSprintHours}</h5>
-                            <h5><b>Hours remaining: </b>{hoursRemaining}</h5>
+                            <h6><b>Hours avialable: </b>{totalSprintHours}</h6>
+                            <h6><b>Hours remaining: </b>{hoursRemaining}</h6>
                             <ProgressBar now={percentageOfHours} label={`Remaining Capacity: ${percentageOfHours}%`} />
 
                             <Table >

@@ -6,7 +6,6 @@ const SprintsService = {
     },
 
     postSprint(payload) {
-        console.log(payload);
         return fetch('/sprints', {
             method: 'POST',
             body: JSON.stringify(payload),

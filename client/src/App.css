@@ -66,6 +66,10 @@
   margin-bottom: 20px;
 }
 
+.progress-dashboard{
+  margin-top: 0px;
+}
+
 .progress-bar{
   color: aliceblue;
   font-weight: bold;
