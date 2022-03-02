@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import BackLogList from "../components/project/BacklogList";
 import ProjectSelector from "../components/project/ProjectSelector";
 import SprintSelector from "../components/sprint/SprintSelector";
 import NewProjectForm from "../components/project/NewProjectForm";
@@ -10,18 +9,18 @@ import TaskListContainer from "./TaskListContainer"
 import BacklogContainer from "./BacklogContainer";
 import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap'
 import UsersService from "../services/UsersService";
+import DrawingContainer from "./DrawingContainer";
+import TeamContainer from "./TeamContainer";
+import '../App.css';
 
 
-
-const ProjectContainer = () => {
+const ProjectContainer = ({ currentUser }) => {
     const [key, setKey] = useState('dashboard');
     const [projects, setProjects] = useState([]);
-    const [currentProject, setCurrentProject] = useState(null);
+    const [currentProject, setCurrentProject] = useState('');
     const [sprints, setSprints] = useState([]);
     const [currentSprint, setCurrentSprint] = useState(null);
     const [usersOnProject, setUsersOnProject] = useState(null);
-
-
 
     useEffect(() => {
         ProjectsService.getProjects()
@@ -33,7 +32,7 @@ const ProjectContainer = () => {
             SprintsService.getSprintsByProject(currentProject.id)
                 .then(sprints => setSprints(sprints));
             UsersService.getUsersByProject(currentProject.id)
-            .then(users => setUsersOnProject(users))
+                .then(users => setUsersOnProject(users))
         }
     }, [currentProject])
 
@@ -60,48 +59,52 @@ const ProjectContainer = () => {
             .then(savedSprint => setSprints([...sprints, savedSprint]))
     }
 
+
     return (
-        <>
-            <h2>This is the project container</h2>
-            <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3" activeKey={key}
+        <div className="project-container">
+
+            <Tabs defaultActiveKey="profile" id="custom-tab" className="custom-tab" activeKey={key}
                 onSelect={(k) => setKey(k)}>
-                <Tab eventKey="dashboard" title="Dashboard">
+                <Tab eventKey="dashboard" title="Dashboard" className="custom-tab">
                     <Container>
-                        <Row>
-                            <Col>
+                        <Row className="selector-row">
+                            <Col >
                                 {projects ?
-                                    <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} />
+                                    <ProjectSelector projects={projects} onProjectSelected={onProjectSelected} currentProject={currentProject} />
                                     : null}
                             </Col>
-                            <Col>
+                            <Col >
                                 {currentProject ?
-                                    <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} />
+                                    <SprintSelector sprints={sprints} onSprintSelected={onSprintSelected} currentSprint={currentSprint} />
                                     : null}
                             </Col>
-                        </Row>
-                        <Row>
-                            {currentSprint ?
-                                <TaskListContainer currentSprint={currentSprint} />
-                                : null}
                         </Row>
                     </Container>
+                    <Container className="task-list-container">
+                        {currentSprint ?
+                            <TaskListContainer currentSprint={currentSprint} usersOnProject={usersOnProject} />
+                            : null}
+                    </Container>
                 </Tab>
-                <Tab eventKey="newProject" title="New Project">
+                <Tab eventKey="productBacklog" title="Product Backlog">
+                    <BacklogContainer projects={projects} />
+                </Tab>
+                <Tab eventKey="newProject" title="New Project" className="custom-tab">
                     <NewProjectForm onProjectSubmit={createProject} />
                 </Tab>
                 <Tab eventKey="newSprint" title="New Sprint">
-                    <NewSprintForm currentProject={currentProject} onSprintSubmit={createSprint} />
+                    <NewSprintForm projects={projects} onSprintSubmit={createSprint} />
                 </Tab>
-                <Tab eventKey="productBacklog" title="Product Backlog">
-                    {currentProject ?
-                        <>
-                            <BacklogContainer currentProject={currentProject} sprints={sprints} usersOnProject={usersOnProject} />
-                        </>
-                        : null}
-
+                <Tab eventKey="draw" title="Draw">
+                    <div>
+                        <DrawingContainer />
+                    </div>
+                </Tab>
+                <Tab eventKey="team" title="Team">
+                    <TeamContainer usersOnProject={usersOnProject} projects={projects} />
                 </Tab>
             </Tabs>
-        </>
+        </div>
     )
 }
 

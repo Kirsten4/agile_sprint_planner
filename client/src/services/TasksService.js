@@ -11,7 +11,6 @@ const TasksService = {
     },
 
     postTask(payload) {
-        console.log(payload);
         return fetch('/tasks', {
             method: 'POST',
             body: JSON.stringify(payload),
@@ -21,7 +20,6 @@ const TasksService = {
     },
     
     updateTask(id, payload) {
-        console.log(payload);
         return fetch('/tasks/' + id, {
             method: "PATCH",
             headers: {'Content-Type': 'application/json'},

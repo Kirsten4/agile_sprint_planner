@@ -4,33 +4,34 @@ import Task from './Task';
 
 const StyledContainer = styled.div`
     margin: 8px;
-    border: 1px solid lightgrey;
-    border-radius: 2px;
-    width: 200px;
+    min-width: 22%;
     display: flex;
     flex-direction: column;
     `;
 
 const StyledTaskList = styled.div`
     padding: 8px;
-    background-color: skyblue;
+    background-color: #e9ecef;
     flex-grow: 1;
     min-height: 300px;
+    border-radius: 0 0 10px 10px;
+    background-color: ${props => (props.isDraggingOver ? '#c5c6c7' : '#e9ecef')}
     `;
 
-const Column = ({ column, tasks, handleUpdate, handleAdd }) => {
+const Column = ({ column, tasks, handleUpdate, handleAdd, usersOnProject }) => {
     
     return (
         <StyledContainer>
-            <h3>{column.columnId}</h3>
+            <h4 className="column-header">{column.columnId}</h4>
             <Droppable droppableId={column.columnId}>
-                {(provided) => (
+                {(provided,snapshot) => (
                     <StyledTaskList
                         ref={provided.innerRef}
                         {...provided.droppableProps}
+                        isDraggingOver={snapshot.isDraggingOver}
                     >
                         {tasks.map((task, index) => (
-                            <Task key={task.id} task={task} index={index} handleUpdate={handleUpdate} handleAdd={handleAdd} />
+                            <Task key={task.id} task={task} index={index} handleUpdate={handleUpdate} handleAdd={handleAdd}usersOnProject={usersOnProject} />
                         ))}
                         {provided.placeholder}
                     </StyledTaskList>

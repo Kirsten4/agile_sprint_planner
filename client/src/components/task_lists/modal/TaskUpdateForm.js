@@ -1,7 +1,7 @@
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import { useState } from 'react'
 
-const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
+const TaskUpdateForm = ({ task, handleUpdate, onHide, usersOnProject }) => {
 
     const [stateTask, setStateTask] = useState(task)
 
@@ -11,7 +11,13 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
         //Timelog needs to add to existing value rather than overwrite it
         if (propertyName === "timeLog") {
             copiedTask[propertyName] = task.timeLog + Number(event.target.value);
-        } else {
+        } else if(propertyName === "users"){
+            for (const user of usersOnProject){
+                if (user.id === Number(event.target.value)){
+                    copiedTask[propertyName].splice(0, 1, user) 
+                }
+            }
+        }else {
             copiedTask[propertyName] = event.target.value;
         }
         setStateTask(copiedTask);
@@ -23,6 +29,13 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
         onHide();
     }
 
+    let dropdownOptions;
+    if (usersOnProject){
+        dropdownOptions = usersOnProject.map((user) => {
+            return <option value={user.id} key={user.id} >{user.name} </option>
+        })
+    }
+     
     return (
         <Container>
             <Form onSubmit={handleSubmit}>
@@ -33,21 +46,33 @@ const TaskUpdateForm = ({ task, handleUpdate, onHide }) => {
                     </Form.Group>
                 </Row>
                 <Row>
+                    <Col>
                     <Form.Group className="mb-3" controlId="formTimeEstimate">
                         <Form.Label>Time Estimate: </Form.Label>
                         <Form.Control name="timeEstimate" type="number" placeholder={0} value={stateTask.timeEstimate} onChange={handleChange}></Form.Control>
                     </Form.Group>
-                </Row>
-                <Row>
-                    <Col>
-                        <p>Logged Time: {task.timeLog}</p>
                     </Col>
                     <Col>
-                        <Form.Group className="mb-3" controlId="formTimeLog">
+                    <Form.Label>Logged Time: </Form.Label>
+                    <div id="logged-time">{task.timeLog} hours</div>
+                    </Col>
+                    <Col>
+                    <Form.Group className="mb-3" controlId="formTimeLog">
                             <Form.Label>Book Hours Against Task: </Form.Label>
                             <Form.Control name="timeLog" type="number" placeholder={0} onChange={handleChange}></Form.Control>
                         </Form.Group>
-                    </Col>
+                    </Col>  
+                </Row>
+                <Row>
+                    {usersOnProject ?  
+                    <Form.Group className="mb-3" controlId="formUser">
+                    <Form.Label>Task Allocated To: </Form.Label>
+                    <Form.Select name="users"  onChange={handleChange}>
+                    {dropdownOptions}
+                    </Form.Select>
+                </Form.Group>
+                    : null}
+                
                 </Row>
                 <Button type="submit">Save Changes</Button>
             </Form>
