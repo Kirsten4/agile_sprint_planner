@@ -35,18 +35,9 @@
     to {
       transform: rotate(360deg);
     }
-  }
-
-  div #canvas{
-      display: flex;
-      justify-content: center;
-      justify-self: center;
-      text-align: center;
-  }
+  } 
   
   .c-jOyZnp {
-      width: 65%;
+      width: 80vw;
       height: 60%;
-      display: flex;
-      justify-self: center;
   }

@@ -4,7 +4,7 @@ import ProjectContainer from "../../containers/ProjectContainer";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import '../../App.css';
 
-const Home = ({currentUser}) => {
+const Home = ({ currentUser }) => {
 
   if (localStorage.getItem("token") === null) {
     return <Navigate to="/login" />;
@@ -16,20 +16,21 @@ const Home = ({currentUser}) => {
   };
 
   return (
-    
+
     <Container>
       <Row className="header">
-        <Col xs lg={true}>
+        <Col>
+          <img className="logo" src={"/logo.png"}></img>
         </Col>
         <Col xs="auto">
-        <h1>Agile Sprint Planner</h1>
+          <h1>Agile Sprint Planner</h1>
         </Col>
-        <Col xs lg={true}>
-        <Button variant="info" size="lg" onClick={logout}>Logout</Button>
-        </Col> 
+        <Col>
+          <Button variant="info" size="lg" onClick={logout}>Logout</Button>
+        </Col>
       </Row>
       <Row>
-      <ProjectContainer currentUser={currentUser} />
+        <ProjectContainer currentUser={currentUser} />
       </Row>
     </Container>
   );

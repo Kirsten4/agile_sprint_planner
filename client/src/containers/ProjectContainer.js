@@ -96,7 +96,7 @@ const ProjectContainer = ({ currentUser }) => {
                     <NewSprintForm projects={projects} onSprintSubmit={createSprint} />
                 </Tab>
                 <Tab eventKey="draw" title="Draw">
-                    <div>
+                    <div className="draw-flex">
                         <DrawingContainer />
                     </div>
                 </Tab>

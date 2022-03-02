@@ -47,12 +47,20 @@
   align-items: center;
 }
 
+.container{
+  max-width: 85vw;
+}
+
 #backlog-dropdowns{
   padding-top: 20px;
 }
 
 .task-list-container{
   justify-content: center;
+}
+
+.logo{
+  width: 150px;
 }
 
 #add-new-buton{
