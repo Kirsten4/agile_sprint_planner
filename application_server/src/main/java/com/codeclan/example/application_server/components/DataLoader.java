@@ -60,20 +60,20 @@ public class DataLoader implements ApplicationRunner {
         sprintRepository.save(sprint1);
 
         Task checkIn = new Task("Check In", project1);
-        checkIn.setTimeEstimate(50.0);
-        checkIn.setTimeLog(30.5);
+        checkIn.setTimeEstimate(90.0);
+        checkIn.setTimeLog(70.0);
         sprint1.getTaskFromBacklog(checkIn.getProject(),checkIn);
         checkIn.addUser(david);
         taskRepository.save(checkIn);
         Task checkOut = new Task("Check Out", project1);
         checkOut.setTimeEstimate(70.0);
-        checkOut.setTimeLog(45.0);
+        checkOut.setTimeLog(50.0);
         sprint1.getTaskFromBacklog(checkOut.getProject(),checkOut);
         checkOut.addUser(david);
         taskRepository.save(checkOut);
         Task makeReservation = new Task("Make Reservation", project1);
         makeReservation.setTimeEstimate(90.0);
-        makeReservation.setTimeLog(20.0);
+        makeReservation.setTimeLog(90.0);
         sprint1.getTaskFromBacklog(makeReservation.getProject(),makeReservation);
         makeReservation.addUser(kirsten);
         taskRepository.save(makeReservation);

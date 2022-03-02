@@ -27,6 +27,7 @@ const BacklogContainer = ({ projects }) => {
     const [modalShow, setModalShow] = useState(false);
     const [selectedSprint, setSelectedSprint] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
+    const [showFullAlert, setShowFullAlert] = useState(false);
     const [sprintTasks, setSprintTasks] = useState([]);
     const [currentProject, setCurrentProject] = useState(null);
     const [sprints, setSprints] = useState([]);
@@ -104,7 +105,9 @@ const BacklogContainer = ({ projects }) => {
         if (selectedSprint && checkCanAddToSprint(task) && task.timeEstimate !== 0) {
             SprintsService.putTaskInSprint(selectedSprint.id, task.id)
                 .then(sprint => setSelectedSprint({ ...sprint }))
-        } else {
+        } else if (selectedSprint && !checkCanAddToSprint(task) && task.timeEstimate !== 0){
+            setShowFullAlert(true);
+        } else{
             setShowAlert(true);
         }
     }
@@ -145,7 +148,6 @@ const BacklogContainer = ({ projects }) => {
         setColumns(newState);
     }
 
-
     let totalSprintHours;
     let hoursRemaining;
     let percentageOfHours;
@@ -181,8 +183,11 @@ const BacklogContainer = ({ projects }) => {
     return (
         <Container>
             <Row>
-                <Alert show={showAlert} variant="danger">
+                <Alert show={showAlert} variant="danger" onClose={() => setShowAlert(false)} dismissible>
                     Select a sprint for the task!
+                </Alert>
+                <Alert show={showFullAlert} variant="danger" onClose={() => setShowFullAlert(false)} dismissible>
+                    Not enough capacity in the sprint for this task!
                 </Alert>
             </Row>
             <Row id="backlog-dropdowns">
