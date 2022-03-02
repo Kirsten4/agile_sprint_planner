@@ -79,6 +79,18 @@
   background-color: #45A29E;
 }
 
+.flex-cards{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.card{
+  margin: 20px;
+  min-width: 20%;
+  border-radius: 10px;
+}
+
 .form-container{
   padding: 50px;
   width: 50vw;

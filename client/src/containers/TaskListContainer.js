@@ -5,7 +5,6 @@ import Column from '../components/task_lists/Column';
 import TasksService from "../services/TasksService";
 import ColumnDataService from "../services/ColumnDataService";
 import { ProgressBar, Col, Row } from "react-bootstrap"
-import { format } from "date-fns"
 import '../App.css';
 
 const StyledContainer = styled.div`
@@ -207,7 +206,7 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
                 <ProgressBar className="progress-dashboard" now={bookedVsSprint} label={`${bookedVsSprint}%`} />
             </Row>
             <Row>
-                Estimated Hours of Tasks Completed vs Duration:
+                Booked Hours of Tasks Completed vs Duration:
                 <ProgressBar className="progress-dashboard" now={doneVsSprint} label={`${doneVsSprint}%`} />
             </Row>
             <Row>

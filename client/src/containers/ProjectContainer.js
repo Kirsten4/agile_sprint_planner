@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import BackLogList from "../components/project/BacklogList";
 import ProjectSelector from "../components/project/ProjectSelector";
 import SprintSelector from "../components/sprint/SprintSelector";
 import NewProjectForm from "../components/project/NewProjectForm";
@@ -11,7 +10,7 @@ import BacklogContainer from "./BacklogContainer";
 import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap'
 import UsersService from "../services/UsersService";
 import DrawingContainer from "./DrawingContainer";
-import { Tldraw, TldrawApp } from '@tldraw/tldraw'
+import TeamContainer from "./TeamContainer";
 import '../App.css';
 
 
@@ -22,8 +21,6 @@ const ProjectContainer = ({ currentUser }) => {
     const [sprints, setSprints] = useState([]);
     const [currentSprint, setCurrentSprint] = useState(null);
     const [usersOnProject, setUsersOnProject] = useState(null);
-
-
 
     useEffect(() => {
         ProjectsService.getProjects()
@@ -62,7 +59,6 @@ const ProjectContainer = ({ currentUser }) => {
             .then(savedSprint => setSprints([...sprints, savedSprint]))
     }
 
-    
 
     return (
         <div className="project-container">
@@ -101,9 +97,11 @@ const ProjectContainer = ({ currentUser }) => {
                 </Tab>
                 <Tab eventKey="draw" title="Draw">
                     <div>
-                    <DrawingContainer />
+                        <DrawingContainer />
                     </div>
-                    
+                </Tab>
+                <Tab eventKey="team" title="Team">
+                    <TeamContainer usersOnProject={usersOnProject} projects={projects} />
                 </Tab>
             </Tabs>
         </div>
