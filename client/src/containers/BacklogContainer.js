@@ -80,7 +80,7 @@ const BacklogContainer = ({ projects }) => {
         if (task.id) {
             TasksService.updateTask(task.id, task)
                 .then(res => res.json());
-            for (let taskToCheck of taskList) {
+            for (let taskToCheck in taskList) {
                 if (taskToCheck.id === task.id) {
                     taskToCheck = task
                 }

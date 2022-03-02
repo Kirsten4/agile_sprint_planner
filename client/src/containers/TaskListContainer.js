@@ -31,7 +31,8 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
             .then(tasks => setTaskList(tasks))
         ColumnDataService.getColumnsBySprintId(currentSprint.id)
             .then(columns => setColumnData(columns))
-    }, [currentSprint, taskList])
+    }, [currentSprint])
+    // }, [currentSprint, taskList])
 
     useEffect(() => {
         if (columnData && taskList) {
@@ -62,16 +63,22 @@ const TaskListContainer = ({ currentSprint, usersOnProject }) => {
 
     const handleTaskUpdate = (task) => {
         TasksService.updateTask(task.id, task)
-            .then(res => res.json());
-        for (let taskToCheck of taskList) {
-            if (taskToCheck.id === task.id) {
-                taskToCheck = task
-            }
-        const newState = [
-            ...taskList
-        ]
-        setTaskList(newState);
-    }}
+            .then(res => res.json())
+            .then(returnedTask => {
+                let newState = [
+                    ...taskList
+                ]
+                for (let i = 0; i < newState.length; i++) {
+
+                    console.log(returnedTask);
+                    if (newState[i].id === returnedTask.id) {
+                        newState[i] = returnedTask
+                        setTaskList(newState);
+                    }
+                }
+            })
+    }
+
 
     const onDragEnd = result => {
         result.draggableId = Number(result.draggableId)
