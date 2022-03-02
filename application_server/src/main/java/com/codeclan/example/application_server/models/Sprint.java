@@ -3,6 +3,7 @@ package com.codeclan.example.application_server.models;
 import com.codeclan.example.application_server.models.Project;
 import com.codeclan.example.application_server.models.Task;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,25 +19,31 @@ public class Sprint {
     private Long id;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private String startDate;
 
     @Column(name = "duration")
     private int duration;
 
     @ManyToOne
     @JoinColumn(name="project_id", nullable = false)
-    @JsonIgnoreProperties({"users", "sprints", "productBacklog"})
+    @JsonIgnoreProperties({"users", "sprints", "productBacklog","columnData"})
     private Project project;
 
     @OneToMany(mappedBy = "sprint")
     @JsonIgnoreProperties({"sprint"})
     private List<Task> tasks;
 
-    public Sprint(Date startDate, int duration, Project project) {
+    @OneToMany(mappedBy = "sprint")
+    @JsonIgnoreProperties({"sprint"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private List<ColumnData> columnData;
+
+    public Sprint(String startDate, int duration, Project project) {
         this.startDate = startDate;
         this.duration = duration;
         this.project = project;
         this.tasks = new ArrayList<>();
+        this.columnData = new ArrayList<>();
     }
 
     public Sprint() {
@@ -50,11 +57,11 @@ public class Sprint {
         this.id = id;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
@@ -82,8 +89,20 @@ public class Sprint {
         this.tasks = tasks;
     }
 
+    public List<ColumnData> getColumnData() {
+        return columnData;
+    }
+
+    public void setColumnData(List<ColumnData> columnData) {
+        this.columnData = columnData;
+    }
+
     public void addTaskToSprint(Task task){
         this.tasks.add(task);
+    }
+
+    public void addColumnData(ColumnData data){
+        this.columnData.add(data);
     }
 
     public void getTaskFromBacklog(Project project, Task task) {

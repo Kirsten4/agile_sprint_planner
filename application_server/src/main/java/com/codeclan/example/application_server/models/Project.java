@@ -20,7 +20,7 @@ public class Project {
     private String name;
 
     @ManyToMany
-    @JsonIgnoreProperties({"projects"})
+    @JsonIgnoreProperties({"projects","tasks"})
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
             name = "users_projects",
@@ -34,18 +34,24 @@ public class Project {
     private List<User> users;
 
     @OneToMany(mappedBy = "project")
-    @JsonIgnoreProperties({"project"})
+    @JsonIgnoreProperties({"project","tasks","columnData"})
     private List<Sprint> sprints;
 
     @OneToMany(mappedBy = "project")
-    @JsonIgnoreProperties({"project"})
+    @JsonIgnoreProperties({"project","users","columnData"})
     private List<Task> productBacklog;
+
+    @OneToMany(mappedBy = "project")
+    @JsonIgnoreProperties({"project"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private List<ColumnData> columnData;
 
     public Project(String name) {
         this.name = name;
         this.users = new ArrayList<>();
         this.sprints = new ArrayList<>();
         this.productBacklog = new ArrayList<>();
+        this.columnData = new ArrayList<>();
     }
 
     public Project() {
@@ -91,12 +97,25 @@ public class Project {
         this.productBacklog = productBacklog;
     }
 
+    public List<ColumnData> getColumnData() {
+        return columnData;
+    }
+
+    public void setColumnData(List<ColumnData> columnData) {
+        this.columnData = columnData;
+    }
+
     public void addUser(User user){
         this.users.add(user);
     }
 
-    public void addTask(Task task){
+    public void addColumnData(ColumnData data){
+        this.columnData.add(data);
+    }
+
+    public void addTask(Task task, ColumnData columnData){
         this.productBacklog.add(task);
+        columnData.addToTaskList(task.getId());
     }
 
     public boolean removeTask(Task task) {

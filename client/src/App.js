@@ -1,16 +1,29 @@
-import {Routes, Route, Link} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 import Login from "./components/routes/Login";
 import SignUp from "./components/routes/Signup";
 import Home from "./components/routes/Home";
+import UsersService from "./services/UsersService";
+import { useState, useEffect } from "react"
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const fetchCurrentUser = (user) => {
+    UsersService.getUserByUsername(user.username)
+      .then(currentUser => {
+        if(currentUser){
+          setCurrentUser(currentUser)
+        }    
+      })
+  }
+
   return (
-    <div className="App">
-      <h1>This is the app</h1>
+    <div className="App" >
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home currentUser={currentUser}/>} />
+        <Route path="/login" element={<Login fetchCurrentUser={fetchCurrentUser} />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
     </div>

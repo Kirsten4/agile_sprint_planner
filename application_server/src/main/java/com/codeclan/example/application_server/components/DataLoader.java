@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -32,50 +33,73 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        User kirsten = new User("Kirsten", "Kirsten4", "kirsten@fake.com", Role.PRODUCT_OWNER);
+        User kirsten = new User("Kirsten", "Kirsten4", "kirsten@fake.com", Role.PRODUCT_OWNER, 40);
         userRepository.save(kirsten);
-        User david = new User("David", "David2", "david@fake.com", Role.DEVELOPER);
+        User david = new User("David", "David2", "david@fake.com", Role.DEVELOPER, 40);
         userRepository.save(david);
-        User duncan = new User("Duncan", "Duncan1", "duncan@fake.com", Role.SCRUM_MASTER);
+        User martin = new User("Martin", "Martin5", "martin@fake.com", Role.DEVELOPER, 20);
+        userRepository.save(martin);
+        User rachel = new User("Rachel", "Rachel6", "rachel@fake.com", Role.DEVELOPER, 35);
+        userRepository.save(rachel);
+        User joanne = new User("Joanne", "Joanne7", "joanne@fake.com", Role.DEVELOPER, 35);
+        userRepository.save(joanne);
+        User duncan = new User("Duncan", "Duncan1", "duncan@fake.com", Role.SCRUM_MASTER, 40);
         userRepository.save(duncan);
-        User linda = new User("Linda", "Linda3", "linda@fake.com", Role.ADMIN);
+        User linda = new User("Linda", "Linda3", "linda@fake.com", Role.ADMIN, 35);
         userRepository.save(linda);
 
-        Project project1 = new Project("Project 1");
+        Project project1 = new Project("Project 1: Hotel Booking System");
         project1.addUser(kirsten);
+        project1.addUser(david);
         project1.addUser(duncan);
+        project1.addUser(martin);
+        project1.addUser(rachel);
         projectRepository.save(project1);
-        Project project2 = new Project("Project 2");
-        project2.addUser(david);
-        projectRepository.save(project2);
 
-        Task checkIn = new Task("Check in", project2);
-        taskRepository.save(checkIn);
-        Task checkOut = new Task("Check out", project2);
-        taskRepository.save(checkOut);
-        Task makeReservation = new Task("Make reservation", project2);
-        taskRepository.save(makeReservation);
-        Task backlogTask1 = new Task("Backlog Task1", project1);
-        taskRepository.save(backlogTask1);
-        Task backlogTask2 = new Task("Backlog Task2", project1);
-        taskRepository.save(backlogTask2);
-
-        Date date = new Date();
-        Sprint sprint1 = new Sprint(date, 2, project1);
+        Sprint sprint1 = new Sprint("2022-03-11", 2, project1);
         sprintRepository.save(sprint1);
 
-        ColumnData taskIdsToDo = new ColumnData("To Do");
-        taskIdsToDo.addToTaskList(1L);
-        taskIdsToDo.addToTaskList(3L);
-        columnDataRepository.save(taskIdsToDo);
-        ColumnData taskIdsInProgress = new ColumnData("In Progress");
-        columnDataRepository.save(taskIdsInProgress);
-        ColumnData taskIdsStuck = new ColumnData("Stuck");
-        taskIdsStuck.addToTaskList(2L);
-        columnDataRepository.save(taskIdsStuck);
-        ColumnData taskIdsDone = new ColumnData("Done");
-        columnDataRepository.save(taskIdsDone);
+        Task checkIn = new Task("Check In", project1);
+        checkIn.setTimeEstimate(90.0);
+        checkIn.setTimeLog(70.0);
+        sprint1.getTaskFromBacklog(checkIn.getProject(),checkIn);
+        checkIn.addUser(david);
+        taskRepository.save(checkIn);
+        Task checkOut = new Task("Check Out", project1);
+        checkOut.setTimeEstimate(70.0);
+        checkOut.setTimeLog(50.0);
+        sprint1.getTaskFromBacklog(checkOut.getProject(),checkOut);
+        checkOut.addUser(david);
+        taskRepository.save(checkOut);
+        Task makeReservation = new Task("Make Reservation", project1);
+        makeReservation.setTimeEstimate(90.0);
+        makeReservation.setTimeLog(90.0);
+        sprint1.getTaskFromBacklog(makeReservation.getProject(),makeReservation);
+        makeReservation.addUser(kirsten);
+        taskRepository.save(makeReservation);
+        Task backlogTask1 = new Task("Backlog Task 1", project1);
+        backlogTask1.setTimeEstimate(30.0);
+        taskRepository.save(backlogTask1);
+        Task backlogTask2 = new Task("Backlog Task 2", project1);
+        backlogTask2.setTimeEstimate(50.0);
+        taskRepository.save(backlogTask2);
+        ColumnData backlogProject1 = new ColumnData("Backlog", null, project1);
+        backlogProject1.addToTaskList(5L);
+        backlogProject1.addToTaskList(4L);
+        columnDataRepository.save(backlogProject1);
+        projectRepository.save(project1);
 
+        ColumnData toDo = new ColumnData("To Do", sprint1, null);
+        toDo.addToTaskList(1L);
+        toDo.addToTaskList(3L);
+        columnDataRepository.save(toDo);
+        ColumnData inProgress = new ColumnData("In Progress", sprint1, null);
+        columnDataRepository.save(inProgress);
+        ColumnData stuck = new ColumnData("Stuck", sprint1, null);
+        stuck.addToTaskList(2L);
+        columnDataRepository.save(stuck);
+        ColumnData done = new ColumnData("Done", sprint1, null);
+        columnDataRepository.save(done);
 
     }
 }
