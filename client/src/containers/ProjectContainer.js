@@ -10,6 +10,8 @@ import TaskListContainer from "./TaskListContainer"
 import BacklogContainer from "./BacklogContainer";
 import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap'
 import UsersService from "../services/UsersService";
+import DrawingContainer from "./DrawingContainer";
+import { Tldraw, TldrawApp } from '@tldraw/tldraw'
 import '../App.css';
 
 
@@ -60,6 +62,8 @@ const ProjectContainer = ({ currentUser }) => {
             .then(savedSprint => setSprints([...sprints, savedSprint]))
     }
 
+    
+
     return (
         <div className="project-container">
 
@@ -94,6 +98,12 @@ const ProjectContainer = ({ currentUser }) => {
                 </Tab>
                 <Tab eventKey="newSprint" title="New Sprint">
                     <NewSprintForm projects={projects} onSprintSubmit={createSprint} />
+                </Tab>
+                <Tab eventKey="draw" title="Draw">
+                    <div>
+                    <DrawingContainer />
+                    </div>
+                    
                 </Tab>
             </Tabs>
         </div>
