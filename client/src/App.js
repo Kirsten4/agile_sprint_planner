@@ -13,13 +13,14 @@ function App() {
   const fetchCurrentUser = (user) => {
     UsersService.getUserByUsername(user.username)
       .then(currentUser => {
-        setCurrentUser(currentUser)        
+        if(currentUser){
+          setCurrentUser(currentUser)
+        }    
       })
   }
 
   return (
     <div className="App" >
-      {/* <h2>The current user is: {currentUser.name}</h2> */}
       <Routes>
         <Route path="/" element={<Home currentUser={currentUser}/>} />
         <Route path="/login" element={<Login fetchCurrentUser={fetchCurrentUser} />} />

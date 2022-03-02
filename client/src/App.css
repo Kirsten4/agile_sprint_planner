@@ -13,6 +13,10 @@
   padding: 30px;
 }
 
+.white-label{
+  color: aliceblue;
+}
+
 .project-container {
   background-color: aliceblue;
   height: 100%;

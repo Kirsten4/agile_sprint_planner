@@ -24,27 +24,8 @@ const NewSprintForm = ({ onSprintSubmit, projects }) => {
             if (project.id === Number(evt.target.value)) {
                 setProject(project)
             }
-        }
-        
+        } 
     }
-
-    // const handleChange = (event) => {
-    //     console.log(event.target.name);
-    //     console.log(event.target.vaue);
-    //     let propertyName = event.target.name;
-    //     let copiedTask = { ...stateTask };
-    //     if (propertyName === "project") {
-    //         for (const project of projects) {
-    //             console.log(project);
-    //             if (project.id === Number(event.target.value)) {
-    //                 copiedTask[propertyName] = project
-    //             }
-    //         }
-    //     } else {
-    //         copiedTask[propertyName] = event.target.value;
-    //     }
-    //     setStateTask(copiedTask);
-    // }
 
         const handleSprintFormSubmit = (evt) => {
             evt.preventDefault()
@@ -53,6 +34,7 @@ const NewSprintForm = ({ onSprintSubmit, projects }) => {
                 duration: duration,
                 project: project,
             })
+            setShowAlert(true)
             setStartDate(null)
             setDuration(null)
             setProject(null)
@@ -103,7 +85,7 @@ const NewSprintForm = ({ onSprintSubmit, projects }) => {
             </Row>
             <Row>
                 <Alert show={showAlert} variant="success" onClose={() => setShowAlert(false)} dismissible>
-                    Project added successfully!
+                    Sprint added successfully!
                 </Alert>
             </Row>
         </Container>
